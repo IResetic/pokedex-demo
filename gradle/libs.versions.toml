@@ -1,13 +1,17 @@
 [versions]
 androidGradlePlugin = "8.1.1"
-kotlin = "1.8.10"
+kotlin = "1.9.21"
 androidxCore = "1.12.0"
-junit = "4.13.2"
 androidxTestExt = "1.1.5"
 androidxEspresso = "3.5.1"
 androidxLifecycle = "2.7.0"
 androidXActivityCompose = "1.8.2"
-composeBom = "2023.03.00"
+androidxComposeCompiler = "1.5.7"
+junit = "4.13.2"
+composeBom = "2024.02.00"
+hilt = "2.50"
+hiltCompiler = "1.2.0"
+ksp = "1.9.10-1.0.13"
 
 [libraries]
 # ***** Core *****
@@ -22,17 +26,25 @@ ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
 # ***** Test *****
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExt" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+
+# ***** Dependency Injection *****
+hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt"}
+androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltCompiler" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltCompiler" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [bundles]
 
