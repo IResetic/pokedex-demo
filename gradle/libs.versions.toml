@@ -13,12 +13,14 @@ hilt = "2.50"
 hiltCompiler = "1.2.0"
 ksp = "1.9.21-1.0.16"
 ktlint = "11.6.1"
+splashScreen = "1.0.1"
 
 [libraries]
 # ***** Core *****
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidXActivityCompose" }
+androidx-splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
 
 # ***** Compose *****
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
