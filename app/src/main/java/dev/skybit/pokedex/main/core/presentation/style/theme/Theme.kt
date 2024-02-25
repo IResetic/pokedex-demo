@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.theme
+package dev.skybit.pokedex.main.core.presentation.style.theme
 
 import android.app.Activity
 import android.os.Build
