@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
-import dev.skybit.pokedex.ui.theme.PokedexTheme
+import dev.skybit.pokedex.main.theme.PokedexTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
