@@ -85,5 +85,5 @@ dependencies {
 
     // ***** Moshi *****
     implementation(libs.square.moshi)
-    ksp(libs.moshi.kotlin.codegen)
+    ksp(libs.kotlin.moshi.codegen)
 }
