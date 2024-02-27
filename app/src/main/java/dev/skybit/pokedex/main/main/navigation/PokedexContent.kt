@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.core.presentation.ui
+package dev.skybit.pokedex.main.main.navigation
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.Scaffold

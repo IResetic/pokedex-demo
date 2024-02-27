@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.core.presentation.ui
+package dev.skybit.pokedex.main.main.ui
 
 import android.animation.ObjectAnimator
 import android.view.View

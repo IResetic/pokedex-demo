@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.core.presentation.ui
+package dev.skybit.pokedex.main.main.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,6 +7,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.skybit.pokedex.main.core.presentation.style.theme.PokedexTheme
+import dev.skybit.pokedex.main.main.navigation.PokedexContent
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
