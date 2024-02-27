@@ -86,4 +86,10 @@ dependencies {
     // ***** Moshi *****
     implementation(libs.square.moshi)
     ksp(libs.kotlin.moshi.codegen)
+
+    // ***** Room *****
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
 }
