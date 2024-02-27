@@ -6,5 +6,5 @@ data class TypeDetails(
     val imageName: String,
     val numberOfPokemons: Int,
     val introductionGeneration: String,
-    val pokemons: List<TypePokemon>
+    val pokemons: List<BasicPokemonInfo>
 )

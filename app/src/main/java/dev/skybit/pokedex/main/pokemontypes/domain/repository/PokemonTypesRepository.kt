@@ -5,5 +5,5 @@ import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
 interface PokemonTypesRepository {
     suspend fun getPokemonTypes(): List<PokemonType>
 
-    suspend fun getPokemonTypeDetails(typeId: Int): PokemonType
+    suspend fun getPokemonTypeDetails(typeName: String): PokemonType
 }

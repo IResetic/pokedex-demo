@@ -1,6 +1,6 @@
 package dev.skybit.pokedex.main.pokemontypes.domain.model
 
-data class TypePokemon(
+data class BasicPokemonInfo(
     val name: String,
     val imageUrl: String
 )
