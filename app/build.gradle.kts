@@ -77,4 +77,13 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
     ksp(libs.androidx.hilt.compiler)
+
+    // ***** Network *****
+    implementation(libs.square.retrofit)
+    implementation(libs.retrofit.moshi.converter)
+    implementation(libs.okhttp.logging.interceptor)
+
+    // ***** Moshi *****
+    implementation(libs.square.moshi)
+    ksp(libs.moshi.kotlin.codegen)
 }
