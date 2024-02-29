@@ -1,12 +1,12 @@
 package dev.skybit.pokedex.main.pokemontypes.data.remote.mappers
 
 import dev.skybit.pokedex.main.core.data.remote.model.ResultDto
-import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
+import dev.skybit.pokedex.main.pokemontypes.data.local.model.PokemonTypeEntity
 import javax.inject.Inject
 
-class ResultDtoToPokemonTypeMapper @Inject constructor() {
-    operator fun invoke(result: ResultDto): PokemonType {
-        return PokemonType(
+class ResultDtoToPokemonEntityTypeMapper @Inject constructor() {
+    operator fun invoke(result: ResultDto): PokemonTypeEntity {
+        return PokemonTypeEntity(
             id = getPokemonTypeId(result.url),
             name = result.name
         )

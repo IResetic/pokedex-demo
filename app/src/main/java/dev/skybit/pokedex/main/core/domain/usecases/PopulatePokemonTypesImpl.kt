@@ -1,0 +1,12 @@
+package dev.skybit.pokedex.main.core.domain.usecases
+
+import dev.skybit.pokedex.main.pokemontypes.domain.repository.PokemonTypesRepository
+import javax.inject.Inject
+
+class PopulatePokemonTypesImpl @Inject constructor(
+    private val pokemonTypesRepository: PokemonTypesRepository
+) : PopulatePokemonTypes {
+    override suspend fun invoke() {
+        pokemonTypesRepository.populatePokemonTypes()
+    }
+}
