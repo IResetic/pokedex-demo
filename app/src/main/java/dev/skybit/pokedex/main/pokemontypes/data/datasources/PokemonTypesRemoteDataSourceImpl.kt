@@ -8,7 +8,8 @@ import javax.inject.Inject
 class PokemonTypesRemoteDataSourceImpl @Inject constructor(
     private val pokemonTypesApi: PokemonTypeApi
 ) : PokemonTypesRemoteDataSource {
-    override suspend fun getPokemonTypes(offset: Int): PagedResponse {
+
+    override suspend fun getPokemonTypes(offset: Int): Result<PagedResponse> {
         return pokemonTypesApi.getPokemonTypes(PAGE_SIZE, offset)
     }
 }

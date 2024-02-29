@@ -10,5 +10,5 @@ interface PokemonTypeApi {
     suspend fun getPokemonTypes(
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
-    ): PagedResponse
+    ): Result<PagedResponse>
 }
