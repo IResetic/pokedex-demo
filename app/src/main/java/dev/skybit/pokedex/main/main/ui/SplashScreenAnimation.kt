@@ -8,7 +8,7 @@ import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreenViewProvider
 
 object SplashScreenAnimation {
-    private const val SPLASH_SCREEN_ZOOM_DURATION = 1800L
+    const val SPLASH_SCREEN_ZOOM_DURATION = 1800L
     private const val SPLASH_SCREEN_ROTATION_DURATION = 700L
     private const val SPLASH_SCREEN_ROTATION_ANGLE = 1080f
 

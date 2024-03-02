@@ -7,7 +7,11 @@ import javax.inject.Inject
 class PokemonTypesLocalDataSourceImpl @Inject constructor(
     private val pokemonTypeDao: PokemonTypeDao
 ) : PokemonTypesLocalDataSource {
-    override suspend fun insertPokemonType(types: List<PokemonTypeEntity>) {
-        pokemonTypeDao.insertPokemonTypes(types)
+    override suspend fun insertOrUpdatePokemonType(types: List<PokemonTypeEntity>) {
+        pokemonTypeDao.insertOrUpdatePokemonTypes(types)
+    }
+
+    override suspend fun getPokemonTypes(): List<PokemonTypeEntity> {
+        return pokemonTypeDao.getAllPokemonTypes()
     }
 }
