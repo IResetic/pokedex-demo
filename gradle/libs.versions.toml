@@ -19,6 +19,7 @@ moshi = "1.15.0"
 okHttpLogger = "4.12.0"
 room = "2.6.1"
 composeNavigation = "2.7.7"
+kotlinImmutableCollection = "0.3.5"
 
 [libraries]
 # ***** Core *****
@@ -64,6 +65,10 @@ kotlin-moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-code
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+
+#***** Collection *****
+kotlin-immutable-collections = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinImmutableCollection" }
+
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

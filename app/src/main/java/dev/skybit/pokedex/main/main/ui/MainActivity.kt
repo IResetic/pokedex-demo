@@ -19,10 +19,10 @@ class MainActivity : ComponentActivity() {
 
         if (savedInstanceState == null) {
             installSplashScreen().apply {
+                SplashScreenAnimation.runOnSplashScreenExitAnimation(this)
                 setKeepOnScreenCondition {
                     !viewModel.mainActivityState.value.isReady
                 }
-                SplashScreenAnimation.runOnSplashScreenExitAnimation(this)
             }
         }
 

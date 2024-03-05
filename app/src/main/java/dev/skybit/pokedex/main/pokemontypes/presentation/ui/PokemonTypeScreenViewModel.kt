@@ -8,6 +8,7 @@ import dev.skybit.pokedex.main.core.utils.onError
 import dev.skybit.pokedex.main.core.utils.onSuccess
 import dev.skybit.pokedex.main.pokemontypes.domain.usecases.GetPokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.domain.usecases.PopulatePokemonTypes
+import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,7 +52,7 @@ class PokemonTypeScreenViewModel @Inject constructor(
             val pokemonTypes = getPokemonTypes()
 
             _pokemonTypeScreenState.update {
-                it.copy(pokemonTypes = pokemonTypes)
+                it.copy(pokemonTypes = PokemonTypeUI.fromDomainList(pokemonTypes))
             }
         }
     }
