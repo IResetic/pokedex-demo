@@ -1,12 +1,12 @@
 package dev.skybit.pokedex.main.pokemontypes.presentation.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.skybit.pokedex.main.core.presentation.style.defaultPadding
@@ -31,7 +32,8 @@ import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.PokemonTy
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
-const val NUMBER_OF_COLUMNS = 2
+const val LANDSCAPE_MODE_NUMBER_OF_COLUMNS = 3
+const val PORTRAIT_MODE_NUMBER_OF_COLUMNS = 2
 
 @Composable
 internal fun PokemonTypesRoute() {
@@ -47,10 +49,17 @@ internal fun PokemonTypesScreen(
     pokemonTypes: ImmutableList<PokemonTypeUI>
 ) {
     Scaffold(
-        modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)
+        modifier = Modifier.background(color = MaterialTheme.colorScheme.primary),
+        topBar = {
+            HeaderComponent()
+        }
     ) { paddingValues ->
+        val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+
         LazyVerticalGrid(
-            columns = GridCells.Fixed(NUMBER_OF_COLUMNS),
+            columns = GridCells.Fixed(
+                if (isLandscape) LANDSCAPE_MODE_NUMBER_OF_COLUMNS else PORTRAIT_MODE_NUMBER_OF_COLUMNS
+            ),
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
@@ -64,10 +73,6 @@ internal fun PokemonTypesScreen(
             verticalArrangement = Arrangement.spacedBy(defaultPadding),
             horizontalArrangement = Arrangement.spacedBy(defaultPadding)
         ) {
-            item(span = { GridItemSpan(this.maxLineSpan) }, content = {
-                HeaderComponent()
-            })
-
             itemsIndexed(pokemonTypes) { _, pokemonTypeUI ->
                 PokemonTypeListItem(pokemonType = pokemonTypeUI)
             }

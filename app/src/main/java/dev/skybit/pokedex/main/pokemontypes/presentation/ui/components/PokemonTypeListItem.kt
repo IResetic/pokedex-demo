@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,8 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import dev.skybit.pokedex.main.core.presentation.style.defaultRadius
 import dev.skybit.pokedex.main.core.presentation.style.largeRadius
-import dev.skybit.pokedex.main.core.presentation.style.mediumImageSize
 import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
+import dev.skybit.pokedex.main.core.presentation.style.thirtyPercent
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
 
 @Composable
@@ -41,7 +41,7 @@ fun PokemonTypeListItem(
         Image(
             painter = painterResource(id = pokemonType.icon),
             contentDescription = null,
-            modifier = Modifier.size(mediumImageSize)
+            modifier = Modifier.fillMaxSize(thirtyPercent)
         )
         Spacer(modifier = Modifier.height(mediumPadding))
         Text(
