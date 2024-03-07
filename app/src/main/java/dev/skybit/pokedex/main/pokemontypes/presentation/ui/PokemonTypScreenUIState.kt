@@ -1,7 +1,9 @@
 package dev.skybit.pokedex.main.pokemontypes.presentation.ui
 
+import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
+
 data class PokemonTypScreenUIState(
     val isLoading: Boolean = false,
-    val pokemonTypes: List<String> = emptyList(),
+    val pokemonTypes: List<PokemonTypeUI> = emptyList(),
     val error: String = ""
 )

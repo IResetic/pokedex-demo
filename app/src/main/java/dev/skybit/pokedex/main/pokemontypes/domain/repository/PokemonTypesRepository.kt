@@ -7,4 +7,6 @@ interface PokemonTypesRepository {
     suspend fun populatePokemonTypes(): Resource<Unit>
 
     suspend fun getPokemonTypeDetails(typeName: String): PokemonType
+
+    suspend fun getPokemonTypes(): List<PokemonType>
 }

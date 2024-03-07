@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.core.domain.usecases
+package dev.skybit.pokedex.main.pokemontypes.domain.usecases
 
 import dev.skybit.pokedex.main.core.utils.Resource
 import dev.skybit.pokedex.main.pokemontypes.domain.repository.PokemonTypesRepository
