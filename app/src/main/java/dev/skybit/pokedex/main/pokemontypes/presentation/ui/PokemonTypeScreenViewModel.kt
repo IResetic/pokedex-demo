@@ -1,6 +1,5 @@
 package dev.skybit.pokedex.main.pokemontypes.presentation.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,9 +37,13 @@ class PokemonTypeScreenViewModel @Inject constructor(
     private fun loadPokemonTypes() {
         viewModelScope.launch {
             populatePokemonTypes().onSuccess {
-                Log.d("PokemonTypeScreenViewModel", "Pokemon types loaded successfully")
+                _pokemonTypeScreenState.update {
+                    it.copy(isLoading = false, error = "")
+                }
             }.onError { message: String?, _ ->
-                Log.d("PokemonTypeScreenViewModel", "Error loading pokemon types $message")
+                _pokemonTypeScreenState.update {
+                    it.copy(isLoading = false, error = "Error loading pokemon types $message")
+                }
             }
 
             setPokemonTypes()

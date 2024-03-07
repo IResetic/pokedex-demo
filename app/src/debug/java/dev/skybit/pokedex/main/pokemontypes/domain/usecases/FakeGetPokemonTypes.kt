@@ -1,7 +1,6 @@
 package dev.skybit.pokedex.main.pokemontypes.domain.usecases
 
 import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
-import dev.skybit.pokedex.main.pokemontypes.domain.usecases.GetPokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.domain.model.fakePokemonTypeFire
 import dev.skybit.pokedex.main.pokemontypes.domain.model.fakePokemonTypeGrass
 

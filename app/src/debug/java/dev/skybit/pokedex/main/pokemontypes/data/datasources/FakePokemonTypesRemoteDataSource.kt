@@ -1,13 +1,18 @@
 package dev.skybit.pokedex.main.pokemontypes.data.datasources
 
-import dev.skybit.pokedex.main.core.data.remote.model.fakePokemonTypesPagedResponse
 import dev.skybit.pokedex.main.core.data.remote.model.PagedResponse
+import dev.skybit.pokedex.main.core.data.remote.model.fakePokemonTypesPagedResponse
 import retrofit2.Response
 
 class FakePokemonTypesRemoteDataSource : PokemonTypesRemoteDataSource {
-    var fakePokemonTypes = Response.success(fakePokemonTypesPagedResponse)
+    var responses: List<Response<PagedResponse>> = listOf(Response.success(fakePokemonTypesPagedResponse))
+    var currentResponseIndex = 0
 
     override suspend fun getPokemonTypes(offset: Int): Response<PagedResponse> {
-        return fakePokemonTypes
+        return if (currentResponseIndex < responses.size) {
+            responses[currentResponseIndex++]
+        } else {
+            Response.success(PagedResponse(next = null, results = listOf()))
+        }
     }
 }

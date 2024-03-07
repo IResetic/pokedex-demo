@@ -1,14 +1,17 @@
 package dev.skybit.pokedex.main.pokemontypes.data.local.dao
 
-import dev.skybit.pokedex.main.pokemontypes.data.local.dao.PokemonTypeDao
 import dev.skybit.pokedex.main.pokemontypes.data.local.model.PokemonTypeEntity
 
 class FakePokemonTypeDao : PokemonTypeDao {
+    var fakePokemonTypeEntities = mutableListOf<PokemonTypeEntity>()
+    var isInserted = false
+
     override suspend fun insertOrUpdatePokemonTypes(pokemonTypes: List<PokemonTypeEntity>) {
-        TODO("Not yet implemented")
+        fakePokemonTypeEntities = pokemonTypes.toMutableList()
+        isInserted = true
     }
 
     override fun getAllPokemonTypes(): List<PokemonTypeEntity> {
-        TODO("Not yet implemented")
+        return fakePokemonTypeEntities
     }
 }

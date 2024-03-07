@@ -57,7 +57,10 @@ class PokemonTypesRepositoryImpl @Inject constructor(
                 }
             }
         } else {
-            throw Exception("Error fetching pokemon types")
+            throw result.errorBody()?.let {
+                val error = it.string()
+                Exception(error)
+            } ?: Exception("An error occurred")
         }
     }
 }
