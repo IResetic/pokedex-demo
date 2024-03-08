@@ -10,8 +10,10 @@ object PokemonTypesScreenDestination : NavigationDestination {
     override val destination: String = "pokemon-types-screen-destination"
 }
 
-fun NavGraphBuilder.pokemonTypesGraph() {
+fun NavGraphBuilder.pokemonTypesGraph(
+    navigateToPokemonsList: (Int) -> Unit
+) {
     composable(route = PokemonTypesScreenDestination.route) {
-        PokemonTypesRoute()
+        PokemonTypesRoute(navigateToPokemonsList = navigateToPokemonsList)
     }
 }

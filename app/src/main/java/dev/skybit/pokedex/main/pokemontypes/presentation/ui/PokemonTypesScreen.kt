@@ -36,19 +36,24 @@ const val PORTRAIT_MODE_NUMBER_OF_COLUMNS = 2
 const val DEFAULT_SIZE_OF_POKEMON_TYPES_LIST = 10
 
 @Composable
-internal fun PokemonTypesRoute() {
+internal fun PokemonTypesRoute(
+    navigateToPokemonsList: (pokemonTypeId: Int) -> Unit
+) {
     val viewModel = hiltViewModel<PokemonTypeScreenViewModel>()
     val pokemonTypesScreenState = viewModel.pokemonTypeScreenState.collectAsState()
     val pokemonType = pokemonTypesScreenState.value.pokemonTypes
 
     PokemonTypesScreen(
-        pokemonTypes = pokemonType.toImmutableList()
+        pokemonTypes = pokemonType.toImmutableList(),
+        navigateToPokemonsList = navigateToPokemonsList
     )
 }
 
 @Composable
 internal fun PokemonTypesScreen(
-    pokemonTypes: ImmutableList<PokemonTypeUI>
+    pokemonTypes: ImmutableList<PokemonTypeUI>,
+    navigateToPokemonsList: (Int) -> Unit
+
 ) {
     Scaffold(
         modifier = Modifier.background(color = MaterialTheme.colorScheme.primary),
@@ -77,7 +82,10 @@ internal fun PokemonTypesScreen(
         ) {
             items(if (pokemonTypes.isEmpty()) DEFAULT_SIZE_OF_POKEMON_TYPES_LIST else pokemonTypes.size) {
                 val pokemonType = if (pokemonTypes.isNotEmpty()) pokemonTypes[it] else null
-                PokemonTypeListItem(pokemonType = pokemonType)
+                PokemonTypeListItem(
+                    pokemonType = pokemonType,
+                    onClick = navigateToPokemonsList
+                )
             }
         }
     }
@@ -96,6 +104,7 @@ fun PokemonTypesScreenPreview() {
     )
 
     PokemonTypesScreen(
-        pokemonTypes = PokemonTypeUI.fromDomainList(pokemonTypes).toImmutableList()
+        pokemonTypes = PokemonTypeUI.fromDomainList(pokemonTypes).toImmutableList(),
+        navigateToPokemonsList = {}
     )
 }

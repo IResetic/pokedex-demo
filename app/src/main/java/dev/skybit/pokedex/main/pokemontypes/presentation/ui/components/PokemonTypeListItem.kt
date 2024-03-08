@@ -2,6 +2,7 @@ package dev.skybit.pokedex.main.pokemontypes.presentation.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,7 +33,8 @@ import java.util.Locale
 
 @Composable
 fun PokemonTypeListItem(
-    pokemonType: PokemonTypeUI?
+    pokemonType: PokemonTypeUI?,
+    onClick: (Int) -> Unit
 ) {
     if (pokemonType == null) {
         ShimmerPokemonTypeListItem()
@@ -45,6 +47,7 @@ fun PokemonTypeListItem(
                 .clip(RoundedCornerShape(largeRadius))
                 .aspectRatio(1f)
                 .background(color = pokemonType.color)
+                .clickable { onClick(pokemonType.id) }
         ) {
             Image(
                 painter = painterResource(id = pokemonType.icon),
@@ -73,6 +76,7 @@ fun PokemonTypeListItemPreview() {
             name = POKEMON_TYPE_NORMAL,
             icon = R.drawable.ic_normal,
             color = TypeNormal
-        )
+        ),
+        onClick = {}
     )
 }
