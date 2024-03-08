@@ -42,6 +42,6 @@ fun parseTypeToImage(type: PokemonType): Int {
         POKEMON_TYPE_DARK -> R.drawable.ic_dark
         POKEMON_TYPE_STEEL -> R.drawable.ic_steel
         POKEMON_TYPE_FAIRY -> R.drawable.ic_fairy
-        else -> R.drawable.ic_launcher_foreground
+        else -> R.drawable.ic_poke_ball
     }
 }

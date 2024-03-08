@@ -19,11 +19,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.defaultRadius
 import dev.skybit.pokedex.main.core.presentation.style.largeRadius
 import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
+import dev.skybit.pokedex.main.core.presentation.style.theme.TypeNormal
 import dev.skybit.pokedex.main.core.presentation.style.thirtyPercent
+import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_NORMAL
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
+import java.util.Locale
 
 @Composable
 fun PokemonTypeListItem(
@@ -45,10 +50,25 @@ fun PokemonTypeListItem(
         )
         Spacer(modifier = Modifier.height(mediumPadding))
         Text(
-            text = pokemonType.name,
+            text = pokemonType.name.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
+            },
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
     }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun PokemonTypeListItemPreview() {
+    PokemonTypeListItem(
+        pokemonType = PokemonTypeUI(
+            id = 1,
+            name = POKEMON_TYPE_NORMAL,
+            icon = R.drawable.ic_normal,
+            color = TypeNormal
+        )
+    )
 }

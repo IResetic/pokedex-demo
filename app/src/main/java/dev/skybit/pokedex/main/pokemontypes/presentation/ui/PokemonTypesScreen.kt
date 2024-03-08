@@ -68,7 +68,7 @@ internal fun PokemonTypesScreen(
                 start = largePadding,
                 end = largePadding,
                 top = defaultPadding,
-                bottom = defaultPadding
+                bottom = largePadding
             ),
             verticalArrangement = Arrangement.spacedBy(defaultPadding),
             horizontalArrangement = Arrangement.spacedBy(defaultPadding)

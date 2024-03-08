@@ -15,6 +15,7 @@ import dev.skybit.pokedex.main.core.presentation.style.theme.TypeGround
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeIce
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeNormal
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypePoison
+import dev.skybit.pokedex.main.core.presentation.style.theme.TypePokeballRed
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypePsychic
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeRock
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeSteel
@@ -60,6 +61,6 @@ fun parseTypeToColor(type: PokemonType): Color {
         POKEMON_TYPE_DARK -> TypeDark
         POKEMON_TYPE_STEEL -> TypeSteel
         POKEMON_TYPE_FAIRY -> TypeFairy
-        else -> Color.Black
+        else -> TypePokeballRed
     }
 }
