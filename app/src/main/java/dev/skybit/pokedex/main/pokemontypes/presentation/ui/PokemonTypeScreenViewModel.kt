@@ -5,9 +5,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.skybit.pokedex.main.core.utils.onError
 import dev.skybit.pokedex.main.core.utils.onSuccess
-import dev.skybit.pokedex.main.pokemontypes.domain.usecases.GetPokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.domain.usecases.PopulatePokemonTypes
+import dev.skybit.pokedex.main.pokemontypes.domain.usecases.StartPokemonTypesListener
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,13 +19,14 @@ import javax.inject.Inject
 @HiltViewModel
 class PokemonTypeScreenViewModel @Inject constructor(
     private val populatePokemonTypes: PopulatePokemonTypes,
-    private val getPokemonTypes: GetPokemonTypes
+    private val startPokemonTypesListener: StartPokemonTypesListener
 ) : ViewModel() {
 
     private var _pokemonTypeScreenState = MutableStateFlow(PokemonTypScreenUIState())
     val pokemonTypeScreenState: StateFlow<PokemonTypScreenUIState> = _pokemonTypeScreenState.asStateFlow()
 
     init {
+        startListener()
         onEvent(PokemonTypeScreenEvent.LoadPokemonTypes)
     }
 
@@ -36,6 +38,11 @@ class PokemonTypeScreenViewModel @Inject constructor(
 
     private fun loadPokemonTypes() {
         viewModelScope.launch {
+            _pokemonTypeScreenState.update {
+                it.copy(isLoading = true, error = "")
+            }
+
+            delay(5000)
             populatePokemonTypes().onSuccess {
                 _pokemonTypeScreenState.update {
                     it.copy(isLoading = false, error = "")
@@ -45,17 +52,17 @@ class PokemonTypeScreenViewModel @Inject constructor(
                     it.copy(isLoading = false, error = "Error loading pokemon types $message")
                 }
             }
-
-            setPokemonTypes()
         }
     }
 
-    private fun setPokemonTypes() {
+    private fun startListener() {
         viewModelScope.launch {
-            val pokemonTypes = getPokemonTypes()
+            val pokemonTypesFlow = startPokemonTypesListener()
 
-            _pokemonTypeScreenState.update {
-                it.copy(pokemonTypes = PokemonTypeUI.fromDomainList(pokemonTypes))
+            pokemonTypesFlow.collect { pokemonTypes ->
+                _pokemonTypeScreenState.update {
+                    it.copy(pokemonTypes = PokemonTypeUI.fromDomainList(pokemonTypes))
+                }
             }
         }
     }

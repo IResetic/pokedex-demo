@@ -1,7 +1,8 @@
 package dev.skybit.pokedex.main.pokemontypes.domain.usecases
 
 import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
+import kotlinx.coroutines.flow.Flow
 
-interface GetPokemonTypes {
-    suspend operator fun invoke(): List<PokemonType>
+interface StartPokemonTypesListener {
+    suspend operator fun invoke(): Flow<List<PokemonType>>
 }

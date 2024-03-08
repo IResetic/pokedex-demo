@@ -1,9 +1,11 @@
 package dev.skybit.pokedex.pokemontype.presentation.ui
 
-import dev.skybit.pokedex.main.core.utils.Resource
 import dev.skybit.pokedex.main.core.utils.Resource.Error
-import dev.skybit.pokedex.main.pokemontypes.domain.usecases.FakeGetPokemonTypes
+import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
+import dev.skybit.pokedex.main.pokemontypes.domain.model.fakePokemonTypeFire
+import dev.skybit.pokedex.main.pokemontypes.domain.model.fakePokemonTypeGrass
 import dev.skybit.pokedex.main.pokemontypes.domain.usecases.FakePopulatePokemonTypes
+import dev.skybit.pokedex.main.pokemontypes.domain.usecases.FakeStartPokemonTypesListener
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +22,7 @@ import org.junit.Test
 
 class PokemonTypeScreenViewModelTest {
     private lateinit var fakePopulatePokemonTypes: FakePopulatePokemonTypes
-    private lateinit var fakeGetPokemonTypes: FakeGetPokemonTypes
+    private lateinit var startPokemonTypesListener: FakeStartPokemonTypesListener
     private lateinit var sut: PokemonTypeScreenViewModel
 
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -29,7 +31,7 @@ class PokemonTypeScreenViewModelTest {
     fun init() {
         Dispatchers.setMain(testDispatcher)
         fakePopulatePokemonTypes = FakePopulatePokemonTypes()
-        fakeGetPokemonTypes = FakeGetPokemonTypes()
+        startPokemonTypesListener = FakeStartPokemonTypesListener()
     }
 
     @After
@@ -38,20 +40,7 @@ class PokemonTypeScreenViewModelTest {
     }
 
     private fun initSut() {
-        sut = PokemonTypeScreenViewModel(fakePopulatePokemonTypes, fakeGetPokemonTypes)
-    }
-
-    @Test
-    fun `should_get_pokemon_types_on_initialization`() = runBlocking {
-        // trigger action
-        initSut()
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // check assertions
-        assertTrue(fakePopulatePokemonTypes.fakeResult is Resource.Success)
-        val expected = PokemonTypeUI.fromDomainList(fakeGetPokemonTypes.fakePokemonTypes)
-        val actual = sut.pokemonTypeScreenState.first().pokemonTypes
-        assertEquals(expected, actual)
+        sut = PokemonTypeScreenViewModel(fakePopulatePokemonTypes, startPokemonTypesListener)
     }
 
     @Test
@@ -75,13 +64,32 @@ class PokemonTypeScreenViewModelTest {
     fun should_update_state_with_pokemon_types() = runBlocking {
         // init state
         initSut()
-        val expected = PokemonTypeUI.fromDomainList(fakeGetPokemonTypes.fakePokemonTypes)
-        testDispatcher.scheduler.advanceUntilIdle()
+        val pokemonTypes = listOf(fakePokemonTypeGrass, fakePokemonTypeFire)
+        startPokemonTypesListener.emitPokemonTypes(pokemonTypes)
 
         // trigger action
         val actual = sut.pokemonTypeScreenState.first().pokemonTypes
 
         // check assertions
+        val expected = PokemonTypeUI.fromDomainList(pokemonTypes)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun should_not_update_state_if_pokemon_types_list_is_empty() = runBlocking {
+        // init sut
+        initSut()
+
+        // check assertions
+        startPokemonTypesListener.emitPokemonTypes(emptyList())
+        var actual = sut.pokemonTypeScreenState.first().pokemonTypes
+        assertEquals(emptyList<PokemonType>(), actual)
+
+        val pokemonTypes = listOf(fakePokemonTypeGrass, fakePokemonTypeFire)
+        startPokemonTypesListener.emitPokemonTypes(pokemonTypes)
+        actual = sut.pokemonTypeScreenState.first().pokemonTypes
+
+        val expected = PokemonTypeUI.fromDomainList(pokemonTypes)
         assertEquals(expected, actual)
     }
 }

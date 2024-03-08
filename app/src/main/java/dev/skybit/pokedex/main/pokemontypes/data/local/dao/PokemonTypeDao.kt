@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
 import dev.skybit.pokedex.main.pokemontypes.data.local.model.PokemonTypeEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PokemonTypeDao {
@@ -12,4 +13,7 @@ interface PokemonTypeDao {
 
     @Query("SELECT * FROM pokemon_types")
     fun getAllPokemonTypes(): List<PokemonTypeEntity>
+
+    @Query("SELECT * FROM pokemon_types")
+    fun getPokemonTypesFlow(): Flow<List<PokemonTypeEntity>>
 }

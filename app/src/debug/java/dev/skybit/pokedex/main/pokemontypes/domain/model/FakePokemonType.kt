@@ -9,3 +9,8 @@ val fakePokemonTypeFire = PokemonType(
     id = 2,
     name = "fire"
 )
+
+val fakePokemonTypeWatter = PokemonType(
+    id = 3,
+    name = "watter"
+)

@@ -32,31 +32,35 @@ import java.util.Locale
 
 @Composable
 fun PokemonTypeListItem(
-    pokemonType: PokemonTypeUI
+    pokemonType: PokemonTypeUI?
 ) {
-    Column(
-        horizontalAlignment = CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .shadow(defaultRadius, RoundedCornerShape(largeRadius))
-            .clip(RoundedCornerShape(largeRadius))
-            .aspectRatio(1f)
-            .background(color = pokemonType.color)
-    ) {
-        Image(
-            painter = painterResource(id = pokemonType.icon),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(thirtyPercent)
-        )
-        Spacer(modifier = Modifier.height(mediumPadding))
-        Text(
-            text = pokemonType.name.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
-            },
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
+    if (pokemonType == null) {
+        ShimmerPokemonTypeListItem()
+    } else {
+        Column(
+            horizontalAlignment = CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .shadow(defaultRadius, RoundedCornerShape(largeRadius))
+                .clip(RoundedCornerShape(largeRadius))
+                .aspectRatio(1f)
+                .background(color = pokemonType.color)
+        ) {
+            Image(
+                painter = painterResource(id = pokemonType.icon),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(thirtyPercent)
+            )
+            Spacer(modifier = Modifier.height(mediumPadding))
+            Text(
+                text = pokemonType.name.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
+                },
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 

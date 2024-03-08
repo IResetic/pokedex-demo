@@ -7,8 +7,11 @@ import dev.skybit.pokedex.main.core.data.remote.model.fakeResultDtoWater
 import dev.skybit.pokedex.main.core.utils.Resource
 import dev.skybit.pokedex.main.pokemontypes.data.datasources.FakePokemonTypesLocalDataSource
 import dev.skybit.pokedex.main.pokemontypes.data.datasources.FakePokemonTypesRemoteDataSource
+import dev.skybit.pokedex.main.pokemontypes.data.local.model.fakePokemonTypeEntityFire
+import dev.skybit.pokedex.main.pokemontypes.data.local.model.fakePokemonTypeEntityGrass
 import dev.skybit.pokedex.main.pokemontypes.data.remote.mappers.ResultDtoToPokemonEntityTypeMapper
 import dev.skybit.pokedex.main.pokemontypes.data.repository.PokemonTypesRepositoryImpl
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -109,5 +112,22 @@ class PokemonTypesRepositoryTest {
             resultDtoToPokemonEntityTypeMapper(it)
         }
         assertEquals(expectedTypes, storedTypes)
+    }
+
+    @Test
+    fun should_successfully_return_a_flow_of_pokemon_types() = runBlocking {
+        // define test data
+        val fakeDataEntities = listOf(
+            fakePokemonTypeEntityGrass,
+            fakePokemonTypeEntityFire
+        )
+        pokemonTypesLocalDataSource.fakePokemonTypeEntities.addAll(fakeDataEntities)
+
+        // trigger action
+        val result = sut.getPokemonTypesFlow().first()
+
+        // check assertions
+        val expected = fakeDataEntities.map { it.toDomain() }
+        assertEquals(expected, result)
     }
 }

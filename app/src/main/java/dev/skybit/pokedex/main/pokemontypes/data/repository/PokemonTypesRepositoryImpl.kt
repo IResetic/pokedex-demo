@@ -9,6 +9,9 @@ import dev.skybit.pokedex.main.pokemontypes.data.remote.mappers.ResultDtoToPokem
 import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
 import dev.skybit.pokedex.main.pokemontypes.domain.repository.PokemonTypesRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -29,6 +32,14 @@ class PokemonTypesRepositoryImpl @Inject constructor(
                 it.toDomain()
             }
         }
+    }
+
+    override suspend fun getPokemonTypesFlow(): Flow<List<PokemonType>> {
+        return pokemonTypesLocalDataSource.getPokemonTypesFlow().map { pokemonTypes ->
+            pokemonTypes.mapNotNull { entity ->
+                entity.toDomain()
+            }
+        }.flowOn(ioDispatcher)
     }
 
     override suspend fun populatePokemonTypes(): Resource<Unit> {

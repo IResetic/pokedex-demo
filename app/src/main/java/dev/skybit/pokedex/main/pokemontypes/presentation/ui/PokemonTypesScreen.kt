@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -34,6 +33,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 const val LANDSCAPE_MODE_NUMBER_OF_COLUMNS = 3
 const val PORTRAIT_MODE_NUMBER_OF_COLUMNS = 2
+const val DEFAULT_SIZE_OF_POKEMON_TYPES_LIST = 10
 
 @Composable
 internal fun PokemonTypesRoute() {
@@ -41,7 +41,9 @@ internal fun PokemonTypesRoute() {
     val pokemonTypesScreenState = viewModel.pokemonTypeScreenState.collectAsState()
     val pokemonType = pokemonTypesScreenState.value.pokemonTypes
 
-    PokemonTypesScreen(pokemonTypes = pokemonType.toImmutableList())
+    PokemonTypesScreen(
+        pokemonTypes = pokemonType.toImmutableList()
+    )
 }
 
 @Composable
@@ -73,8 +75,9 @@ internal fun PokemonTypesScreen(
             verticalArrangement = Arrangement.spacedBy(defaultPadding),
             horizontalArrangement = Arrangement.spacedBy(defaultPadding)
         ) {
-            itemsIndexed(pokemonTypes) { _, pokemonTypeUI ->
-                PokemonTypeListItem(pokemonType = pokemonTypeUI)
+            items(if (pokemonTypes.isEmpty()) DEFAULT_SIZE_OF_POKEMON_TYPES_LIST else pokemonTypes.size) {
+                val pokemonType = if (pokemonTypes.isNotEmpty()) pokemonTypes[it] else null
+                PokemonTypeListItem(pokemonType = pokemonType)
             }
         }
     }
