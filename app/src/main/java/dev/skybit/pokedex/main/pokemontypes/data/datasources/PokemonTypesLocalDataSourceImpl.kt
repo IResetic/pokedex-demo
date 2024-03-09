@@ -19,4 +19,8 @@ class PokemonTypesLocalDataSourceImpl @Inject constructor(
     override suspend fun getPokemonTypesFlow(): Flow<List<PokemonTypeEntity>> {
         return pokemonTypeDao.getPokemonTypesFlow()
     }
+
+    override suspend fun getPokemonTypeById(id: Int): PokemonTypeEntity {
+        return pokemonTypeDao.getPokemonTypeById(id)
+    }
 }

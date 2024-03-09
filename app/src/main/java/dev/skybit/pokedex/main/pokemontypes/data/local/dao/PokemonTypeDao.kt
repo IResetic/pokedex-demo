@@ -16,4 +16,7 @@ interface PokemonTypeDao {
 
     @Query("SELECT * FROM pokemon_types")
     fun getPokemonTypesFlow(): Flow<List<PokemonTypeEntity>>
+
+    @Query("SELECT * FROM pokemon_types WHERE id = :id")
+    fun getPokemonTypeById(id: Int): PokemonTypeEntity
 }

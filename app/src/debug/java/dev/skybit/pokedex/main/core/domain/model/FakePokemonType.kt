@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.pokemontypes.domain.model
+package dev.skybit.pokedex.main.core.domain.model
 
 val fakePokemonTypeGrass = PokemonType(
     id = 1,

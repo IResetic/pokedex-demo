@@ -1,6 +1,7 @@
-package dev.skybit.pokedex.main.pokemontypes.utils
+package dev.skybit.pokedex.main.core.utils
 
 import androidx.compose.ui.graphics.Color
+import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeBug
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeDark
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeDragon
@@ -20,25 +21,6 @@ import dev.skybit.pokedex.main.core.presentation.style.theme.TypePsychic
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeRock
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeSteel
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeWater
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_BUG
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_DARK
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_DRAGON
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_ELECTRIC
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_FAIRY
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_FIGHTING
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_FIRE
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_FLYING
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_GHOST
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_GRASS
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_GROUND
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_ICE
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_NORMAL
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_POISON
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_PSYCHIC
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_ROCK
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_STEEL
-import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_WATER
-import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
 import java.util.Locale
 
 fun parseTypeToColor(type: PokemonType): Color {

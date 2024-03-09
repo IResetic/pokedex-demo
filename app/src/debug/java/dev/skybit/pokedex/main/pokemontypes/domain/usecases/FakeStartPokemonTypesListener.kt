@@ -1,8 +1,8 @@
 package dev.skybit.pokedex.main.pokemontypes.domain.usecases
 
-import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
-import dev.skybit.pokedex.main.pokemontypes.domain.model.fakePokemonTypeFire
-import dev.skybit.pokedex.main.pokemontypes.domain.model.fakePokemonTypeGrass
+import dev.skybit.pokedex.main.core.domain.model.PokemonType
+import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeFire
+import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeGrass
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 

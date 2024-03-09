@@ -1,9 +1,9 @@
 package dev.skybit.pokedex.pokemontype.presentation.ui
 
+import dev.skybit.pokedex.main.core.domain.model.PokemonType
+import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeFire
+import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeGrass
 import dev.skybit.pokedex.main.core.utils.Resource.Error
-import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
-import dev.skybit.pokedex.main.pokemontypes.domain.model.fakePokemonTypeFire
-import dev.skybit.pokedex.main.pokemontypes.domain.model.fakePokemonTypeGrass
 import dev.skybit.pokedex.main.pokemontypes.domain.usecases.FakePopulatePokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.domain.usecases.FakeStartPokemonTypesListener
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI

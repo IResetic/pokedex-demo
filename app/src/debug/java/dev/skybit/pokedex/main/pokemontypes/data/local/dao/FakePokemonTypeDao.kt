@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.flow
 
 class FakePokemonTypeDao : PokemonTypeDao {
     var fakePokemonTypeEntities = mutableListOf<PokemonTypeEntity>()
+    var fakePokemonTypeMap = mutableMapOf<Int, PokemonTypeEntity>()
     var isInserted = false
 
     override suspend fun insertOrUpdatePokemonTypes(pokemonTypes: List<PokemonTypeEntity>) {
@@ -19,5 +20,15 @@ class FakePokemonTypeDao : PokemonTypeDao {
 
     override fun getPokemonTypesFlow(): Flow<List<PokemonTypeEntity>> {
         return flow { emit(fakePokemonTypeEntities) }
+    }
+
+    override fun getPokemonTypeById(id: Int): PokemonTypeEntity {
+        return fakePokemonTypeMap[id] ?: throw NoSuchElementException("No pokemon type with id $id")
+    }
+
+    fun populatePokemonTypesMap(types: List<PokemonTypeEntity>) {
+        types.forEach {
+            fakePokemonTypeMap[it.id] = it
+        }
     }
 }

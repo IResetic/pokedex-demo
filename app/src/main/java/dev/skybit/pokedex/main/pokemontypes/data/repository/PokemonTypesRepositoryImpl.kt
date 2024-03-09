@@ -2,11 +2,11 @@ package dev.skybit.pokedex.main.pokemontypes.data.repository
 
 import dev.skybit.pokedex.main.core.data.PAGE_SIZE
 import dev.skybit.pokedex.main.core.di.IoDispatcher
+import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.core.utils.Resource
 import dev.skybit.pokedex.main.pokemontypes.data.datasources.PokemonTypesLocalDataSource
 import dev.skybit.pokedex.main.pokemontypes.data.datasources.PokemonTypesRemoteDataSource
 import dev.skybit.pokedex.main.pokemontypes.data.remote.mappers.ResultDtoToPokemonEntityTypeMapper
-import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
 import dev.skybit.pokedex.main.pokemontypes.domain.repository.PokemonTypesRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -40,6 +40,12 @@ class PokemonTypesRepositoryImpl @Inject constructor(
                 entity.toDomain()
             }
         }.flowOn(ioDispatcher)
+    }
+
+    override suspend fun getPokemonTypeBasicIInfoById(pokemonTypeId: Int): PokemonType {
+        return withContext(ioDispatcher) {
+            pokemonTypesLocalDataSource.getPokemonTypeById(pokemonTypeId).toDomain()
+        }
     }
 
     override suspend fun populatePokemonTypes(): Resource<Unit> {

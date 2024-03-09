@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.core.presentation.style.defaultPadding
 import dev.skybit.pokedex.main.core.presentation.style.largePadding
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_BUG
@@ -24,7 +25,6 @@ import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_DRAGON
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_FIRE
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_GRASS
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_NORMAL
-import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.HeaderComponent
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.PokemonTypeListItem

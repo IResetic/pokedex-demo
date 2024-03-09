@@ -9,4 +9,6 @@ interface PokemonTypesLocalDataSource {
     suspend fun getPokemonTypes(): List<PokemonTypeEntity>
 
     suspend fun getPokemonTypesFlow(): Flow<List<PokemonTypeEntity>>
+
+    suspend fun getPokemonTypeById(id: Int): PokemonTypeEntity
 }

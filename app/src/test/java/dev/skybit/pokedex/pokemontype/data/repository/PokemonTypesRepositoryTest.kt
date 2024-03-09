@@ -130,4 +130,18 @@ class PokemonTypesRepositoryTest {
         val expected = fakeDataEntities.map { it.toDomain() }
         assertEquals(expected, result)
     }
+
+    @Test
+    fun should_return_pokemon_type_for_specific_id() = runBlocking {
+        // define test data
+        val pokemonTypes = listOf(fakePokemonTypeEntityFire, fakePokemonTypeEntityGrass)
+        pokemonTypesLocalDataSource.populatePokemonTypesMap(pokemonTypes)
+
+        // trigger action
+        val actual = sut.getPokemonTypeBasicIInfoById(fakePokemonTypeEntityGrass.id)
+
+        // check assertions
+        val expected = fakePokemonTypeEntityGrass.toDomain()
+        assertEquals(expected, actual)
+    }
 }

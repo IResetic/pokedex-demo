@@ -2,7 +2,7 @@ package dev.skybit.pokedex.main.pokemontypes.data.local.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
+import dev.skybit.pokedex.main.core.domain.model.PokemonType
 
 @Entity(tableName = "pokemon_types")
 data class PokemonTypeEntity(

@@ -2,8 +2,8 @@ package dev.skybit.pokedex.main.pokemontypes.presentation.model
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import dev.skybit.pokedex.main.pokemontypes.domain.model.PokemonType
-import dev.skybit.pokedex.main.pokemontypes.utils.parseTypeToColor
+import dev.skybit.pokedex.main.core.domain.model.PokemonType
+import dev.skybit.pokedex.main.core.utils.parseTypeToColor
 import dev.skybit.pokedex.main.pokemontypes.utils.parseTypeToImage
 
 @Immutable
