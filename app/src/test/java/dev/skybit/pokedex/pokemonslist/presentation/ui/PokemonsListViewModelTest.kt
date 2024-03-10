@@ -47,7 +47,7 @@ class PokemonsListViewModelTest {
         }
         initSut(savedStateHandle)
 
-        //check assertions
+        // check assertions
         val actual = sut.pokemonsListScreenState.first().pokemonTypeBasicInfo
         val expected = PokemonsListBasicInfoUI.fromDomain(fakePokemonTypeGrass)
         assertEquals(expected, actual)

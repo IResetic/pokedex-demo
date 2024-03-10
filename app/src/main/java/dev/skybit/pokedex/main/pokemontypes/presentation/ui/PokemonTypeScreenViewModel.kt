@@ -8,6 +8,8 @@ import dev.skybit.pokedex.main.core.utils.onSuccess
 import dev.skybit.pokedex.main.pokemontypes.domain.usecases.PopulatePokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.domain.usecases.StartPokemonTypesListener
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
+import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.ClearErrorMessage
+import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.LoadPokemonTypes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,12 +29,13 @@ class PokemonTypeScreenViewModel @Inject constructor(
 
     init {
         startListener()
-        onEvent(PokemonTypeScreenEvent.LoadPokemonTypes)
+        onEvent(LoadPokemonTypes)
     }
 
     fun onEvent(event: PokemonTypeScreenEvent) {
         when (event) {
-            is PokemonTypeScreenEvent.LoadPokemonTypes -> { loadPokemonTypes() }
+            is LoadPokemonTypes -> { loadPokemonTypes() }
+            is ClearErrorMessage -> { clearErrorMessage() }
         }
     }
 
@@ -64,6 +67,12 @@ class PokemonTypeScreenViewModel @Inject constructor(
                     it.copy(pokemonTypes = PokemonTypeUI.fromDomainList(pokemonTypes))
                 }
             }
+        }
+    }
+
+    private fun clearErrorMessage() {
+        _pokemonTypeScreenState.update {
+            it.copy(error = "")
         }
     }
 }
