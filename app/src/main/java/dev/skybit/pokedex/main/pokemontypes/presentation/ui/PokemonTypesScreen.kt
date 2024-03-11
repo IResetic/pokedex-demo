@@ -64,6 +64,7 @@ internal fun PokemonTypesRoute(
         pokemonTypes = pokemonTypes.toImmutableList(),
         isLoading = pokemonTypesScreenState.value.isLoading,
         errorMessage = pokemonTypesScreenState.value.error,
+        retryLoading = { viewModel.onEvent(PokemonTypeScreenEvent.RetryLoadingOfPokemonTypes) },
         navigateToPokemonsList = navigateToPokemonsList
     )
 }
@@ -73,6 +74,7 @@ internal fun PokemonTypesScreen(
     pokemonTypes: ImmutableList<PokemonTypeUI>,
     isLoading: Boolean = false,
     errorMessage: String,
+    retryLoading: () -> Unit,
     navigateToPokemonsList: (Int) -> Unit
 
 ) {
@@ -86,11 +88,17 @@ internal fun PokemonTypesScreen(
 
         when {
             pokemonTypes.isEmpty() && !isLoading && errorMessage.isEmpty() -> {
-                EmptyPokemonTypesList(message = stringResource(id = R.string.pokemon_types_empty_list_message))
+                EmptyPokemonTypesList(
+                    message = stringResource(id = R.string.pokemon_types_empty_list_message),
+                    onRetry = retryLoading
+                )
             }
 
             pokemonTypes.isEmpty() && errorMessage.isNotEmpty() && !isLoading -> {
-                EmptyPokemonTypesList(message = stringResource(id = R.string.pokemon_types_error_message))
+                EmptyPokemonTypesList(
+                    message = stringResource(id = R.string.pokemon_types_error_message),
+                    onRetry = retryLoading
+                )
             }
 
             else -> {
@@ -140,6 +148,7 @@ fun PokemonTypesScreenPreview() {
         pokemonTypes = PokemonTypeUI.fromDomainList(pokemonTypes).toImmutableList(),
         isLoading = false,
         errorMessage = "",
+        retryLoading = {},
         navigateToPokemonsList = {}
     )
 }

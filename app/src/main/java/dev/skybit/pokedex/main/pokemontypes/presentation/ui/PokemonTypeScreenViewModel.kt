@@ -10,6 +10,7 @@ import dev.skybit.pokedex.main.pokemontypes.domain.usecases.StartPokemonTypesLis
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.ClearErrorMessage
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.LoadPokemonTypes
+import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.RetryLoadingOfPokemonTypes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,6 +37,7 @@ class PokemonTypeScreenViewModel @Inject constructor(
         when (event) {
             is LoadPokemonTypes -> { loadPokemonTypes() }
             is ClearErrorMessage -> { clearErrorMessage() }
+            is RetryLoadingOfPokemonTypes -> { loadPokemonTypes() }
         }
     }
 

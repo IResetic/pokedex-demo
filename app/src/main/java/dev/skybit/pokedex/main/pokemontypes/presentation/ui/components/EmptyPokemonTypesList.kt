@@ -4,8 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,10 +18,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
+import dev.skybit.pokedex.main.core.presentation.style.smallPadding
 
 @Composable
 fun EmptyPokemonTypesList(
-    message: String
+    message: String,
+    onRetry: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -35,8 +40,21 @@ fun EmptyPokemonTypesList(
         )
         Text(
             text = message,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center
         )
+        Spacer(modifier = Modifier.height(mediumPadding))
+        FilledTonalButton(onClick = { onRetry() }) {
+            Text(
+                modifier = Modifier.padding(
+                    top = smallPadding,
+                    bottom = smallPadding,
+                    start = mediumPadding,
+                    end = mediumPadding
+                ),
+                text = "Retry",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
     }
 }
