@@ -76,7 +76,6 @@ internal fun PokemonTypesScreen(
     errorMessage: String,
     retryLoading: () -> Unit,
     navigateToPokemonsList: (Int) -> Unit
-
 ) {
     Scaffold(
         modifier = Modifier.background(color = MaterialTheme.colorScheme.primary),
