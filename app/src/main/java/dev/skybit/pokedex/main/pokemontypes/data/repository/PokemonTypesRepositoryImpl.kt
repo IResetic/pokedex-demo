@@ -64,10 +64,10 @@ class PokemonTypesRepositoryImpl @Inject constructor(
         if (result.isSuccessful) {
             val body = result.body()
             body?.let {
-                val types = it.results.map { resultDto ->
+                val types = it.results?.map { resultDto ->
                     resultDtoToPokemonEntityTypeMapper(resultDto)
                 }
-                pokemonTypesLocalDataSource.insertOrUpdatePokemonType(types)
+                pokemonTypesLocalDataSource.insertOrUpdatePokemonType(types ?: emptyList())
 
                 if (it.next != null) {
                     fetchNewPokemonTypes(offset + PAGE_SIZE)

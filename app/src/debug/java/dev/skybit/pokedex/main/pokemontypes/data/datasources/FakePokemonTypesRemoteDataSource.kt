@@ -12,7 +12,7 @@ class FakePokemonTypesRemoteDataSource : PokemonTypesRemoteDataSource {
         return if (currentResponseIndex < responses.size) {
             responses[currentResponseIndex++]
         } else {
-            Response.success(PagedResponse(next = null, results = listOf()))
+            Response.success(PagedResponse(count = 0, next = null, previous = null, results = listOf()))
         }
     }
 }

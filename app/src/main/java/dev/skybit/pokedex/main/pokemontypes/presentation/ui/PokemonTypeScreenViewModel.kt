@@ -47,6 +47,7 @@ class PokemonTypeScreenViewModel @Inject constructor(
                 it.copy(isLoading = true, error = "")
             }
 
+            // TODO Update populatePokemonTypes to return a list of PokemonType so we don't have to use listeners
             delay(5000)
             populatePokemonTypes().onSuccess {
                 _pokemonTypeScreenState.update {

@@ -84,15 +84,11 @@ internal fun PokemonTypesScreen(
         }
     ) { paddingValues ->
         val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-
+        // TODO Update this UI
+        // We should check isLoading flag and show the spinner
+        // When loading is finished we should show the list of pokemon types
+        // If there is an error we should show the error message
         when {
-            pokemonTypes.isEmpty() && !isLoading && errorMessage.isEmpty() -> {
-                EmptyPokemonTypesList(
-                    message = stringResource(id = R.string.pokemon_types_empty_list_message),
-                    onRetry = retryLoading
-                )
-            }
-
             pokemonTypes.isEmpty() && errorMessage.isNotEmpty() && !isLoading -> {
                 EmptyPokemonTypesList(
                     message = stringResource(id = R.string.pokemon_types_error_message),
