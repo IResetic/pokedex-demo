@@ -5,10 +5,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import dev.skybit.pokedex.main.pokemonslist.presentation.navigation.PokemonsListScreenDestination
-import dev.skybit.pokedex.main.pokemonslist.presentation.navigation.pokemonsListGraph
 import dev.skybit.pokedex.main.pokemontypes.presentation.navigation.PokemonTypesScreenDestination
 import dev.skybit.pokedex.main.pokemontypes.presentation.navigation.pokemonTypesGraph
+import dev.skybit.pokedex.main.typedetails.presentation.navigation.PokemonTypeDetailsScreenDestination
+import dev.skybit.pokedex.main.typedetails.presentation.navigation.pokemonTypeDetailsGraph
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -19,10 +19,10 @@ fun PokedexContent(navController: NavHostController) {
             startDestination = PokemonTypesScreenDestination.route
         ) {
             pokemonTypesGraph(
-                navigateToPokemonsList = { navController.navigate(PokemonsListScreenDestination.route(it)) }
+                navigateToPokemonsList = { navController.navigate(PokemonTypeDetailsScreenDestination.route(it)) }
             )
 
-            pokemonsListGraph()
+            pokemonTypeDetailsGraph()
         }
     }
 }

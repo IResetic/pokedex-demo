@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeFire
 import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeGrass
 import dev.skybit.pokedex.main.core.domain.usecases.FakeGetPokemonTypeBasicInfo
-import dev.skybit.pokedex.main.pokemonslist.presentation.model.PokemonsListBasicInfoUI
-import dev.skybit.pokedex.main.pokemonslist.presentation.navigation.PokemonsListScreenDestination
-import dev.skybit.pokedex.main.pokemonslist.presentation.ui.PokemonsListViewModel
+import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicInfoUI
+import dev.skybit.pokedex.main.typedetails.presentation.navigation.PokemonTypeDetailsScreenDestination
+import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -18,7 +18,7 @@ import org.junit.Test
 
 class PokemonsListViewModelTest {
     private lateinit var getPokemonTypeBasicInfo: FakeGetPokemonTypeBasicInfo
-    private lateinit var sut: PokemonsListViewModel
+    private lateinit var sut: PokemonTypeDetailsViewModel
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -30,7 +30,7 @@ class PokemonsListViewModelTest {
     }
 
     private fun initSut(savedStateHandle: SavedStateHandle = SavedStateHandle()) {
-        sut = PokemonsListViewModel(
+        sut = PokemonTypeDetailsViewModel(
             savedStateHandle = savedStateHandle,
             getPokemonTypeBasicInfo = getPokemonTypeBasicInfo
         )
@@ -43,13 +43,13 @@ class PokemonsListViewModelTest {
 
         // init sut
         val savedStateHandle = SavedStateHandle().apply {
-            this[PokemonsListScreenDestination.POKEMON_TYPE_ID] = fakePokemonTypeFire.id.toString()
+            this[PokemonTypeDetailsScreenDestination.POKEMON_TYPE_ID] = fakePokemonTypeFire.id.toString()
         }
         initSut(savedStateHandle)
 
         // check assertions
         val actual = sut.pokemonsListScreenState.first().pokemonTypeBasicInfo
-        val expected = PokemonsListBasicInfoUI.fromDomain(fakePokemonTypeGrass)
+        val expected = PokemonTypeBasicInfoUI.fromDomain(fakePokemonTypeGrass)
         assertEquals(expected, actual)
     }
 }

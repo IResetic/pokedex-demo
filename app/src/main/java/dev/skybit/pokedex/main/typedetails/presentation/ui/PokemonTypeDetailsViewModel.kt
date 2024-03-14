@@ -1,12 +1,12 @@
-package dev.skybit.pokedex.main.pokemonslist.presentation.ui
+package dev.skybit.pokedex.main.typedetails.presentation.ui
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.skybit.pokedex.main.core.domain.usecases.GetPokemonTypeBasicInfo
-import dev.skybit.pokedex.main.pokemonslist.presentation.model.PokemonsListBasicInfoUI
-import dev.skybit.pokedex.main.pokemonslist.presentation.navigation.PokemonsListScreenDestination.POKEMON_TYPE_ID
+import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicInfoUI
+import dev.skybit.pokedex.main.typedetails.presentation.navigation.PokemonTypeDetailsScreenDestination.POKEMON_TYPE_ID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,14 +15,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PokemonsListViewModel @Inject constructor(
+class PokemonTypeDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getPokemonTypeBasicInfo: GetPokemonTypeBasicInfo
 ) : ViewModel() {
     private val pokemonTypeId = savedStateHandle.get<String>(POKEMON_TYPE_ID)
 
-    private var _pokemonsListScreenState = MutableStateFlow(PokemonsListUiState())
-    val pokemonsListScreenState: StateFlow<PokemonsListUiState> = _pokemonsListScreenState.asStateFlow()
+    private var _pokemonsListScreenState = MutableStateFlow(PokemonTypeDetailsUiState())
+    val pokemonsListScreenState: StateFlow<PokemonTypeDetailsUiState> = _pokemonsListScreenState.asStateFlow()
 
     init {
         getBasicPokemonTypeInfo()
@@ -34,7 +34,7 @@ class PokemonsListViewModel @Inject constructor(
                 val pokemonTypeBasicInfo = getPokemonTypeBasicInfo(pokemonTypeId.toInt())
 
                 _pokemonsListScreenState.update {
-                    it.copy(pokemonTypeBasicInfo = PokemonsListBasicInfoUI.fromDomain(pokemonTypeBasicInfo))
+                    it.copy(pokemonTypeBasicInfo = PokemonTypeBasicInfoUI.fromDomain(pokemonTypeBasicInfo))
                 }
             }
         }

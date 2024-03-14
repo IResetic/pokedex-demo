@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.pokemonslist.presentation.ui
+package dev.skybit.pokedex.main.typedetails.presentation.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -11,23 +11,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import dev.skybit.pokedex.main.pokemonslist.presentation.model.PokemonsListBasicInfoUI
+import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicInfoUI
 
 @Composable
-fun PokemonsListRoute() {
-    val viewModel = hiltViewModel<PokemonsListViewModel>()
+fun PokemonTypeDetailsRoute() {
+    val viewModel = hiltViewModel<PokemonTypeDetailsViewModel>()
     val pokemonsListScreenState = viewModel.pokemonsListScreenState.collectAsState()
     val pokemonTypeBasicInfo = pokemonsListScreenState.value.pokemonTypeBasicInfo
 
-    PokemonsListScreen(
+    PokemonTypesDetailsScreen(
         pokemonTypeBasicInfo = pokemonTypeBasicInfo
     )
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PokemonsListScreen(
-    pokemonTypeBasicInfo: PokemonsListBasicInfoUI? = null
+fun PokemonTypesDetailsScreen(
+    pokemonTypeBasicInfo: PokemonTypeBasicInfoUI? = null
 ) {
     Scaffold {
         Box(modifier = Modifier.fillMaxSize().background(pokemonTypeBasicInfo?.backgroundColor ?: MaterialTheme.colorScheme.primary)) {

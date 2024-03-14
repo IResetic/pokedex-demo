@@ -1,8 +1,8 @@
-package dev.skybit.pokedex.main.pokemonslist.presentation.model
+package dev.skybit.pokedex.main.typedetails.presentation.model
 
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeFire
 
-val fakePokemonsListBasicInfoGrass = PokemonsListBasicInfoUI(
+val fakePokemonTypeBasicInfoGrass = PokemonTypeBasicInfoUI(
     title = "Grass",
     backgroundColor = TypeFire
 )
