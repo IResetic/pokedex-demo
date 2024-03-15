@@ -1,14 +1,18 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package dev.skybit.pokedex.pokemontype.presentation.ui
 
-import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeFire
 import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeGrass
+import dev.skybit.pokedex.main.core.utils.Resource
 import dev.skybit.pokedex.main.core.utils.Resource.Error
-import dev.skybit.pokedex.main.pokemontypes.domain.usecases.FakePopulatePokemonTypes
-import dev.skybit.pokedex.main.pokemontypes.domain.usecases.FakeStartPokemonTypesListener
+import dev.skybit.pokedex.main.pokemontypes.domain.usecases.FakeGetPokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
+import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.ClearErrorMessage
+import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.RetryLoadingOfPokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -21,8 +25,7 @@ import org.junit.Before
 import org.junit.Test
 
 class PokemonTypeScreenViewModelTest {
-    private lateinit var fakePopulatePokemonTypes: FakePopulatePokemonTypes
-    private lateinit var startPokemonTypesListener: FakeStartPokemonTypesListener
+    private lateinit var getPokemonTypes: FakeGetPokemonTypes
     private lateinit var sut: PokemonTypeScreenViewModel
 
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -30,8 +33,7 @@ class PokemonTypeScreenViewModelTest {
     @Before
     fun init() {
         Dispatchers.setMain(testDispatcher)
-        fakePopulatePokemonTypes = FakePopulatePokemonTypes()
-        startPokemonTypesListener = FakeStartPokemonTypesListener()
+        getPokemonTypes = FakeGetPokemonTypes()
     }
 
     @After
@@ -40,14 +42,14 @@ class PokemonTypeScreenViewModelTest {
     }
 
     private fun initSut() {
-        sut = PokemonTypeScreenViewModel(fakePopulatePokemonTypes, startPokemonTypesListener)
+        sut = PokemonTypeScreenViewModel(getPokemonTypes)
     }
 
     @Test
     fun should_handle_error_when_trying_to_fetch_pokemon_types() = runBlocking {
         // define test data
         val errorMessage = "Network Error"
-        fakePopulatePokemonTypes.fakeResult = Error(errorMessage)
+        getPokemonTypes.fakeResult = Error(errorMessage)
 
         // init sut
         initSut()
@@ -62,10 +64,12 @@ class PokemonTypeScreenViewModelTest {
 
     @Test
     fun should_update_state_with_pokemon_types() = runBlocking {
+        // define test data
+        val pokemonTypes = listOf(fakePokemonTypeGrass, fakePokemonTypeFire)
+        getPokemonTypes.fakeResult = Resource.Success(pokemonTypes)
+
         // init state
         initSut()
-        val pokemonTypes = listOf(fakePokemonTypeGrass, fakePokemonTypeFire)
-        startPokemonTypesListener.emitPokemonTypes(pokemonTypes)
 
         // trigger action
         val actual = sut.pokemonTypeScreenState.first().pokemonTypes
@@ -76,20 +80,59 @@ class PokemonTypeScreenViewModelTest {
     }
 
     @Test
-    fun should_not_update_state_if_pokemon_types_list_is_empty() = runBlocking {
+    fun should_clear_error_message_after_is_consumed() = runBlocking {
+        // define test data
+        val pokemonTypes = listOf(fakePokemonTypeGrass, fakePokemonTypeFire)
+        getPokemonTypes.fakeResult = Error("Network Error", emptyList())
+
+        // init sut
+        initSut()
+
+        // trigger action
+        sut.onEvent(ClearErrorMessage)
+
+        // check assertions
+        val actual = sut.pokemonTypeScreenState.first().error
+        assertTrue(actual.isEmpty())
+    }
+
+    @Test
+    fun should_fetch_cashed_pokemon_types_in_case_of_an_error() = runBlocking {
+        // define test data
+        val pokemonTypes = listOf(fakePokemonTypeGrass, fakePokemonTypeFire)
+        getPokemonTypes.fakeResult = Error("Network Error", pokemonTypes)
+
         // init sut
         initSut()
 
         // check assertions
-        startPokemonTypesListener.emitPokemonTypes(emptyList())
-        var actual = sut.pokemonTypeScreenState.first().pokemonTypes
-        assertEquals(emptyList<PokemonType>(), actual)
+        val actual = sut.pokemonTypeScreenState.first()
+        assertTrue(actual.error.contains("Network Error"))
+        assertEquals(PokemonTypeUI.fromDomainList(pokemonTypes), actual.pokemonTypes)
+    }
 
+    @Test
+    fun should_retry_loading_pokemon_types_in_case_of_the_retry_event() = runBlocking {
+        // define test data
         val pokemonTypes = listOf(fakePokemonTypeGrass, fakePokemonTypeFire)
-        startPokemonTypesListener.emitPokemonTypes(pokemonTypes)
-        actual = sut.pokemonTypeScreenState.first().pokemonTypes
+        getPokemonTypes.fakeResult = Error("Network Error", emptyList())
 
-        val expected = PokemonTypeUI.fromDomainList(pokemonTypes)
-        assertEquals(expected, actual)
+        // init sut
+        initSut()
+
+        // check assertions
+        var actual = sut.pokemonTypeScreenState.first()
+        assertTrue(actual.error.contains("Network Error"))
+        assertTrue(actual.pokemonTypes.isEmpty())
+
+        // trigger action
+        getPokemonTypes.fakeResult = Resource.Success(pokemonTypes)
+        sut.onEvent(RetryLoadingOfPokemonTypes)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        // check assertions
+        actual = sut.pokemonTypeScreenState.first()
+        assertTrue(actual.error.isEmpty())
+        assertEquals(PokemonTypeUI.fromDomainList(pokemonTypes), actual.pokemonTypes)
     }
 }

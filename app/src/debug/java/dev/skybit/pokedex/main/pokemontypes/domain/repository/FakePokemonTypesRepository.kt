@@ -10,6 +10,7 @@ class FakePokemonTypesRepository : PokemonTypesRepository {
     var fakeResult: Resource<Unit> = Resource.Success(Unit)
     var fakePokemonTypes = listOf<PokemonType>()
     var fakePokemonTypeMap = mutableMapOf<Int, PokemonType>()
+    var shouldFetchThrowException: Boolean = false
 
     override suspend fun populatePokemonTypes(): Resource<Unit> {
         return fakeResult
@@ -31,6 +32,12 @@ class FakePokemonTypesRepository : PokemonTypesRepository {
         return fakePokemonTypeMap[pokemonTypeId] ?: throw NoSuchElementException(
             "No pokemon type with id $pokemonTypeId"
         )
+    }
+
+    override suspend fun fetchNewPokemonTypes(offset: Int) {
+        if (shouldFetchThrowException) {
+            throw Exception("Fake exception")
+        }
     }
 
     fun populatePokemonTypesMap(types: List<PokemonType>) {

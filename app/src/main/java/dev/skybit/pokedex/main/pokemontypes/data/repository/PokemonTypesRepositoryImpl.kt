@@ -58,7 +58,7 @@ class PokemonTypesRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun fetchNewPokemonTypes(offset: Int) {
+    override suspend fun fetchNewPokemonTypes(offset: Int) {
         val result = pokemonTypesRemoteDataSource.getPokemonTypes(offset)
 
         if (result.isSuccessful) {

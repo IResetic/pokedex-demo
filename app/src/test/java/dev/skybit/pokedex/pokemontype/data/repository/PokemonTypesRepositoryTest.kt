@@ -11,11 +11,14 @@ import dev.skybit.pokedex.main.pokemontypes.data.local.model.fakePokemonTypeEnti
 import dev.skybit.pokedex.main.pokemontypes.data.local.model.fakePokemonTypeEntityGrass
 import dev.skybit.pokedex.main.pokemontypes.data.remote.mappers.ResultDtoToPokemonEntityTypeMapper
 import dev.skybit.pokedex.main.pokemontypes.data.repository.PokemonTypesRepositoryImpl
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -41,6 +44,11 @@ class PokemonTypesRepositoryTest {
             resultDtoToPokemonEntityTypeMapper,
             testDispatcher
         )
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     @Test

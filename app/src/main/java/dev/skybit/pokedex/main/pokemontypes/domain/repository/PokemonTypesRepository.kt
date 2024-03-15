@@ -14,4 +14,6 @@ interface PokemonTypesRepository {
     suspend fun getPokemonTypesFlow(): Flow<List<PokemonType>>
 
     suspend fun getPokemonTypeBasicIInfoById(pokemonTypeId: Int): PokemonType
+
+    suspend fun fetchNewPokemonTypes(offset: Int)
 }
