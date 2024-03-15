@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.pokemontypes.data.remote.mappers
+package dev.skybit.pokedex.main.pokemontypes.data.local.model.mappers
 
 import dev.skybit.pokedex.main.core.data.remote.model.ResultDto
 import dev.skybit.pokedex.main.pokemontypes.data.local.model.PokemonTypeEntity

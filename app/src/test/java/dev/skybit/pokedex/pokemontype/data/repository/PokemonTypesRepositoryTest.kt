@@ -1,22 +1,17 @@
 package dev.skybit.pokedex.pokemontype.data.repository
 
-import dev.skybit.pokedex.main.core.data.remote.model.PagedResponse
 import dev.skybit.pokedex.main.core.data.remote.model.fakePokemonTypesPagedResponse
-import dev.skybit.pokedex.main.core.data.remote.model.fakeResultDtoElectric
-import dev.skybit.pokedex.main.core.data.remote.model.fakeResultDtoWater
-import dev.skybit.pokedex.main.core.utils.Resource
 import dev.skybit.pokedex.main.pokemontypes.data.datasources.FakePokemonTypesLocalDataSource
 import dev.skybit.pokedex.main.pokemontypes.data.datasources.FakePokemonTypesRemoteDataSource
 import dev.skybit.pokedex.main.pokemontypes.data.local.model.fakePokemonTypeEntityFire
 import dev.skybit.pokedex.main.pokemontypes.data.local.model.fakePokemonTypeEntityGrass
-import dev.skybit.pokedex.main.pokemontypes.data.remote.mappers.ResultDtoToPokemonEntityTypeMapper
+import dev.skybit.pokedex.main.pokemontypes.data.local.model.mappers.ResultDtoToPokemonEntityTypeMapper
 import dev.skybit.pokedex.main.pokemontypes.data.repository.PokemonTypesRepositoryImpl
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -25,6 +20,7 @@ import org.junit.Before
 import org.junit.Test
 import retrofit2.Response
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PokemonTypesRepositoryTest {
     private lateinit var pokemonTypesRemoteDataSource: FakePokemonTypesRemoteDataSource
     private lateinit var pokemonTypesLocalDataSource: FakePokemonTypesLocalDataSource
@@ -52,23 +48,17 @@ class PokemonTypesRepositoryTest {
     }
 
     @Test
-    fun successfully_populate_pokemon_types_from_remote_source() = runBlocking {
+    fun should_successfully_populate_pokemon_types() = runBlocking {
         // define test data
-        val pokemonTypes = listOf(fakeResultDtoWater, fakeResultDtoElectric)
-        val response = Response.success(
-            fakePokemonTypesPagedResponse.copy(
-                results = pokemonTypes
-            )
-        )
-        pokemonTypesRemoteDataSource.responses = listOf(response)
+        pokemonTypesRemoteDataSource.responses = listOf(Response.success(fakePokemonTypesPagedResponse))
 
         // trigger action
-        sut.populatePokemonTypes()
+        sut.populatePokemonTypes(0)
 
         // check assertions
-        val result = pokemonTypesLocalDataSource.fakePokemonTypeEntities
-        val expected = pokemonTypes.map { resultDtoToPokemonEntityTypeMapper(it) }
-        assertEquals(expected, result)
+        assertTrue(pokemonTypesLocalDataSource.isInserted)
+        val expected = fakePokemonTypesPagedResponse.results?.map { resultDtoToPokemonEntityTypeMapper(it) }
+        assertEquals(expected, pokemonTypesLocalDataSource.fakePokemonTypeEntities)
     }
 
     @Test
@@ -81,62 +71,29 @@ class PokemonTypesRepositoryTest {
         assertEquals(expected, actual)
     }
 
-    @Test
-    fun populate_pokemon_types_should_return_error_when_remote_source_fails() = runBlocking {
+    @Test(expected = Exception::class)
+    fun populatePokemonTypes_handlesErrorFromRemoteDataSource() = runBlocking {
         // define test data
-        val errorMessage = "Network error"
-        val response = Response.error<PagedResponse>(
-            500,
-            "{\"error\": \"$errorMessage\"}"
-                .toResponseBody("application/json".toMediaTypeOrNull())
-        )
-        pokemonTypesRemoteDataSource.responses = listOf(response)
+        pokemonTypesRemoteDataSource.responses = listOf(Response.error(400, "Bad Request".toResponseBody(null)))
 
         // trigger action
-        val result = sut.populatePokemonTypes()
-
-        // check assertions
-        assertTrue(result is Resource.Error)
-        assertTrue((result as Resource.Error).message!!.contains(errorMessage))
+        sut.populatePokemonTypes(0)
     }
 
     @Test
-    fun should_fetch_and_store_multiple_pages_of_pokemon_types() = runBlocking {
+    fun should_recursively_populate_pokemon_types() = runBlocking {
         // define test data
-        val firstPageResponse = Response.success(
-            fakePokemonTypesPagedResponse.copy(next = "http://nextpage.com", results = listOf(fakeResultDtoWater))
+        pokemonTypesRemoteDataSource.responses = listOf(
+            Response.success(fakePokemonTypesPagedResponse.copy(next = "http://example.com/page2")),
+            Response.success(fakePokemonTypesPagedResponse.copy(next = null))
         )
-        val secondPageResponse = Response.success(
-            fakePokemonTypesPagedResponse.copy(next = null, results = listOf(fakeResultDtoElectric))
-        )
-        pokemonTypesRemoteDataSource.responses = (listOf(firstPageResponse, secondPageResponse))
 
         // trigger action
-        sut.populatePokemonTypes()
+        sut.populatePokemonTypes(0)
 
         // check assertions
-        val storedTypes = pokemonTypesLocalDataSource.fakePokemonTypeEntities
-        val expectedTypes = listOf(fakeResultDtoWater, fakeResultDtoElectric).map {
-            resultDtoToPokemonEntityTypeMapper(it)
-        }
-        assertEquals(expectedTypes, storedTypes)
-    }
-
-    @Test
-    fun should_successfully_return_a_flow_of_pokemon_types() = runBlocking {
-        // define test data
-        val fakeDataEntities = listOf(
-            fakePokemonTypeEntityGrass,
-            fakePokemonTypeEntityFire
-        )
-        pokemonTypesLocalDataSource.fakePokemonTypeEntities.addAll(fakeDataEntities)
-
-        // trigger action
-        val result = sut.getPokemonTypesFlow().first()
-
-        // check assertions
-        val expected = fakeDataEntities.map { it.toDomain() }
-        assertEquals(expected, result)
+        assertTrue(pokemonTypesLocalDataSource.isInserted)
+        assertEquals(4, pokemonTypesLocalDataSource.fakePokemonTypeEntities.size)
     }
 
     @Test
