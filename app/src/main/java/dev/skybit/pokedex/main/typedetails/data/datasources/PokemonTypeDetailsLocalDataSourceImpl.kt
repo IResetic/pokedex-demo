@@ -6,8 +6,12 @@ import javax.inject.Inject
 
 class PokemonTypeDetailsLocalDataSourceImpl @Inject constructor(
     private val pokemonBasicInfoDao: PokemonBasicInfoDao
-): PokemonTypeDetailsLocalDataSource {
+) : PokemonTypeDetailsLocalDataSource {
     override suspend fun insertOrUpdatePokemonBasicInfo(pokemonBasicInfo: List<PokemonBasicInfoEntity>) {
         return pokemonBasicInfoDao.insertOrUpdatePokemonBasicInfo(pokemonBasicInfo)
+    }
+
+    override suspend fun getPokemonBasicInfoByType(typeId: Int): List<PokemonBasicInfoEntity> {
+        return pokemonBasicInfoDao.getPokemonBasicInfoByType(typeId)
     }
 }

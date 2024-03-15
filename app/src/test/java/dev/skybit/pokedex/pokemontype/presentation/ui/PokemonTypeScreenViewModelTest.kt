@@ -56,7 +56,7 @@ class PokemonTypeScreenViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
 
         // trigger action
-        val actual = sut.pokemonTypeScreenState.first().error
+        val actual = sut.pokemonTypeScreenState.first().errorMessage
 
         // check assertions
         assertTrue(actual.contains(errorMessage))
@@ -92,7 +92,7 @@ class PokemonTypeScreenViewModelTest {
         sut.onEvent(ClearErrorMessage)
 
         // check assertions
-        val actual = sut.pokemonTypeScreenState.first().error
+        val actual = sut.pokemonTypeScreenState.first().errorMessage
         assertTrue(actual.isEmpty())
     }
 
@@ -107,7 +107,7 @@ class PokemonTypeScreenViewModelTest {
 
         // check assertions
         val actual = sut.pokemonTypeScreenState.first()
-        assertTrue(actual.error.contains("Network Error"))
+        assertTrue(actual.errorMessage.contains("Network Error"))
         assertEquals(PokemonTypeUI.fromDomainList(pokemonTypes), actual.pokemonTypes)
     }
 
@@ -122,7 +122,7 @@ class PokemonTypeScreenViewModelTest {
 
         // check assertions
         var actual = sut.pokemonTypeScreenState.first()
-        assertTrue(actual.error.contains("Network Error"))
+        assertTrue(actual.errorMessage.contains("Network Error"))
         assertTrue(actual.pokemonTypes.isEmpty())
 
         // trigger action
@@ -132,7 +132,7 @@ class PokemonTypeScreenViewModelTest {
 
         // check assertions
         actual = sut.pokemonTypeScreenState.first()
-        assertTrue(actual.error.isEmpty())
+        assertTrue(actual.errorMessage.isEmpty())
         assertEquals(PokemonTypeUI.fromDomainList(pokemonTypes), actual.pokemonTypes)
     }
 }

@@ -52,8 +52,8 @@ internal fun PokemonTypesRoute(
     val context = LocalContext.current
     val errorMessage = stringResource(id = R.string.pokemon_types_toast_error)
 
-    LaunchedEffect(key1 = pokemonTypesScreenState.value.error) {
-        val error = pokemonTypesScreenState.value.error
+    LaunchedEffect(key1 = pokemonTypesScreenState.value.errorMessage) {
+        val error = pokemonTypesScreenState.value.errorMessage
         if (error.isNotEmpty() && pokemonTypes.isNotEmpty()) {
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
             viewModel.onEvent(ClearErrorMessage)
@@ -63,7 +63,7 @@ internal fun PokemonTypesRoute(
     PokemonTypesScreen(
         pokemonTypes = pokemonTypes.toImmutableList(),
         isLoading = pokemonTypesScreenState.value.isLoading,
-        errorMessage = pokemonTypesScreenState.value.error,
+        errorMessage = pokemonTypesScreenState.value.errorMessage,
         retryLoading = { viewModel.onEvent(PokemonTypeScreenEvent.RetryLoadingOfPokemonTypes) },
         navigateToPokemonsList = navigateToPokemonsList
     )

@@ -9,7 +9,7 @@ import dev.skybit.pokedex.main.pokemontypes.domain.usecases.GetPokemonTypesImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface PokemonTypeDomainModel {
+interface PokemonTypeDomainModule {
 
     @Binds
     fun provideGetPokemonTypes(impl: GetPokemonTypesImpl): GetPokemonTypes

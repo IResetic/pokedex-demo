@@ -40,14 +40,14 @@ class PokemonTypeScreenViewModel @Inject constructor(
     private fun loadPokemonTypes() {
         viewModelScope.launch {
             _pokemonTypeScreenState.update {
-                it.copy(isLoading = true, error = "")
+                it.copy(isLoading = true, errorMessage = "")
             }
 
             getPokemonTypes().onSuccess { pokemonTypes ->
                 _pokemonTypeScreenState.update {
                     it.copy(
                         isLoading = false,
-                        error = "",
+                        errorMessage = "",
                         pokemonTypes = PokemonTypeUI.fromDomainList(pokemonTypes)
                     )
                 }
@@ -55,7 +55,7 @@ class PokemonTypeScreenViewModel @Inject constructor(
                 _pokemonTypeScreenState.update {
                     it.copy(
                         isLoading = false,
-                        error = "Error loading pokemon types $message",
+                        errorMessage = "Error loading pokemon types $message",
                         pokemonTypes = PokemonTypeUI.fromDomainList(pokemonTypes ?: emptyList())
                     )
                 }
@@ -65,7 +65,7 @@ class PokemonTypeScreenViewModel @Inject constructor(
 
     private fun clearErrorMessage() {
         _pokemonTypeScreenState.update {
-            it.copy(error = "")
+            it.copy(errorMessage = "")
         }
     }
 }

@@ -26,4 +26,7 @@ object DatabaseModule {
 
     @Provides
     fun providePokemonTypeDao(database: PokedexAppDatabase) = database.pokemonTypeDao()
+
+    @Provides
+    fun providePokemonBasicInfoDao(database: PokedexAppDatabase) = database.pokemonBasicInfoDao()
 }

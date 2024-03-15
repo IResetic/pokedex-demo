@@ -1,7 +1,9 @@
 package dev.skybit.pokedex.main.typedetails.domain.repository
 
-import dev.skybit.pokedex.main.typedetails.domain.model.PokemonTypeDetails
+import dev.skybit.pokedex.main.typedetails.domain.model.PokemonBasicInfo
 
 interface PokemonTypeDetailsRepository {
-    suspend fun getPokemonTypeDetails(pokemonTypeId: Int): List<PokemonTypeDetails>
+    suspend fun getPokemonTypeDetails(pokemonTypeId: Int): List<PokemonBasicInfo>
+
+    suspend fun fetchPokemonTypeDetails(pokemonTypeId: Int)
 }

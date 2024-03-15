@@ -8,5 +8,10 @@ import dev.skybit.pokedex.main.core.data.remote.model.ResultDto
 data class PokemonTypeDetailsResponse(
     @field:Json(name = "id") val id: Int,
     @field:Json(name = "name") val name: String?,
-    @field:Json(name = "pokemon") val pokemons: List<ResultDto>?
+    @field:Json(name = "pokemon") val pokemons: List<Pokemon>?
+)
+
+@JsonClass(generateAdapter = true)
+data class Pokemon(
+    @field:Json(name = "pokemon") val pokemon: ResultDto
 )

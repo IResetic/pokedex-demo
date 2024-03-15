@@ -5,7 +5,7 @@ import dev.skybit.pokedex.main.pokemontypes.data.datasources.FakePokemonTypesLoc
 import dev.skybit.pokedex.main.pokemontypes.data.datasources.FakePokemonTypesRemoteDataSource
 import dev.skybit.pokedex.main.pokemontypes.data.local.model.fakePokemonTypeEntityFire
 import dev.skybit.pokedex.main.pokemontypes.data.local.model.fakePokemonTypeEntityGrass
-import dev.skybit.pokedex.main.pokemontypes.data.local.model.mappers.ResultDtoToPokemonEntityTypeMapper
+import dev.skybit.pokedex.main.pokemontypes.data.mappers.ResultDtoToPokemonEntityTypeMapper
 import dev.skybit.pokedex.main.pokemontypes.data.repository.PokemonTypesRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -4,7 +4,7 @@ import dev.skybit.pokedex.main.FIRE_POKEMON_TYPE_ID
 import dev.skybit.pokedex.main.core.data.remote.model.fakeResultDtoFire
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_FIRE
 import dev.skybit.pokedex.main.pokemontypes.data.local.model.PokemonTypeEntity
-import dev.skybit.pokedex.main.pokemontypes.data.local.model.mappers.ResultDtoToPokemonEntityTypeMapper
+import dev.skybit.pokedex.main.pokemontypes.data.mappers.ResultDtoToPokemonEntityTypeMapper
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

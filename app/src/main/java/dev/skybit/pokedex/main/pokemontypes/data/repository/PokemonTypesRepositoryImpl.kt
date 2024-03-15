@@ -5,7 +5,7 @@ import dev.skybit.pokedex.main.core.di.IoDispatcher
 import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.pokemontypes.data.datasources.PokemonTypesLocalDataSource
 import dev.skybit.pokedex.main.pokemontypes.data.datasources.PokemonTypesRemoteDataSource
-import dev.skybit.pokedex.main.pokemontypes.data.local.model.mappers.ResultDtoToPokemonEntityTypeMapper
+import dev.skybit.pokedex.main.pokemontypes.data.mappers.ResultDtoToPokemonEntityTypeMapper
 import dev.skybit.pokedex.main.pokemontypes.domain.repository.PokemonTypesRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

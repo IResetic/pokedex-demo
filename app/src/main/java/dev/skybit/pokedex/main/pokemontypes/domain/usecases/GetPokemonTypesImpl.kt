@@ -16,7 +16,7 @@ class GetPokemonTypesImpl @Inject constructor(
 
             Resource.Success(pokemonType)
         } catch (e: Exception) {
-            if(e is CancellationException) {
+            if (e is CancellationException) {
                 throw e
             } else {
                 val pokemonTypes = pokemonTypesRepository.getPokemonTypes()
