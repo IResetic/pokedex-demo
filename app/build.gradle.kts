@@ -104,4 +104,7 @@ dependencies {
 
     // ***** Collections *****
     implementation(libs.kotlin.immutable.collections)
+
+    // ***** Image *****
+    implementation(libs.coil.compose)
 }

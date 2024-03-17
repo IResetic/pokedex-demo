@@ -23,6 +23,7 @@ composeNavigation = "2.7.7"
 kotlinImmutableCollection = "0.3.5"
 coroutines = "1.7.3"
 accompanist = "0.34.0"
+coil = '2.6.0'
 
 [libraries]
 # ***** Core *****
@@ -72,8 +73,11 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
-#***** Collection *****
+# ***** Collection *****
 kotlin-immutable-collections = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinImmutableCollection" }
+
+# ***** Image *****
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

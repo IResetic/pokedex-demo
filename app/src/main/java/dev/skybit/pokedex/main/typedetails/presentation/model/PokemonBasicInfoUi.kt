@@ -13,7 +13,7 @@ data class PokemonBasicInfoUi(
         fun fromDomain(pokemonBasicInfo: PokemonBasicInfo) = PokemonBasicInfoUi(
             id = pokemonBasicInfo.id,
             name = pokemonBasicInfo.name,
-            imageUrl = "$IMAGE_BASE_URL${pokemonBasicInfo.id}.$POKEMON_IMG_FORMAT"
+            imageUrl = "$IMAGE_BASE_URL${pokemonBasicInfo.id}$POKEMON_IMG_FORMAT"
         )
 
         fun fromDomainList(pokemons: List<PokemonBasicInfo>): List<PokemonBasicInfoUi> {
