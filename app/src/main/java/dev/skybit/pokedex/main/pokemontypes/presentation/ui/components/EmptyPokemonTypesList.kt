@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
@@ -35,7 +36,7 @@ fun EmptyPokemonTypesList(
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_erorr),
-            contentDescription = "Error loading pokemon types",
+            contentDescription = stringResource(id = R.string.pokemon_type_loading_error_icon_content_description),
             modifier = Modifier.fillMaxSize(0.25f)
         )
         Text(

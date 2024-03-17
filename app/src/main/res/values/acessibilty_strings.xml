@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Splash screen -->
+    <string name="splash_screen_image_content_Description">Splash screen logo</string>
+
+    <!-- Pokemon Type Screen details -->
+    <string name="pokemon_image_placeholder_content_description">Pokemon image error placeholder</string>
+    <string name="navigate_back_icon_content_description">Navigate back</string>
+
+    <!-- Pokemon Type Screen -->
+    <string name="pokemon_type_icon_content_description">Pokemon type icon</string>
+    <string name="pokemon_type_loading_error_icon_content_description">Error loading pokemon types</string>
+</resources>

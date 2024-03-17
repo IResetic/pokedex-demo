@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.largePadding
@@ -25,7 +26,7 @@ fun HeaderComponent() {
     ) {
         Image(
             painter = painterResource(id = R.drawable.main_pokemon_logo),
-            contentDescription = "splash screen"
+            contentDescription = stringResource(id = R.string.splash_screen_image_content_Description)
         )
     }
 }

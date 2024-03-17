@@ -26,7 +26,9 @@ import dev.skybit.pokedex.main.typedetails.presentation.ui.components.BasicPokem
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.PokemonTypeDetailsHeaderComponent
 
 @Composable
-fun PokemonTypeDetailsRoute() {
+fun PokemonTypeDetailsRoute(
+    navigateBack: () -> Unit
+) {
     val viewModel = hiltViewModel<PokemonTypeDetailsViewModel>()
     val pokemonsListScreenState = viewModel.pokemonsListScreenState.collectAsState()
     val pokemonTypeBasicInfo = pokemonsListScreenState.value.pokemonTypeBasicInfo
@@ -34,7 +36,8 @@ fun PokemonTypeDetailsRoute() {
 
     PokemonTypesDetailsScreen(
         pokemonTypeBasicInfo = pokemonTypeBasicInfo,
-        pokemons = pokemons
+        pokemons = pokemons,
+        navigateBack = navigateBack
     )
 }
 
@@ -42,13 +45,15 @@ fun PokemonTypeDetailsRoute() {
 @Composable
 fun PokemonTypesDetailsScreen(
     pokemonTypeBasicInfo: PokemonTypeBasicInfoUI? = null,
-    pokemons: List<PokemonBasicInfoUi> = emptyList()
+    pokemons: List<PokemonBasicInfoUi> = emptyList(),
+    navigateBack: () -> Unit
 ) {
     Scaffold(
         topBar = {
             PokemonTypeDetailsHeaderComponent(
                 backgroundColor = pokemonTypeBasicInfo?.backgroundColor,
-                title = pokemonTypeBasicInfo?.title
+                title = pokemonTypeBasicInfo?.title,
+                navigateBack = navigateBack
             )
         }
     ) { paddingValues ->

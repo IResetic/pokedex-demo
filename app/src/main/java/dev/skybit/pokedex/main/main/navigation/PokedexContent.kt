@@ -22,7 +22,9 @@ fun PokedexContent(navController: NavHostController) {
                 navigateToPokemonsList = { navController.navigate(PokemonTypeDetailsScreenDestination.route(it)) }
             )
 
-            pokemonTypeDetailsGraph()
+            pokemonTypeDetailsGraph(
+                navigateBack = navController::popBackStack
+            )
         }
     }
 }
