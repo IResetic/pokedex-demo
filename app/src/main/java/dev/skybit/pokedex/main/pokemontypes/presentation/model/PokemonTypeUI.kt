@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.core.utils.parseTypeToColor
-import dev.skybit.pokedex.main.pokemontypes.utils.parseTypeToImage
+import dev.skybit.pokedex.main.pokemontypes.utils.parseTypeNameToImage
 
 @Immutable
 data class PokemonTypeUI(
@@ -19,7 +19,7 @@ data class PokemonTypeUI(
                 id = type.id,
                 name = type.name,
                 color = parseTypeToColor(type),
-                icon = parseTypeToImage(type)
+                icon = parseTypeNameToImage(type.name)
             )
         }
 

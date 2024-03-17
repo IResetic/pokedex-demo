@@ -24,12 +24,15 @@ import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.core.presentation.style.defaultPadding
 import dev.skybit.pokedex.main.core.presentation.style.largePadding
+import dev.skybit.pokedex.main.core.utils.DEFAULT_SIZE_OF_POKEMON_TYPES_LIST
+import dev.skybit.pokedex.main.core.utils.LANDSCAPE_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_BUG
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_DARK
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_DRAGON
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_FIRE
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_GRASS
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_NORMAL
+import dev.skybit.pokedex.main.core.utils.PORTRAIT_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.ClearErrorMessage
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.EmptyPokemonTypesList
@@ -37,10 +40,6 @@ import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.HeaderCom
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.PokemonTypeListItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-
-const val LANDSCAPE_MODE_NUMBER_OF_COLUMNS = 3
-const val PORTRAIT_MODE_NUMBER_OF_COLUMNS = 2
-const val DEFAULT_SIZE_OF_POKEMON_TYPES_LIST = 10
 
 @Composable
 internal fun PokemonTypesRoute(

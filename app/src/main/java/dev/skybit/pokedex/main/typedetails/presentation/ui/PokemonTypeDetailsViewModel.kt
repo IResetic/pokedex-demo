@@ -1,6 +1,5 @@
 package dev.skybit.pokedex.main.typedetails.presentation.ui
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +8,7 @@ import dev.skybit.pokedex.main.core.domain.usecases.GetPokemonTypeBasicInfo
 import dev.skybit.pokedex.main.core.utils.onError
 import dev.skybit.pokedex.main.core.utils.onSuccess
 import dev.skybit.pokedex.main.typedetails.domain.usecases.GetPokemonsBasicInfoByTypeId
+import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicInfoUI
 import dev.skybit.pokedex.main.typedetails.presentation.navigation.PokemonTypeDetailsScreenDestination.POKEMON_TYPE_ID
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,14 +52,13 @@ class PokemonTypeDetailsViewModel @Inject constructor(
                 val pokemonsBasicInfo = getPokemonsBasicInfoByTypeId(pokemonTypeId.toInt())
 
                 pokemonsBasicInfo.onSuccess { pokemons ->
-                    Log.d("TEST_POKEMONS", "Pokemons: $pokemons")
                     _pokemonsListScreenState.update {
-                        it.copy(pokemonsBasicInfo = pokemons)
+                        it.copy(pokemons = PokemonBasicInfoUi.fromDomainList(pokemons))
                     }
                 }.onError { message, pokemons ->
                     _pokemonsListScreenState.update {
                         it.copy(
-                            pokemonsBasicInfo = pokemons ?: emptyList(),
+                            pokemons = PokemonBasicInfoUi.fromDomainList(pokemons ?: emptyList()),
                             errorMessage = message ?: ""
                         )
                     }

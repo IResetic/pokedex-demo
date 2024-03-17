@@ -20,4 +20,5 @@ val largeRadius = 12.dp
 val mediumImageSize = 60.dp
 
 // ***** Percentages *****
+const val twentyPercent = 0.2f
 const val thirtyPercent = 0.3f

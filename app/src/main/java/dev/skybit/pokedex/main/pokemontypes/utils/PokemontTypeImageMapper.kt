@@ -1,7 +1,6 @@
 package dev.skybit.pokedex.main.pokemontypes.utils
 
 import dev.skybit.pokedex.R
-import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_BUG
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_DARK
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_DRAGON
@@ -22,8 +21,8 @@ import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_STEEL
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_WATER
 import java.util.Locale
 
-fun parseTypeToImage(type: PokemonType): Int {
-    return when (type.name.lowercase(Locale.ROOT)) {
+fun parseTypeNameToImage(name: String): Int {
+    return when (name.lowercase(Locale.ROOT)) {
         POKEMON_TYPE_NORMAL -> R.drawable.ic_normal
         POKEMON_TYPE_FIRE -> R.drawable.ic_fire
         POKEMON_TYPE_WATER -> R.drawable.ic_water

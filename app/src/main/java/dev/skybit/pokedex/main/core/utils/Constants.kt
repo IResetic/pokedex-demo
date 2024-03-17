@@ -19,3 +19,12 @@ const val POKEMON_TYPE_DRAGON = "dragon"
 const val POKEMON_TYPE_DARK = "dark"
 const val POKEMON_TYPE_STEEL = "steel"
 const val POKEMON_TYPE_FAIRY = "fairy"
+
+// ***** Network Constants *****
+const val IMAGE_BASE_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+const val POKEMON_IMG_FORMAT = ".png"
+
+// ***** UI Constants *****
+const val LANDSCAPE_MODE_NUMBER_OF_COLUMNS = 3
+const val PORTRAIT_MODE_NUMBER_OF_COLUMNS = 2
+const val DEFAULT_SIZE_OF_POKEMON_TYPES_LIST = 10
