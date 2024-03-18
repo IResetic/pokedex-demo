@@ -24,7 +24,7 @@ import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.core.presentation.style.defaultPadding
 import dev.skybit.pokedex.main.core.presentation.style.largePadding
-import dev.skybit.pokedex.main.core.utils.DEFAULT_SIZE_OF_POKEMON_TYPES_LIST
+import dev.skybit.pokedex.main.core.utils.DEFAULT_SIZE_OF_GRID_LIST
 import dev.skybit.pokedex.main.core.utils.LANDSCAPE_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_BUG
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_DARK
@@ -120,7 +120,7 @@ internal fun PokemonTypesScreen(
                     verticalArrangement = Arrangement.spacedBy(defaultPadding),
                     horizontalArrangement = Arrangement.spacedBy(defaultPadding)
                 ) {
-                    items(if (pokemonTypes.isEmpty()) DEFAULT_SIZE_OF_POKEMON_TYPES_LIST else pokemonTypes.size) {
+                    items(if (pokemonTypes.isEmpty()) DEFAULT_SIZE_OF_GRID_LIST else pokemonTypes.size) {
                         val pokemonType = if (pokemonTypes.isNotEmpty()) pokemonTypes[it] else null
                         PokemonTypeListItem(
                             pokemonType = pokemonType,

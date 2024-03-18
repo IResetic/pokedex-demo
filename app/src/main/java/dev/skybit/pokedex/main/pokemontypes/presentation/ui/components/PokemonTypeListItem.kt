@@ -28,6 +28,7 @@ import dev.skybit.pokedex.main.core.presentation.style.largeRadius
 import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeNormal
 import dev.skybit.pokedex.main.core.presentation.style.thirtyPercent
+import dev.skybit.pokedex.main.core.presentation.ui.components.ShimmerGridListItem
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_NORMAL
 import dev.skybit.pokedex.main.core.utils.capitalizeFirstLetter
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
@@ -38,7 +39,7 @@ fun PokemonTypeListItem(
     onClick: (Int) -> Unit
 ) {
     if (pokemonType == null) {
-        ShimmerPokemonTypeListItem()
+        ShimmerGridListItem()
     } else {
         Column(
             horizontalAlignment = CenterHorizontally,

@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.pokemontypes.presentation.ui.components
+package dev.skybit.pokedex.main.core.presentation.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,10 +11,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import dev.skybit.pokedex.main.core.presentation.style.defaultRadius
 import dev.skybit.pokedex.main.core.presentation.style.largeRadius
-import dev.skybit.pokedex.main.core.presentation.ui.components.shimmerEffect
 
 @Composable
-fun ShimmerPokemonTypeListItem() {
+fun ShimmerGridListItem() {
     Box(
         modifier = Modifier
             .shadow(defaultRadius, RoundedCornerShape(largeRadius))

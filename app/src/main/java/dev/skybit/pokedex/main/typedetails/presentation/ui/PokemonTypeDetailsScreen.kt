@@ -18,6 +18,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.skybit.pokedex.main.core.presentation.style.defaultPadding
 import dev.skybit.pokedex.main.core.presentation.style.largePadding
+import dev.skybit.pokedex.main.core.presentation.ui.components.ShimmerGridListItem
+import dev.skybit.pokedex.main.core.utils.DEFAULT_SIZE_OF_GRID_LIST
 import dev.skybit.pokedex.main.core.utils.LANDSCAPE_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.core.utils.PORTRAIT_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
@@ -33,10 +35,12 @@ fun PokemonTypeDetailsRoute(
     val pokemonsListScreenState = viewModel.pokemonsListScreenState.collectAsState()
     val pokemonTypeBasicInfo = pokemonsListScreenState.value.pokemonTypeBasicInfo
     val pokemons = pokemonsListScreenState.value.pokemons
+    val isLoading = pokemonsListScreenState.value.isLoading
 
     PokemonTypesDetailsScreen(
         pokemonTypeBasicInfo = pokemonTypeBasicInfo,
         pokemons = pokemons,
+        isLoading = isLoading,
         navigateBack = navigateBack
     )
 }
@@ -46,6 +50,7 @@ fun PokemonTypeDetailsRoute(
 fun PokemonTypesDetailsScreen(
     pokemonTypeBasicInfo: PokemonTypeBasicInfoUI? = null,
     pokemons: List<PokemonBasicInfoUi> = emptyList(),
+    isLoading: Boolean,
     navigateBack: () -> Unit
 ) {
     Scaffold(
@@ -76,8 +81,14 @@ fun PokemonTypesDetailsScreen(
             verticalArrangement = Arrangement.spacedBy(defaultPadding),
             horizontalArrangement = Arrangement.spacedBy(defaultPadding)
         ) {
-            items(pokemons.size) { index ->
-                BasicPokemonListItem(pokemons[index])
+            if (isLoading) {
+                items(DEFAULT_SIZE_OF_GRID_LIST) {
+                    ShimmerGridListItem()
+                }
+            } else {
+                items(pokemons.size) { index ->
+                    BasicPokemonListItem(pokemons[index])
+                }
             }
         }
     }

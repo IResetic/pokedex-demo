@@ -6,5 +6,6 @@ import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicIn
 data class PokemonTypeDetailsUiState(
     val pokemonTypeBasicInfo: PokemonTypeBasicInfoUI? = null,
     val pokemons: List<PokemonBasicInfoUi> = emptyList(),
+    val isLoading: Boolean = false,
     val errorMessage: String = ""
 )

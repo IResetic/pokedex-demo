@@ -47,23 +47,36 @@ class PokemonTypeDetailsViewModel @Inject constructor(
     }
 
     private fun getPokemonsBasicInfo() {
+        startLoading()
+
         viewModelScope.launch {
             pokemonTypeId?.let { pokemonTypeId ->
                 val pokemonsBasicInfo = getPokemonsBasicInfoByTypeId(pokemonTypeId.toInt())
 
                 pokemonsBasicInfo.onSuccess { pokemons ->
                     _pokemonsListScreenState.update {
-                        it.copy(pokemons = PokemonBasicInfoUi.fromDomainList(pokemons))
+                        it.copy(
+                            pokemons = PokemonBasicInfoUi.fromDomainList(pokemons),
+                            isLoading = false,
+                            errorMessage = ""
+                        )
                     }
                 }.onError { message, pokemons ->
                     _pokemonsListScreenState.update {
                         it.copy(
                             pokemons = PokemonBasicInfoUi.fromDomainList(pokemons ?: emptyList()),
-                            errorMessage = message ?: ""
+                            errorMessage = message ?: "",
+                            isLoading = false
                         )
                     }
                 }
             }
+        }
+    }
+
+    private fun startLoading() {
+        _pokemonsListScreenState.update {
+            it.copy(isLoading = true)
         }
     }
 }
