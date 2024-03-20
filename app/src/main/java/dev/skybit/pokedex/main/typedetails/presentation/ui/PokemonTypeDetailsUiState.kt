@@ -7,5 +7,6 @@ data class PokemonTypeDetailsUiState(
     val pokemonTypeBasicInfo: PokemonTypeBasicInfoUI? = null,
     val pokemons: List<PokemonBasicInfoUi> = emptyList(),
     val isLoading: Boolean = false,
+    val isRefreshing: Boolean = false,
     val errorMessage: String = ""
 )

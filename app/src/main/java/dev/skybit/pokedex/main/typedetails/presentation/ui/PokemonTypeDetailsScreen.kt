@@ -1,7 +1,10 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package dev.skybit.pokedex.main.typedetails.presentation.ui
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,13 +12,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.defaultPadding
 import dev.skybit.pokedex.main.core.presentation.style.largePadding
 import dev.skybit.pokedex.main.core.presentation.ui.components.ShimmerGridListItem
@@ -24,7 +33,10 @@ import dev.skybit.pokedex.main.core.utils.LANDSCAPE_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.core.utils.PORTRAIT_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicInfoUI
+import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.ClearErrorMessage
+import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.RefreshPokemonTypeDetails
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.BasicPokemonListItem
+import dev.skybit.pokedex.main.typedetails.presentation.ui.components.EmptyPokemonsList
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.PokemonTypeDetailsHeaderComponent
 
 @Composable
@@ -36,11 +48,23 @@ fun PokemonTypeDetailsRoute(
     val pokemonTypeBasicInfo = pokemonsListScreenState.value.pokemonTypeBasicInfo
     val pokemons = pokemonsListScreenState.value.pokemons
     val isLoading = pokemonsListScreenState.value.isLoading
+    val errorMessage = pokemonsListScreenState.value.errorMessage
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = pokemonsListScreenState.value.errorMessage) {
+        val error = pokemonsListScreenState.value.errorMessage
+        if (error.isNotEmpty() && pokemons.isNotEmpty()) {
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            viewModel.onEvent(ClearErrorMessage)
+        }
+    }
 
     PokemonTypesDetailsScreen(
         pokemonTypeBasicInfo = pokemonTypeBasicInfo,
         pokemons = pokemons,
         isLoading = isLoading,
+        errorMessage = errorMessage,
+        refreshPokemonTypeDetails = { viewModel.onEvent(RefreshPokemonTypeDetails) },
         navigateBack = navigateBack
     )
 }
@@ -51,6 +75,8 @@ fun PokemonTypesDetailsScreen(
     pokemonTypeBasicInfo: PokemonTypeBasicInfoUI? = null,
     pokemons: List<PokemonBasicInfoUi> = emptyList(),
     isLoading: Boolean,
+    errorMessage: String,
+    refreshPokemonTypeDetails: () -> Unit,
     navigateBack: () -> Unit
 ) {
     Scaffold(
@@ -63,31 +89,53 @@ fun PokemonTypesDetailsScreen(
         }
     ) { paddingValues ->
         val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val gridState = rememberLazyGridState()
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(
-                if (isLandscape) LANDSCAPE_MODE_NUMBER_OF_COLUMNS else PORTRAIT_MODE_NUMBER_OF_COLUMNS
-            ),
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-                .background(color = pokemonTypeBasicInfo?.backgroundColor ?: MaterialTheme.colorScheme.primary),
-            contentPadding = PaddingValues(
-                start = largePadding,
-                end = largePadding,
-                top = defaultPadding,
-                bottom = largePadding
-            ),
-            verticalArrangement = Arrangement.spacedBy(defaultPadding),
-            horizontalArrangement = Arrangement.spacedBy(defaultPadding)
-        ) {
-            if (isLoading) {
-                items(DEFAULT_SIZE_OF_GRID_LIST) {
-                    ShimmerGridListItem()
-                }
-            } else {
-                items(pokemons.size) { index ->
-                    BasicPokemonListItem(pokemons[index])
+        when {
+            pokemons.isEmpty() && !isLoading && errorMessage.isEmpty() -> {
+                EmptyPokemonsList(
+                    message = stringResource(id = R.string.pokemon_types_empty_list_message),
+                    backgroundColor = pokemonTypeBasicInfo?.backgroundColor,
+                    onRetry = refreshPokemonTypeDetails
+                )
+            }
+
+            pokemons.isEmpty() && !isLoading && errorMessage.isNotEmpty() -> {
+                EmptyPokemonsList(
+                    message = stringResource(id = R.string.pokemon_types_error_message),
+                    backgroundColor = pokemonTypeBasicInfo?.backgroundColor,
+                    onRetry = refreshPokemonTypeDetails
+                )
+            }
+
+            else -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(
+                        if (isLandscape) LANDSCAPE_MODE_NUMBER_OF_COLUMNS else PORTRAIT_MODE_NUMBER_OF_COLUMNS
+                    ),
+                    state = gridState,
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize()
+                        .background(color = pokemonTypeBasicInfo?.backgroundColor ?: MaterialTheme.colorScheme.primary),
+                    contentPadding = PaddingValues(
+                        start = largePadding,
+                        end = largePadding,
+                        top = defaultPadding,
+                        bottom = largePadding
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(defaultPadding),
+                    horizontalArrangement = Arrangement.spacedBy(defaultPadding)
+                ) {
+                    if (isLoading) {
+                        items(DEFAULT_SIZE_OF_GRID_LIST) {
+                            ShimmerGridListItem()
+                        }
+                    } else {
+                        items(pokemons.size) { index ->
+                            BasicPokemonListItem(pokemons[index])
+                        }
+                    }
                 }
             }
         }

@@ -11,6 +11,7 @@ import dev.skybit.pokedex.main.typedetails.domain.usecases.GetPokemonsBasicInfoB
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicInfoUI
 import dev.skybit.pokedex.main.typedetails.presentation.navigation.PokemonTypeDetailsScreenDestination.POKEMON_TYPE_ID
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,7 +32,20 @@ class PokemonTypeDetailsViewModel @Inject constructor(
 
     init {
         getBasicPokemonTypeInfo()
-        getPokemonsBasicInfo()
+        getPokemonTypeDetails()
+    }
+
+    fun onEvent(event: PokemonTypeDetailsScreenEvent) {
+        when (event) {
+            is PokemonTypeDetailsScreenEvent.RefreshPokemonTypeDetails -> {
+                refreshPokemonTypeDetails()
+            }
+            is PokemonTypeDetailsScreenEvent.ClearErrorMessage -> {
+                _pokemonsListScreenState.update {
+                    it.copy(errorMessage = "")
+                }
+            }
+        }
     }
 
     private fun getBasicPokemonTypeInfo() {
@@ -46,9 +60,26 @@ class PokemonTypeDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun getPokemonsBasicInfo() {
-        startLoading()
+    private fun getPokemonTypeDetails() {
+        _pokemonsListScreenState.update {
+            it.copy(isLoading = true)
+        }
 
+        fetchPokemonsBasicInfo()
+    }
+
+    private fun refreshPokemonTypeDetails() {
+        _pokemonsListScreenState.update {
+            it.copy(isLoading = true)
+        }
+
+        viewModelScope.launch {
+            delay(2000L)
+            fetchPokemonsBasicInfo()
+        }
+    }
+
+    private fun fetchPokemonsBasicInfo() {
         viewModelScope.launch {
             pokemonTypeId?.let { pokemonTypeId ->
                 val pokemonsBasicInfo = getPokemonsBasicInfoByTypeId(pokemonTypeId.toInt())
@@ -58,6 +89,7 @@ class PokemonTypeDetailsViewModel @Inject constructor(
                         it.copy(
                             pokemons = PokemonBasicInfoUi.fromDomainList(pokemons),
                             isLoading = false,
+                            isRefreshing = false,
                             errorMessage = ""
                         )
                     }
@@ -66,17 +98,12 @@ class PokemonTypeDetailsViewModel @Inject constructor(
                         it.copy(
                             pokemons = PokemonBasicInfoUi.fromDomainList(pokemons ?: emptyList()),
                             errorMessage = message ?: "",
-                            isLoading = false
+                            isLoading = false,
+                            isRefreshing = false
                         )
                     }
                 }
             }
-        }
-    }
-
-    private fun startLoading() {
-        _pokemonsListScreenState.update {
-            it.copy(isLoading = true)
         }
     }
 }
