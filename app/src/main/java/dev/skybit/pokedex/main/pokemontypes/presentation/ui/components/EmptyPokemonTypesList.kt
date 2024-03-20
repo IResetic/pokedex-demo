@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
 import dev.skybit.pokedex.main.core.presentation.style.smallPadding
@@ -58,4 +59,13 @@ fun EmptyPokemonTypesList(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EmptyPokemonTypesListPreview() {
+    EmptyPokemonTypesList(
+        message = "An error occurred while loading the pokemon types",
+        onRetry = {}
+    )
 }

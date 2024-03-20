@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.defaultPadding
@@ -140,4 +141,51 @@ fun PokemonTypesDetailsScreen(
             }
         }
     }
+}
+
+@Composable
+@Preview
+fun PokemonTypesDetailsScreenPreview() {
+    PokemonTypesDetailsScreen(
+        pokemonTypeBasicInfo = PokemonTypeBasicInfoUI(
+            title = "fire",
+            backgroundColor = MaterialTheme.colorScheme.primary
+        ),
+        pokemons = listOf(
+            PokemonBasicInfoUi(
+                id = 1,
+                name = "bulbasaur",
+                imageUrl = ""
+            ),
+            PokemonBasicInfoUi(
+                id = 2,
+                name = "ivysaur",
+                imageUrl = ""
+            ),
+            PokemonBasicInfoUi(
+                id = 3,
+                name = "venusaur",
+                imageUrl = ""
+            ),
+            PokemonBasicInfoUi(
+                id = 4,
+                name = "charmander",
+                imageUrl = ""
+            ),
+            PokemonBasicInfoUi(
+                id = 5,
+                name = "charmeleon",
+                imageUrl = ""
+            ),
+            PokemonBasicInfoUi(
+                id = 6,
+                name = "charizard",
+                imageUrl = ""
+            )
+        ),
+        isLoading = false,
+        errorMessage = "",
+        refreshPokemonTypeDetails = {},
+        navigateBack = {}
+    )
 }

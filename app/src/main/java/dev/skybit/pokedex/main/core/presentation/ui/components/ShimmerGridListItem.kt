@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.tooling.preview.Preview
 import dev.skybit.pokedex.main.core.presentation.style.defaultRadius
 import dev.skybit.pokedex.main.core.presentation.style.largeRadius
 
@@ -21,4 +22,10 @@ fun ShimmerGridListItem() {
             .aspectRatio(1f)
             .background(color = MaterialTheme.colorScheme.surface).shimmerEffect()
     )
+}
+
+@Preview(showBackground = false)
+@Composable
+fun ShimmerGridListItemPreview() {
+    ShimmerGridListItem()
 }

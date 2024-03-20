@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
 import dev.skybit.pokedex.main.core.presentation.style.smallPadding
 
@@ -51,4 +52,14 @@ fun EmptyPokemonsList(
             )
         }
     }
+}
+
+@Composable
+@Preview
+fun EmptyPokemonsListPreview() {
+    EmptyPokemonsList(
+        message = "No pokemons found",
+        backgroundColor = null,
+        onRetry = {}
+    )
 }

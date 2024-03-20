@@ -153,3 +153,31 @@ fun PokemonTypesScreenPreview() {
         navigateToPokemonsList = {}
     )
 }
+
+@Preview(showBackground = false)
+@Composable
+fun PokemonTypesScreenEmptyListPreview() {
+    val emptyList: ImmutableList<PokemonTypeUI> = emptyList<PokemonTypeUI>().toImmutableList()
+
+    PokemonTypesScreen(
+        pokemonTypes = emptyList,
+        isLoading = false,
+        errorMessage = "",
+        retryLoading = {},
+        navigateToPokemonsList = {}
+    )
+}
+
+@Preview(showBackground = false)
+@Composable
+fun PokemonTypesScreenEmptyListWithErrorPreview() {
+    val emptyList: ImmutableList<PokemonTypeUI> = emptyList<PokemonTypeUI>().toImmutableList()
+
+    PokemonTypesScreen(
+        pokemonTypes = emptyList,
+        isLoading = false,
+        errorMessage = "Error for preview",
+        retryLoading = {},
+        navigateToPokemonsList = {}
+    )
+}

@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.SubcomposeAsyncImage
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.defaultRadius
@@ -68,4 +69,16 @@ fun BasicPokemonListItem(
             textAlign = TextAlign.Center
         )
     }
+}
+
+@Preview
+@Composable
+fun BasicPokemonListItemPreview() {
+    BasicPokemonListItem(
+        pokemonBasicInfo = PokemonBasicInfoUi(
+            id = 1,
+            name = "bulbasaur",
+            imageUrl = ""
+        )
+    )
 }
