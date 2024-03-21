@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -35,9 +36,10 @@ import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_NORMAL
 import dev.skybit.pokedex.main.core.utils.PORTRAIT_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.ClearErrorMessage
-import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.EmptyPokemonTypesList
+import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.EmptyPokemonTypesListView
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.HeaderComponent
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.PokemonTypeListItem
+import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.PokemonTypeRetryOnErrorView
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -83,49 +85,43 @@ internal fun PokemonTypesScreen(
         }
     ) { paddingValues ->
         val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-        // TODO Update this UI
-        // We should check isLoading flag and show the spinner
-        // When loading is finished we should show the list of pokemon types
-        // If there is an error we should show the error message
-        when {
-            pokemonTypes.isEmpty() && !isLoading && errorMessage.isEmpty() -> {
-                EmptyPokemonTypesList(
-                    message = stringResource(id = R.string.pokemon_types_empty_list_message),
-                    onRetry = retryLoading
-                )
-            }
+        Box(modifier = Modifier.padding(paddingValues)) {
+            when {
+                pokemonTypes.isEmpty() && !isLoading && errorMessage.isEmpty() -> {
+                    EmptyPokemonTypesListView()
+                }
 
-            pokemonTypes.isEmpty() && errorMessage.isNotEmpty() && !isLoading -> {
-                EmptyPokemonTypesList(
-                    message = stringResource(id = R.string.pokemon_types_error_message),
-                    onRetry = retryLoading
-                )
-            }
+                pokemonTypes.isEmpty() && errorMessage.isNotEmpty() && !isLoading -> {
+                    PokemonTypeRetryOnErrorView(
+                        message = stringResource(id = R.string.pokemon_types_error_message),
+                        onRetry = retryLoading
+                    )
+                }
 
-            else -> {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(
-                        if (isLandscape) LANDSCAPE_MODE_NUMBER_OF_COLUMNS else PORTRAIT_MODE_NUMBER_OF_COLUMNS
-                    ),
-                    modifier = Modifier
-                        .padding(paddingValues)
-                        .fillMaxSize()
-                        .background(color = MaterialTheme.colorScheme.primary),
-                    contentPadding = PaddingValues(
-                        start = largePadding,
-                        end = largePadding,
-                        top = defaultPadding,
-                        bottom = largePadding
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(defaultPadding),
-                    horizontalArrangement = Arrangement.spacedBy(defaultPadding)
-                ) {
-                    items(if (pokemonTypes.isEmpty()) DEFAULT_SIZE_OF_GRID_LIST else pokemonTypes.size) {
-                        val pokemonType = if (pokemonTypes.isNotEmpty()) pokemonTypes[it] else null
-                        PokemonTypeListItem(
-                            pokemonType = pokemonType,
-                            onClick = navigateToPokemonsList
-                        )
+                else -> {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(
+                            if (isLandscape) LANDSCAPE_MODE_NUMBER_OF_COLUMNS else PORTRAIT_MODE_NUMBER_OF_COLUMNS
+                        ),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = MaterialTheme.colorScheme.primary),
+                        contentPadding = PaddingValues(
+                            start = largePadding,
+                            end = largePadding,
+                            top = defaultPadding,
+                            bottom = largePadding
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(defaultPadding),
+                        horizontalArrangement = Arrangement.spacedBy(defaultPadding)
+                    ) {
+                        items(if (pokemonTypes.isEmpty()) DEFAULT_SIZE_OF_GRID_LIST else pokemonTypes.size) {
+                            val pokemonType = if (pokemonTypes.isNotEmpty()) pokemonTypes[it] else null
+                            PokemonTypeListItem(
+                                pokemonType = pokemonType,
+                                onClick = navigateToPokemonsList
+                            )
+                        }
                     }
                 }
             }

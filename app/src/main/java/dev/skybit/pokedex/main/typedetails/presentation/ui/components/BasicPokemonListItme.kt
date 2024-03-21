@@ -5,8 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -24,8 +24,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.SubcomposeAsyncImage
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.defaultRadius
-import dev.skybit.pokedex.main.core.presentation.style.largeImageSize
+import dev.skybit.pokedex.main.core.presentation.style.fiftyPercent
 import dev.skybit.pokedex.main.core.presentation.style.largeRadius
+import dev.skybit.pokedex.main.core.presentation.style.seventyPercent
 import dev.skybit.pokedex.main.core.utils.capitalizeFirstLetter
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
 
@@ -44,14 +45,14 @@ fun BasicPokemonListItem(
     ) {
         SubcomposeAsyncImage(
             modifier = Modifier
-                .size(largeImageSize)
+                .fillMaxSize(seventyPercent)
                 .align(Alignment.CenterHorizontally),
             model = pokemonBasicInfo.imageUrl,
             contentDescription = pokemonBasicInfo.name,
             loading = {
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.scale(0.5f)
+                    modifier = Modifier.scale(fiftyPercent)
                 )
             },
             error = {

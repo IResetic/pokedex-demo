@@ -1,9 +1,10 @@
 package dev.skybit.pokedex.main.typedetails.presentation.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,14 +15,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
 import dev.skybit.pokedex.main.core.presentation.style.smallPadding
+import dev.skybit.pokedex.main.core.presentation.style.twentyFivePercent
+import dev.skybit.pokedex.main.core.presentation.style.twentyPercent
 
 @Composable
-fun EmptyPokemonsList(
-    message: String,
+fun PokemonsRetryOnErrorView(
     backgroundColor: Color?,
     onRetry: () -> Unit
 ) {
@@ -30,16 +35,27 @@ fun EmptyPokemonsList(
             .fillMaxSize()
             .background(backgroundColor ?: MaterialTheme.colorScheme.primary)
             .padding(start = mediumPadding, end = mediumPadding),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.fillMaxHeight(twentyPercent))
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_error_white),
+            contentDescription = stringResource(id = R.string.empty_pokemons_list_content_description),
+            modifier = Modifier.fillMaxSize(twentyFivePercent)
+        )
+
         Text(
-            text = message,
-            style = MaterialTheme.typography.titleMedium,
+            text = stringResource(id = R.string.pokemon_types_error_message),
+            style = MaterialTheme.typography.titleMedium.copy(
+                color = MaterialTheme.colorScheme.onPrimary
+            ),
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(mediumPadding))
-        FilledTonalButton(onClick = { onRetry() }) {
+        FilledTonalButton(
+            onClick = { onRetry() }
+        ) {
             Text(
                 modifier = Modifier.padding(
                     top = smallPadding,
@@ -47,7 +63,7 @@ fun EmptyPokemonsList(
                     start = mediumPadding,
                     end = mediumPadding
                 ),
-                text = "Retry",
+                text = stringResource(id = R.string.retry_button_text),
                 style = MaterialTheme.typography.bodyLarge
             )
         }
@@ -57,8 +73,7 @@ fun EmptyPokemonsList(
 @Composable
 @Preview
 fun EmptyPokemonsListPreview() {
-    EmptyPokemonsList(
-        message = "No pokemons found",
+    PokemonsRetryOnErrorView(
         backgroundColor = null,
         onRetry = {}
     )

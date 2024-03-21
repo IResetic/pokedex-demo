@@ -28,3 +28,6 @@ const val POKEMON_IMG_FORMAT = ".png"
 const val LANDSCAPE_MODE_NUMBER_OF_COLUMNS = 3
 const val PORTRAIT_MODE_NUMBER_OF_COLUMNS = 2
 const val DEFAULT_SIZE_OF_GRID_LIST = 10
+
+// ***** Delay Constants *****
+const val MIN_RELOADING_TIME = 1000L

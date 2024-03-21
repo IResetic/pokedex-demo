@@ -5,12 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.skybit.pokedex.main.core.domain.usecases.GetPokemonTypeBasicInfo
+import dev.skybit.pokedex.main.core.utils.MIN_RELOADING_TIME
 import dev.skybit.pokedex.main.core.utils.onError
 import dev.skybit.pokedex.main.core.utils.onSuccess
+import dev.skybit.pokedex.main.typedetails.domain.model.PokemonBasicInfo
 import dev.skybit.pokedex.main.typedetails.domain.usecases.GetPokemonsBasicInfoByTypeId
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicInfoUI
 import dev.skybit.pokedex.main.typedetails.presentation.navigation.PokemonTypeDetailsScreenDestination.POKEMON_TYPE_ID
+import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.ClearErrorMessage
+import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.RetryLoadingPokemonTypeDetails
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,10 +41,10 @@ class PokemonTypeDetailsViewModel @Inject constructor(
 
     fun onEvent(event: PokemonTypeDetailsScreenEvent) {
         when (event) {
-            is PokemonTypeDetailsScreenEvent.RefreshPokemonTypeDetails -> {
-                refreshPokemonTypeDetails()
+            is RetryLoadingPokemonTypeDetails -> {
+                tryReloadingPokemonTypeDetails()
             }
-            is PokemonTypeDetailsScreenEvent.ClearErrorMessage -> {
+            is ClearErrorMessage -> {
                 _pokemonsListScreenState.update {
                     it.copy(errorMessage = "")
                 }
@@ -61,49 +65,49 @@ class PokemonTypeDetailsViewModel @Inject constructor(
     }
 
     private fun getPokemonTypeDetails() {
-        _pokemonsListScreenState.update {
-            it.copy(isLoading = true)
-        }
-
-        fetchPokemonsBasicInfo()
-    }
-
-    private fun refreshPokemonTypeDetails() {
-        _pokemonsListScreenState.update {
-            it.copy(isLoading = true)
-        }
-
         viewModelScope.launch {
-            delay(2000L)
             fetchPokemonsBasicInfo()
         }
     }
 
-    private fun fetchPokemonsBasicInfo() {
+    private fun tryReloadingPokemonTypeDetails() {
         viewModelScope.launch {
-            pokemonTypeId?.let { pokemonTypeId ->
-                val pokemonsBasicInfo = getPokemonsBasicInfoByTypeId(pokemonTypeId.toInt())
+            delay(MIN_RELOADING_TIME)
 
-                pokemonsBasicInfo.onSuccess { pokemons ->
-                    _pokemonsListScreenState.update {
-                        it.copy(
-                            pokemons = PokemonBasicInfoUi.fromDomainList(pokemons),
-                            isLoading = false,
-                            isRefreshing = false,
-                            errorMessage = ""
-                        )
-                    }
-                }.onError { message, pokemons ->
-                    _pokemonsListScreenState.update {
-                        it.copy(
-                            pokemons = PokemonBasicInfoUi.fromDomainList(pokemons ?: emptyList()),
-                            errorMessage = message ?: "",
-                            isLoading = false,
-                            isRefreshing = false
-                        )
-                    }
-                }
+            fetchPokemonsBasicInfo()
+        }
+    }
+
+    private suspend fun fetchPokemonsBasicInfo() {
+        _pokemonsListScreenState.update {
+            it.copy(isLoading = true)
+        }
+
+        pokemonTypeId?.let { pokemonTypeId ->
+            val pokemonsBasicInfo = getPokemonsBasicInfoByTypeId(pokemonTypeId.toInt())
+
+            pokemonsBasicInfo.onSuccess { pokemons ->
+                updatePokemonScreenStateAfterFetching(pokemons = pokemons)
+            }.onError { message, pokemons ->
+                updatePokemonScreenStateAfterFetching(
+                    pokemons = pokemons ?: emptyList(),
+                    errorMessage = "Error while fetching pokemon data: $message"
+                )
             }
+        }
+    }
+
+    private fun updatePokemonScreenStateAfterFetching(
+        pokemons: List<PokemonBasicInfo> = emptyList(),
+        errorMessage: String = ""
+    ) {
+        _pokemonsListScreenState.update {
+            it.copy(
+                pokemons = PokemonBasicInfoUi.fromDomainList(pokemons),
+                errorMessage = errorMessage,
+                isLoading = false,
+                isRefreshing = false
+            )
         }
     }
 }
