@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.skybit.pokedex.main.core.domain.model.PokemonType
-import dev.skybit.pokedex.main.core.utils.MIN_RELOADING_TIME
+import dev.skybit.pokedex.main.core.utils.RELOADING_DEBOUNCE_TIME
 import dev.skybit.pokedex.main.core.utils.onError
 import dev.skybit.pokedex.main.core.utils.onSuccess
 import dev.skybit.pokedex.main.pokemontypes.domain.usecases.GetPokemonTypes
@@ -12,6 +12,7 @@ import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.ClearErrorMessage
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.LoadPokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.RetryLoadingOfPokemonTypes
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class PokemonTypeScreenViewModel @Inject constructor(
     private val getPokemonTypes: GetPokemonTypes
 ) : ViewModel() {
+    private var fetchPokemonTypesJob: Job? = null
 
     private var _pokemonTypeScreenState = MutableStateFlow(PokemonTypScreenUIState())
     val pokemonTypeScreenState: StateFlow<PokemonTypScreenUIState> = _pokemonTypeScreenState.asStateFlow()
@@ -41,23 +43,29 @@ class PokemonTypeScreenViewModel @Inject constructor(
     }
 
     private fun loadPokemonTypes() {
+        _pokemonTypeScreenState.update {
+            it.copy(isLoading = true, errorMessage = "")
+        }
+
         viewModelScope.launch {
             fetchPokemonTypes()
         }
     }
 
     private fun retryLoadingPokemonTypes() {
-        viewModelScope.launch {
-            delay(MIN_RELOADING_TIME)
+        _pokemonTypeScreenState.update {
+            it.copy(isLoading = true, errorMessage = "")
+        }
+
+        fetchPokemonTypesJob?.cancel()
+
+        fetchPokemonTypesJob = viewModelScope.launch {
+            delay(RELOADING_DEBOUNCE_TIME)
             fetchPokemonTypes()
         }
     }
 
     private suspend fun fetchPokemonTypes() {
-        _pokemonTypeScreenState.update {
-            it.copy(isLoading = true, errorMessage = "")
-        }
-
         getPokemonTypes().onSuccess { pokemonTypes ->
             updatePokemonTypesScreenStateAfterFetching(pokemonTypes = pokemonTypes)
         }.onError { message, pokemonTypes ->

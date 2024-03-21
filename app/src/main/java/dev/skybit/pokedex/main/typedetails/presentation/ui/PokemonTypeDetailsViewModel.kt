@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.skybit.pokedex.main.core.domain.usecases.GetPokemonTypeBasicInfo
-import dev.skybit.pokedex.main.core.utils.MIN_RELOADING_TIME
+import dev.skybit.pokedex.main.core.utils.RELOADING_DEBOUNCE_TIME
 import dev.skybit.pokedex.main.core.utils.onError
 import dev.skybit.pokedex.main.core.utils.onSuccess
 import dev.skybit.pokedex.main.typedetails.domain.model.PokemonBasicInfo
@@ -15,6 +15,7 @@ import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicIn
 import dev.skybit.pokedex.main.typedetails.presentation.navigation.PokemonTypeDetailsScreenDestination.POKEMON_TYPE_ID
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.ClearErrorMessage
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.RetryLoadingPokemonTypeDetails
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,6 +31,7 @@ class PokemonTypeDetailsViewModel @Inject constructor(
     private val getPokemonsBasicInfoByTypeId: GetPokemonsBasicInfoByTypeId
 ) : ViewModel() {
     private val pokemonTypeId = savedStateHandle.get<String>(POKEMON_TYPE_ID)
+    private var fetchPokemonsJob: Job? = null
 
     private var _pokemonsListScreenState = MutableStateFlow(PokemonTypeDetailsUiState())
     val pokemonsListScreenState: StateFlow<PokemonTypeDetailsUiState> = _pokemonsListScreenState.asStateFlow()
@@ -65,24 +67,30 @@ class PokemonTypeDetailsViewModel @Inject constructor(
     }
 
     private fun getPokemonTypeDetails() {
+        _pokemonsListScreenState.update {
+            it.copy(isLoading = true)
+        }
+
         viewModelScope.launch {
             fetchPokemonsBasicInfo()
         }
     }
 
     private fun tryReloadingPokemonTypeDetails() {
-        viewModelScope.launch {
-            delay(MIN_RELOADING_TIME)
+        _pokemonsListScreenState.update {
+            it.copy(isLoading = true)
+        }
+
+        fetchPokemonsJob?.cancel()
+
+        fetchPokemonsJob = viewModelScope.launch {
+            delay(RELOADING_DEBOUNCE_TIME)
 
             fetchPokemonsBasicInfo()
         }
     }
 
     private suspend fun fetchPokemonsBasicInfo() {
-        _pokemonsListScreenState.update {
-            it.copy(isLoading = true)
-        }
-
         pokemonTypeId?.let { pokemonTypeId ->
             val pokemonsBasicInfo = getPokemonsBasicInfoByTypeId(pokemonTypeId.toInt())
 
