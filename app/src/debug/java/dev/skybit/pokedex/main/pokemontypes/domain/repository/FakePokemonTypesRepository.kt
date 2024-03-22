@@ -24,10 +24,4 @@ class FakePokemonTypesRepository : PokemonTypesRepository {
             throw Exception("Fake exception")
         }
     }
-
-    fun populatePokemonTypesMap(types: List<PokemonType>) {
-        types.forEach {
-            fakePokemonTypeMap[it.id] = it
-        }
-    }
 }

@@ -11,7 +11,7 @@ class GetPokemonsBasicInfoByTypeIdImpl @Inject constructor(
 ) : GetPokemonsBasicInfoByTypeId {
     override suspend operator fun invoke(typeId: Int): Resource<List<PokemonBasicInfo>> {
         try {
-            pokemonTypeDetailsRepository.fetchPokemonTypeDetails(typeId)
+            pokemonTypeDetailsRepository.populatePokemonTypeDetails(typeId)
             val pokemons = pokemonTypeDetailsRepository.getPokemonTypeDetails(typeId)
 
             return Resource.Success(data = pokemons)

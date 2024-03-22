@@ -82,7 +82,6 @@ class PokemonTypeScreenViewModelTest {
     @Test
     fun should_clear_error_message_after_is_consumed() = runBlocking {
         // define test data
-        val pokemonTypes = listOf(fakePokemonTypeGrass, fakePokemonTypeFire)
         getPokemonTypes.fakeResult = Error("Network Error", emptyList())
 
         // init sut

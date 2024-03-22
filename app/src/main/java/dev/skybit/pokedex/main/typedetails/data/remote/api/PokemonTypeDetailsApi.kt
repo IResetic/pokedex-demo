@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.typedetails.data.remote
+package dev.skybit.pokedex.main.typedetails.data.remote.api
 
 import dev.skybit.pokedex.main.typedetails.data.remote.model.PokemonTypeDetailsResponse
 import retrofit2.Response

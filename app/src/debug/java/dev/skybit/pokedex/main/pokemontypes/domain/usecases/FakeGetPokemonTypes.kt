@@ -4,7 +4,7 @@ import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.core.utils.Resource
 
 class FakeGetPokemonTypes : GetPokemonTypes {
-    var fakeResult: Resource<List<PokemonType>> = Resource.Success(emptyList<PokemonType>())
+    var fakeResult: Resource<List<PokemonType>> = Resource.Success(emptyList())
 
     override suspend fun invoke(): Resource<List<PokemonType>> {
         return fakeResult

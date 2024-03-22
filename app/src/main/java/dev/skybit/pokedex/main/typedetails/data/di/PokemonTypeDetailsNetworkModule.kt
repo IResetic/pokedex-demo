@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.skybit.pokedex.main.typedetails.data.remote.PokemonTypeDetailsApi
+import dev.skybit.pokedex.main.typedetails.data.remote.api.PokemonTypeDetailsApi
 import retrofit2.Retrofit
 import javax.inject.Singleton
 

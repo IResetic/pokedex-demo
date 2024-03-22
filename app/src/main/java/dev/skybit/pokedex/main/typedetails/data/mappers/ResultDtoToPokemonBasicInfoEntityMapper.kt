@@ -4,7 +4,7 @@ import dev.skybit.pokedex.main.core.data.remote.model.ResultDto
 import dev.skybit.pokedex.main.typedetails.data.local.model.PokemonBasicInfoEntity
 import javax.inject.Inject
 
-class ResultDtoToPokemonBasicInfoEntity @Inject constructor() {
+class ResultDtoToPokemonBasicInfoEntityMapper @Inject constructor() {
     operator fun invoke(resultDto: ResultDto, pokemonTypeId: Int, pokemonTypeName: String): PokemonBasicInfoEntity {
         return PokemonBasicInfoEntity(
             id = getPokemonId(resultDto.url),

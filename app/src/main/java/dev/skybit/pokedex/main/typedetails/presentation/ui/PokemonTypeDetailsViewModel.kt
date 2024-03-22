@@ -30,6 +30,7 @@ class PokemonTypeDetailsViewModel @Inject constructor(
     private val getPokemonTypeBasicInfo: GetPokemonTypeBasicInfo,
     private val getPokemonsBasicInfoByTypeId: GetPokemonsBasicInfoByTypeId
 ) : ViewModel() {
+
     private val pokemonTypeId = savedStateHandle.get<String>(POKEMON_TYPE_ID)
     private var fetchPokemonsJob: Job? = null
 
