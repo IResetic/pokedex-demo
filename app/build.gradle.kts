@@ -2,11 +2,13 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.com.google.dagger.hilt.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "dev.skybit.pokedex"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "dev.skybit.pokedex"
@@ -38,7 +40,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
     }
     packaging {
         resources {
@@ -49,19 +51,68 @@ android {
 
 dependencies {
 
-    implementation(libs.core.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.activity.compose)
-    implementation(platform(libs.compose.bom))
+    configurations.all {
+        resolutionStrategy {
+            force("androidx.navigation:navigation-compose:2.7.7")
+        }
+    }
+    // ***** Core *****
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.splash.screen)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+
+    // ***** Compose *****
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.material)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
+
+    // ***** Test *****
+    androidTestImplementation(libs.androidx.test.ext)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    testImplementation(libs.kotlinx.coroutines.test)
     debugImplementation(libs.ui.test.manifest)
+
+    // ****** Dependency Injection *****
+    implementation(libs.hilt)
+    implementation(libs.hilt.navigation.compose)
+    ksp(libs.hilt.compiler)
+    ksp(libs.androidx.hilt.compiler)
+
+    // ***** Network *****
+    implementation(libs.square.retrofit)
+    implementation(libs.retrofit.moshi.converter)
+    implementation(libs.okhttp.logging.interceptor)
+
+    // ***** Moshi *****
+    implementation(libs.square.moshi)
+    ksp(libs.kotlin.moshi.codegen)
+
+    // ***** Room *****
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.paging)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
+
+    // ***** Collections *****
+    implementation(libs.kotlin.immutable.collections)
+
+    // ***** Image *****
+    implementation(libs.coil.compose)
+
+    // ***** Paging *****
+    implementation(libs.paging.compose)
+    implementation(libs.paging.runtime)
+    testImplementation(libs.paging.common)
+    testImplementation(libs.paging.testing)
 }

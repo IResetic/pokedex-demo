@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Pokedex</string>
+
+    <!-- PokemonTypesScreen -->
+    <string name="pokemon_types_toast_error">There was an error when fetching pokemon types.</string>
+    <string name="pokemon_types_empty_list_message">There are no pokemon types to show.</string>
+    <string name="pokemon_types_error_message">Unable to fetch pokemon types form the network.</string>
+
+    <!-- Pokemon Type Details Screen -->
+    <string name="unable_to_fetch_pokemon_type_details_error_message">There was an error when fetching pokemon type details.</string>
+    <string name="empty_pokemons_list_message">There are no pokemons to show.</string>
+    <string name="pokemons_list_error_message">Unable to fetch pokemons from the network.</string>
+
+    <!-- Buttons text -->
+    <string name="retry_button_text">Retry</string>
 </resources>
