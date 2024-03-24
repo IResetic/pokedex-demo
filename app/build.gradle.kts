@@ -100,6 +100,7 @@ dependencies {
     // ***** Room *****
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.room.paging)
     annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)
 
@@ -108,4 +109,10 @@ dependencies {
 
     // ***** Image *****
     implementation(libs.coil.compose)
+
+    // ***** Paging *****
+    implementation(libs.paging.compose)
+    implementation(libs.paging.runtime)
+    testImplementation(libs.paging.common)
+    testImplementation(libs.paging.testing)
 }

@@ -31,3 +31,7 @@ const val DEFAULT_SIZE_OF_GRID_LIST = 10
 
 // ***** Delay Constants *****
 const val RELOADING_DEBOUNCE_TIME = 1000L
+
+// ***** Paging Constants *****
+const val POKEMON_BASIC_INFO_PAGE_SIZE = 20
+const val POKEMON_BASIC_INFO_INITIAL_LOAD_SIZE = 20

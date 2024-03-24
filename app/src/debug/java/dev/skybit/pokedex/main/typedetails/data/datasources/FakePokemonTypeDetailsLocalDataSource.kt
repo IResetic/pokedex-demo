@@ -1,5 +1,7 @@
 package dev.skybit.pokedex.main.typedetails.data.datasources
 
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import dev.skybit.pokedex.main.typedetails.data.local.model.PokemonBasicInfoEntity
 
 class FakePokemonTypeDetailsLocalDataSource : PokemonTypeDetailsLocalDataSource {
@@ -17,5 +19,22 @@ class FakePokemonTypeDetailsLocalDataSource : PokemonTypeDetailsLocalDataSource 
 
     override suspend fun getPokemonBasicInfoByType(typeId: Int): List<PokemonBasicInfoEntity> {
         return fakePokemonBasicInfoStorage.filter { it.pokemonTypeId == typeId }
+    }
+
+    override fun getPokemonBasicInfoByTypePaged(typeId: Int): PagingSource<Int, PokemonBasicInfoEntity> {
+        return object : PagingSource<Int, PokemonBasicInfoEntity>() {
+            override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonBasicInfoEntity> {
+                val data = fakePokemonBasicInfoStorage.filter { it.pokemonTypeId == typeId }
+                return LoadResult.Page(
+                    data = data,
+                    prevKey = null,
+                    nextKey = null
+                )
+            }
+
+            override fun getRefreshKey(state: PagingState<Int, PokemonBasicInfoEntity>): Int? {
+                return null
+            }
+        }
     }
 }

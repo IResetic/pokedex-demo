@@ -1,5 +1,6 @@
 package dev.skybit.pokedex.typedetails.data.repository
 
+import androidx.paging.testing.asSnapshot
 import dev.skybit.pokedex.main.typedetails.data.datasources.FakePokemonTypeDetailsLocalDataSource
 import dev.skybit.pokedex.main.typedetails.data.datasources.FakePokemonTypeDetailsRemoteDataSource
 import dev.skybit.pokedex.main.typedetails.data.local.model.fakeGrassPokemonTypeId
@@ -62,8 +63,7 @@ class PokemonTypeDetailsRepositoryTest {
     }
 
     @Test
-    fun should_successfully_return_pokemon_type_details() = runBlocking {
-        // define test data
+    fun should_successfully_get_pokemon_type_details() = runBlocking {
         pokemonTypeDetailsLocalDataSource.fakePokemonBasicInfoStorage.addAll(
             listOf(
                 fakePokemonBasicInfoEntityGrassOne,
@@ -73,12 +73,12 @@ class PokemonTypeDetailsRepositoryTest {
         )
 
         // trigger action
-        val result = sut.getPokemonTypeDetails(fakeGrassPokemonTypeId)
+        val actual = sut.getPokemonTypeDetailsPaged(fakeGrassPokemonTypeId).asSnapshot()
 
         // check assertions
         val expected = listOf(fakePokemonBasicInfoEntityGrassOne, fakePokemonBasicInfoEntityGrassTwp).map {
             it.toDomain()
         }
-        assertEquals(expected, result)
+        assertEquals(expected, actual)
     }
 }

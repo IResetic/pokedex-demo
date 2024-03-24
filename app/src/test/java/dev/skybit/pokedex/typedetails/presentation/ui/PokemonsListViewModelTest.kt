@@ -1,12 +1,14 @@
 package dev.skybit.pokedex.typedetails.presentation.ui
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.paging.testing.asSnapshot
 import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeGrass
 import dev.skybit.pokedex.main.core.domain.usecases.FakeGetPokemonTypeBasicInfo
 import dev.skybit.pokedex.main.core.utils.Resource
-import dev.skybit.pokedex.main.pokemontypes.domain.usecases.FakeGetPokemonsBasicInfoByTypeId
 import dev.skybit.pokedex.main.typedetails.domain.model.fakePokemonBasicInfoBulbasaur
 import dev.skybit.pokedex.main.typedetails.domain.model.fakePokemonBasicInfoIvysaur
+import dev.skybit.pokedex.main.typedetails.domain.usecases.FakeGetPokemonsBasicInfoByTypeIdPaged
+import dev.skybit.pokedex.main.typedetails.domain.usecases.FakePopulatePokemonTypeDetails
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicInfoUI
 import dev.skybit.pokedex.main.typedetails.presentation.navigation.PokemonTypeDetailsScreenDestination.POKEMON_TYPE_ID
@@ -27,7 +29,9 @@ import org.junit.Test
 
 class PokemonsListViewModelTest {
     private lateinit var getPokemonTypeBasicInfo: FakeGetPokemonTypeBasicInfo
-    private lateinit var getPokemonsBasicInfoByTypeId: FakeGetPokemonsBasicInfoByTypeId
+    private lateinit var getPokemonsBasicInfoByTypeIdPaged: FakeGetPokemonsBasicInfoByTypeIdPaged
+    private lateinit var populatePokemonTypeDetails: FakePopulatePokemonTypeDetails
+
     private lateinit var sut: PokemonTypeDetailsViewModel
 
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -36,7 +40,9 @@ class PokemonsListViewModelTest {
     fun init() {
         Dispatchers.setMain(testDispatcher)
         getPokemonTypeBasicInfo = FakeGetPokemonTypeBasicInfo()
-        getPokemonsBasicInfoByTypeId = FakeGetPokemonsBasicInfoByTypeId()
+        getPokemonsBasicInfoByTypeIdPaged = FakeGetPokemonsBasicInfoByTypeIdPaged()
+        populatePokemonTypeDetails = FakePopulatePokemonTypeDetails()
+
         initSut()
     }
 
@@ -44,7 +50,8 @@ class PokemonsListViewModelTest {
         sut = PokemonTypeDetailsViewModel(
             savedStateHandle = savedStateHandle,
             getPokemonTypeBasicInfo = getPokemonTypeBasicInfo,
-            getPokemonsBasicInfoByTypeId = getPokemonsBasicInfoByTypeId
+            getPokemonsBasicInfoByTypeIdPaged = getPokemonsBasicInfoByTypeIdPaged,
+            populatePokemonTypeDetails = populatePokemonTypeDetails
         )
     }
 
@@ -69,27 +76,25 @@ class PokemonsListViewModelTest {
     }
 
     @Test
-    fun should_successfully_fetch_pokemon_type_details() = runBlocking {
+    fun should_successfully_populate_pokemon_type_details() = runBlocking {
         // define test data
         val savedStateHandle = SavedStateHandle(mapOf(POKEMON_TYPE_ID to "1"))
-        val pokemons = listOf(fakePokemonBasicInfoBulbasaur, fakePokemonBasicInfoIvysaur)
-        getPokemonsBasicInfoByTypeId.fakePokemonBasicInfoList = Resource.Success(pokemons)
+        populatePokemonTypeDetails.fakePokemonBasicInfoList = Resource.Success(Unit)
 
         // init sut
         initSut(savedStateHandle)
 
         // check assertions
-        val actual = sut.pokemonsListScreenState.first().pokemons
-        val expected = pokemons.map { PokemonBasicInfoUi.fromDomain(it) }
-        assertEquals(expected, actual)
+        val actual = sut.pokemonsListScreenState.first()
+        assertTrue(actual.errorMessage.isEmpty())
     }
 
     @Test
-    fun should_handle_error_during_pokemon_type_details_fetching() = runBlocking {
+    fun should_handle_error_return_after_trying_to_populate_pokemon_type_details() = runBlocking {
         // define test data
         val networkError = "Network error"
         val savedStateHandle = SavedStateHandle(mapOf(POKEMON_TYPE_ID to "1"))
-        getPokemonsBasicInfoByTypeId.fakePokemonBasicInfoList = Resource.Error(networkError)
+        populatePokemonTypeDetails.fakePokemonBasicInfoList = Resource.Error(networkError)
 
         // init sut
         initSut(savedStateHandle)
@@ -102,10 +107,9 @@ class PokemonsListViewModelTest {
     @Test
     fun successfully_fetch_pokemon_type_details_after_retry() = runBlocking {
         // define test data
-        val pokemons = listOf(fakePokemonBasicInfoBulbasaur)
         val networkError = "Network error"
         val savedStateHandle = SavedStateHandle(mapOf(POKEMON_TYPE_ID to "1"))
-        getPokemonsBasicInfoByTypeId.fakePokemonBasicInfoList = Resource.Error(networkError)
+        populatePokemonTypeDetails.fakePokemonBasicInfoList = Resource.Error(networkError)
 
         // init sut
         initSut(savedStateHandle)
@@ -115,15 +119,13 @@ class PokemonsListViewModelTest {
         assertTrue(currentError.contains(networkError))
 
         // trigger action
-        getPokemonsBasicInfoByTypeId.fakePokemonBasicInfoList = Resource.Success(pokemons)
+        populatePokemonTypeDetails.fakePokemonBasicInfoList = Resource.Success(Unit)
         sut.onEvent(RetryLoadingPokemonTypeDetails)
 
         testDispatcher.scheduler.advanceUntilIdle()
 
         // check assertions
         val actual = sut.pokemonsListScreenState.first()
-        val expected = pokemons.map { PokemonBasicInfoUi.fromDomain(it) }
-        assertEquals(expected, actual.pokemons)
         assertTrue(actual.errorMessage.isEmpty())
     }
 
@@ -132,7 +134,7 @@ class PokemonsListViewModelTest {
         // define test data
         val networkError = "Network error"
         val savedStateHandle = SavedStateHandle(mapOf(POKEMON_TYPE_ID to "1"))
-        getPokemonsBasicInfoByTypeId.fakePokemonBasicInfoList = Resource.Error(networkError)
+        populatePokemonTypeDetails.fakePokemonBasicInfoList = Resource.Error(networkError)
 
         // init sut
         initSut(savedStateHandle)
@@ -148,5 +150,21 @@ class PokemonsListViewModelTest {
         // check assertions
         val actual = sut.pokemonsListScreenState.first().errorMessage
         assertTrue(actual.isEmpty())
+    }
+
+    @Test
+    fun should_successfully_emit_pokemons_basic_info_paging_source() = runBlocking {
+        // define test data
+        val savedStateHandle = SavedStateHandle(mapOf(POKEMON_TYPE_ID to "1"))
+        val pokemons = listOf(fakePokemonBasicInfoBulbasaur, fakePokemonBasicInfoIvysaur)
+        getPokemonsBasicInfoByTypeIdPaged.fakePokemonBasicInfoData = pokemons
+        val expected = pokemons.map { PokemonBasicInfoUi.fromDomain(it) }
+
+        // init sut
+        initSut(savedStateHandle)
+
+        // check assertions
+        val actual = sut.pokemonsBasicInfoPagingSource.asSnapshot()
+        assertEquals(expected, actual)
     }
 }

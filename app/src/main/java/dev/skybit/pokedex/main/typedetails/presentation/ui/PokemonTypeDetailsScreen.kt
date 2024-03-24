@@ -17,12 +17,21 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.LoadState.NotLoading
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.defaultPadding
 import dev.skybit.pokedex.main.core.presentation.style.largePadding
@@ -38,6 +47,7 @@ import dev.skybit.pokedex.main.typedetails.presentation.ui.components.BasicPokem
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.EmptyPokemonListView
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.PokemonTypeDetailsHeaderComponent
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.PokemonsRetryOnErrorView
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun PokemonTypeDetailsRoute(
@@ -46,24 +56,24 @@ fun PokemonTypeDetailsRoute(
     val viewModel = hiltViewModel<PokemonTypeDetailsViewModel>()
     val pokemonsListScreenState = viewModel.pokemonsListScreenState.collectAsState()
     val pokemonTypeBasicInfo = pokemonsListScreenState.value.pokemonTypeBasicInfo
-    val pokemons = pokemonsListScreenState.value.pokemons
     val isLoading = pokemonsListScreenState.value.isLoading
-    val errorMessage = stringResource(id = R.string.unable_to_fetch_pokemon_type_details_error_message)
+    val toastErrorMessage = stringResource(id = R.string.unable_to_fetch_pokemon_type_details_error_message)
     val context = LocalContext.current
+    val pokemonsItems = viewModel.pokemonsBasicInfoPagingSource.collectAsLazyPagingItems()
 
     LaunchedEffect(key1 = pokemonsListScreenState.value.errorMessage) {
         val error = pokemonsListScreenState.value.errorMessage
-        if (error.isNotEmpty() && pokemons.isNotEmpty()) {
-            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+        if (error.isNotEmpty() && pokemonsItems.itemCount > 0) {
+            Toast.makeText(context, toastErrorMessage, Toast.LENGTH_SHORT).show()
             viewModel.onEvent(ClearErrorMessage)
         }
     }
 
     PokemonTypesDetailsScreen(
         pokemonTypeBasicInfo = pokemonTypeBasicInfo,
-        pokemons = pokemons,
+        pokemonsItems = pokemonsItems,
         isLoading = isLoading,
-        errorMessage = errorMessage,
+        errorMessage = pokemonsListScreenState.value.errorMessage,
         refreshPokemonTypeDetails = { viewModel.onEvent(RetryLoadingPokemonTypeDetails) },
         navigateBack = navigateBack
     )
@@ -73,12 +83,30 @@ fun PokemonTypeDetailsRoute(
 @Composable
 fun PokemonTypesDetailsScreen(
     pokemonTypeBasicInfo: PokemonTypeBasicInfoUI? = null,
-    pokemons: List<PokemonBasicInfoUi> = emptyList(),
+    pokemonsItems: LazyPagingItems<PokemonBasicInfoUi>,
     isLoading: Boolean,
     errorMessage: String,
     refreshPokemonTypeDetails: () -> Unit,
     navigateBack: () -> Unit
 ) {
+    val isEmptyState by remember(pokemonsItems.loadState.refresh, pokemonsItems.itemCount, isLoading, errorMessage) {
+        derivedStateOf {
+            pokemonsItems.loadState.refresh is NotLoading &&
+                pokemonsItems.itemCount == 0 &&
+                !isLoading &&
+                errorMessage.isEmpty()
+        }
+    }
+
+    val isErrorState by remember(pokemonsItems.loadState.refresh, pokemonsItems.itemCount, isLoading, errorMessage) {
+        derivedStateOf {
+            pokemonsItems.loadState.refresh is NotLoading &&
+                !isLoading &&
+                pokemonsItems.itemCount == 0 &&
+                errorMessage.isNotEmpty()
+        }
+    }
+
     Scaffold(
         topBar = {
             PokemonTypeDetailsHeaderComponent(
@@ -97,11 +125,11 @@ fun PokemonTypesDetailsScreen(
                 .padding(paddingValues)
         ) {
             when {
-                pokemons.isEmpty() && !isLoading && errorMessage.isEmpty() -> {
+                isEmptyState -> {
                     EmptyPokemonListView(pokemonTypeBasicInfo?.backgroundColor)
                 }
 
-                pokemons.isEmpty() && !isLoading && errorMessage.isNotEmpty() -> {
+                isErrorState -> {
                     PokemonsRetryOnErrorView(
                         backgroundColor = pokemonTypeBasicInfo?.backgroundColor,
                         onRetry = refreshPokemonTypeDetails
@@ -128,13 +156,16 @@ fun PokemonTypesDetailsScreen(
                         verticalArrangement = Arrangement.spacedBy(defaultPadding),
                         horizontalArrangement = Arrangement.spacedBy(defaultPadding)
                     ) {
-                        if (isLoading) {
+                        if (isLoading || pokemonsItems.loadState.refresh is LoadState.Loading) {
                             items(DEFAULT_SIZE_OF_GRID_LIST) {
                                 ShimmerGridListItem()
                             }
                         } else {
-                            items(pokemons.size) { index ->
-                                BasicPokemonListItem(pokemons[index])
+                            items(pokemonsItems.itemCount) { index ->
+                                val pokemonInfo = pokemonsItems[index]
+                                if (pokemonInfo != null) {
+                                    BasicPokemonListItem(pokemonInfo)
+                                }
                             }
                         }
                     }
@@ -144,49 +175,58 @@ fun PokemonTypesDetailsScreen(
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-@Preview
 fun PokemonTypesDetailsScreenPreview() {
-    PokemonTypesDetailsScreen(
-        pokemonTypeBasicInfo = PokemonTypeBasicInfoUI(
-            title = "fire",
-            backgroundColor = MaterialTheme.colorScheme.primary
-        ),
-        pokemons = listOf(
-            PokemonBasicInfoUi(
-                id = 1,
-                name = "bulbasaur",
-                imageUrl = ""
-            ),
-            PokemonBasicInfoUi(
-                id = 2,
-                name = "ivysaur",
-                imageUrl = ""
-            ),
-            PokemonBasicInfoUi(
-                id = 3,
-                name = "venusaur",
-                imageUrl = ""
-            ),
-            PokemonBasicInfoUi(
-                id = 4,
-                name = "charmander",
-                imageUrl = ""
-            ),
-            PokemonBasicInfoUi(
-                id = 5,
-                name = "charmeleon",
-                imageUrl = ""
-            ),
-            PokemonBasicInfoUi(
-                id = 6,
-                name = "charizard",
-                imageUrl = ""
+    val pokemonTypeBasicInfo = PokemonTypeBasicInfoUI(backgroundColor = Color.Blue, title = "Water")
+    val pokemonsItems = flowOf(
+        PagingData.from(
+            listOf(
+                PokemonBasicInfoUi(
+                    id = 1,
+                    name = "Bulbasaur",
+                    imageUrl = ""
+
+                ),
+                PokemonBasicInfoUi(
+                    id = 2,
+                    name = "Ivysaur",
+                    imageUrl = ""
+                ),
+                PokemonBasicInfoUi(
+                    id = 3,
+                    name = "Venusaur",
+                    imageUrl = ""
+                ),
+                PokemonBasicInfoUi(
+                    id = 4,
+                    name = "Charmander",
+                    imageUrl = ""
+
+                ),
+                PokemonBasicInfoUi(
+                    id = 5,
+                    name = "Charmeleon",
+                    imageUrl = ""
+
+                ),
+                PokemonBasicInfoUi(
+                    id = 6,
+                    name = "Charizard",
+                    imageUrl = ""
+                )
             )
-        ),
-        isLoading = false,
-        errorMessage = "",
-        refreshPokemonTypeDetails = {},
-        navigateBack = {}
+        )
+    ).collectAsLazyPagingItems()
+    val isLoading = false
+    val errorMessage = ""
+
+    PokemonTypesDetailsScreen(
+        pokemonTypeBasicInfo = pokemonTypeBasicInfo,
+        pokemonsItems = pokemonsItems,
+        isLoading = isLoading,
+        errorMessage = errorMessage,
+        refreshPokemonTypeDetails = { },
+        navigateBack = { }
     )
 }
