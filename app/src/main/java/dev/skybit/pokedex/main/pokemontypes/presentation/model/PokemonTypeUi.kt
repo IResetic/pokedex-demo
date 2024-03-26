@@ -18,7 +18,7 @@ data class PokemonTypeUi(
             return PokemonTypeUi(
                 id = type.id,
                 name = type.name,
-                color = parseTypeToColor(type),
+                color = parseTypeToColor(type.name),
                 icon = parseTypeNameToImage(type.name)
             )
         }

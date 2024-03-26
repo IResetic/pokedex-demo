@@ -14,7 +14,7 @@ data class PokemonTypeBasicInfoUI(
     companion object {
         fun fromDomain(pokemonTypeBasicInfo: PokemonType) = PokemonTypeBasicInfoUI(
             title = pokemonTypeBasicInfo.name,
-            backgroundColor = parseTypeToColor(pokemonTypeBasicInfo)
+            backgroundColor = parseTypeToColor(pokemonTypeBasicInfo.name)
         )
     }
 }

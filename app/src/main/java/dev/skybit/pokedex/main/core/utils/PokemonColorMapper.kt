@@ -1,7 +1,6 @@
 package dev.skybit.pokedex.main.core.utils
 
 import androidx.compose.ui.graphics.Color
-import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeBug
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeDark
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeDragon
@@ -23,8 +22,8 @@ import dev.skybit.pokedex.main.core.presentation.style.theme.TypeSteel
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeWater
 import java.util.Locale
 
-fun parseTypeToColor(type: PokemonType): Color {
-    return when (type.name.lowercase(Locale.ROOT)) {
+fun parseTypeToColor(typeName: String): Color {
+    return when (typeName.lowercase(Locale.ROOT)) {
         POKEMON_TYPE_NORMAL -> TypeNormal
         POKEMON_TYPE_FIRE -> TypeFire
         POKEMON_TYPE_WATER -> TypeWater
