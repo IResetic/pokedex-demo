@@ -54,15 +54,13 @@ fun PokemonTypeDetailsRoute(
     navigateBack: () -> Unit
 ) {
     val viewModel = hiltViewModel<PokemonTypeDetailsViewModel>()
-    val pokemonsListScreenState = viewModel.pokemonsListScreenState.collectAsState()
-    val pokemonTypeBasicInfo = pokemonsListScreenState.value.pokemonTypeBasicInfo
-    val isLoading = pokemonsListScreenState.value.isLoading
-    val toastErrorMessage = stringResource(id = R.string.unable_to_fetch_pokemon_type_details_error_message)
     val context = LocalContext.current
+    val pokemonsListScreenState by viewModel.pokemonsListScreenState.collectAsState()
     val pokemonsItems = viewModel.pokemonsBasicInfoPagingSource.collectAsLazyPagingItems()
+    val toastErrorMessage = stringResource(id = R.string.unable_to_fetch_pokemon_type_details_error_message)
 
-    LaunchedEffect(key1 = pokemonsListScreenState.value.errorMessage) {
-        val error = pokemonsListScreenState.value.errorMessage
+    LaunchedEffect(key1 = pokemonsListScreenState.errorMessage) {
+        val error = pokemonsListScreenState.errorMessage
         if (error.isNotEmpty() && pokemonsItems.itemCount > 0) {
             Toast.makeText(context, toastErrorMessage, Toast.LENGTH_SHORT).show()
             viewModel.onEvent(ClearErrorMessage)
@@ -70,10 +68,10 @@ fun PokemonTypeDetailsRoute(
     }
 
     PokemonTypesDetailsScreen(
-        pokemonTypeBasicInfo = pokemonTypeBasicInfo,
+        pokemonTypeBasicInfo = pokemonsListScreenState.pokemonTypeBasicInfo,
         pokemonsItems = pokemonsItems,
-        isLoading = isLoading,
-        errorMessage = pokemonsListScreenState.value.errorMessage,
+        isLoading = pokemonsListScreenState.isLoading,
+        errorMessage = pokemonsListScreenState.errorMessage,
         refreshPokemonTypeDetails = { viewModel.onEvent(RetryLoadingPokemonTypeDetails) },
         navigateBack = navigateBack
     )

@@ -15,6 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -48,13 +49,13 @@ internal fun PokemonTypesRoute(
     navigateToPokemonsList: (pokemonTypeId: Int) -> Unit
 ) {
     val viewModel = hiltViewModel<PokemonTypeScreenViewModel>()
-    val pokemonTypesScreenState = viewModel.pokemonTypeScreenState.collectAsState()
-    val pokemonTypes = pokemonTypesScreenState.value.pokemonTypes
+    val pokemonTypesScreenState by viewModel.pokemonTypeScreenState.collectAsState()
+    val pokemonTypes = pokemonTypesScreenState.pokemonTypes
     val context = LocalContext.current
     val errorMessage = stringResource(id = R.string.pokemon_types_toast_error)
 
-    LaunchedEffect(key1 = pokemonTypesScreenState.value.errorMessage) {
-        val error = pokemonTypesScreenState.value.errorMessage
+    LaunchedEffect(key1 = pokemonTypesScreenState.errorMessage) {
+        val error = pokemonTypesScreenState.errorMessage
         if (error.isNotEmpty() && pokemonTypes.isNotEmpty()) {
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
             viewModel.onEvent(ClearErrorMessage)
@@ -63,8 +64,8 @@ internal fun PokemonTypesRoute(
 
     PokemonTypesScreen(
         pokemonTypes = pokemonTypes.toImmutableList(),
-        isLoading = pokemonTypesScreenState.value.isLoading,
-        errorMessage = pokemonTypesScreenState.value.errorMessage,
+        isLoading = pokemonTypesScreenState.isLoading,
+        errorMessage = pokemonTypesScreenState.errorMessage,
         retryLoading = { viewModel.onEvent(PokemonTypeScreenEvent.RetryLoadingOfPokemonTypes) },
         navigateToPokemonsList = navigateToPokemonsList
     )
