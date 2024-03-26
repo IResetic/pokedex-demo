@@ -7,7 +7,7 @@ import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeGrass
 import dev.skybit.pokedex.main.core.utils.Resource
 import dev.skybit.pokedex.main.core.utils.Resource.Error
 import dev.skybit.pokedex.main.pokemontypes.domain.usecases.FakeGetPokemonTypes
-import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
+import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUi
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.ClearErrorMessage
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.RetryLoadingOfPokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenViewModel
@@ -75,7 +75,7 @@ class PokemonTypeScreenViewModelTest {
         val actual = sut.pokemonTypeScreenState.first().pokemonTypes
 
         // check assertions
-        val expected = PokemonTypeUI.fromDomainList(pokemonTypes)
+        val expected = PokemonTypeUi.fromDomainList(pokemonTypes)
         assertEquals(expected, actual)
     }
 
@@ -107,7 +107,7 @@ class PokemonTypeScreenViewModelTest {
         // check assertions
         val actual = sut.pokemonTypeScreenState.first()
         assertTrue(actual.errorMessage.contains("Network Error"))
-        assertEquals(PokemonTypeUI.fromDomainList(pokemonTypes), actual.pokemonTypes)
+        assertEquals(PokemonTypeUi.fromDomainList(pokemonTypes), actual.pokemonTypes)
     }
 
     @Test
@@ -132,6 +132,6 @@ class PokemonTypeScreenViewModelTest {
         // check assertions
         actual = sut.pokemonTypeScreenState.first()
         assertTrue(actual.errorMessage.isEmpty())
-        assertEquals(PokemonTypeUI.fromDomainList(pokemonTypes), actual.pokemonTypes)
+        assertEquals(PokemonTypeUi.fromDomainList(pokemonTypes), actual.pokemonTypes)
     }
 }

@@ -8,7 +8,7 @@ import dev.skybit.pokedex.main.core.utils.RELOADING_DEBOUNCE_TIME
 import dev.skybit.pokedex.main.core.utils.onError
 import dev.skybit.pokedex.main.core.utils.onSuccess
 import dev.skybit.pokedex.main.pokemontypes.domain.usecases.GetPokemonTypes
-import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
+import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUi
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.ClearErrorMessage
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.LoadPokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.RetryLoadingOfPokemonTypes
@@ -84,7 +84,7 @@ class PokemonTypeScreenViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 errorMessage = errorMessage,
-                pokemonTypes = PokemonTypeUI.fromDomainList(pokemonTypes)
+                pokemonTypes = PokemonTypeUi.fromDomainList(pokemonTypes)
             )
         }
     }

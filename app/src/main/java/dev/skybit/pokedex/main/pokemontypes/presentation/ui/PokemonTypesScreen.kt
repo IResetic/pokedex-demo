@@ -34,7 +34,7 @@ import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_FIRE
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_GRASS
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_NORMAL
 import dev.skybit.pokedex.main.core.utils.PORTRAIT_MODE_NUMBER_OF_COLUMNS
-import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
+import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUi
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.ClearErrorMessage
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.EmptyPokemonTypesListView
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.HeaderComponent
@@ -72,7 +72,7 @@ internal fun PokemonTypesRoute(
 
 @Composable
 internal fun PokemonTypesScreen(
-    pokemonTypes: ImmutableList<PokemonTypeUI>,
+    pokemonTypes: ImmutableList<PokemonTypeUi>,
     isLoading: Boolean = false,
     errorMessage: String,
     retryLoading: () -> Unit,
@@ -142,7 +142,7 @@ fun PokemonTypesScreenPreview() {
     )
 
     PokemonTypesScreen(
-        pokemonTypes = PokemonTypeUI.fromDomainList(pokemonTypes).toImmutableList(),
+        pokemonTypes = PokemonTypeUi.fromDomainList(pokemonTypes).toImmutableList(),
         isLoading = false,
         errorMessage = "",
         retryLoading = {},
@@ -153,7 +153,7 @@ fun PokemonTypesScreenPreview() {
 @Preview(showBackground = false)
 @Composable
 fun PokemonTypesScreenEmptyListPreview() {
-    val emptyList: ImmutableList<PokemonTypeUI> = emptyList<PokemonTypeUI>().toImmutableList()
+    val emptyList: ImmutableList<PokemonTypeUi> = emptyList<PokemonTypeUi>().toImmutableList()
 
     PokemonTypesScreen(
         pokemonTypes = emptyList,
@@ -167,7 +167,7 @@ fun PokemonTypesScreenEmptyListPreview() {
 @Preview(showBackground = false)
 @Composable
 fun PokemonTypesScreenEmptyListWithErrorPreview() {
-    val emptyList: ImmutableList<PokemonTypeUI> = emptyList<PokemonTypeUI>().toImmutableList()
+    val emptyList: ImmutableList<PokemonTypeUi> = emptyList<PokemonTypeUi>().toImmutableList()
 
     PokemonTypesScreen(
         pokemonTypes = emptyList,

@@ -7,15 +7,15 @@ import dev.skybit.pokedex.main.core.utils.parseTypeToColor
 import dev.skybit.pokedex.main.pokemontypes.utils.parseTypeNameToImage
 
 @Immutable
-data class PokemonTypeUI(
+data class PokemonTypeUi(
     val id: Int,
     val name: String,
     val color: Color,
     val icon: Int
 ) {
     companion object {
-        fun fromDomain(type: PokemonType): PokemonTypeUI {
-            return PokemonTypeUI(
+        fun fromDomain(type: PokemonType): PokemonTypeUi {
+            return PokemonTypeUi(
                 id = type.id,
                 name = type.name,
                 color = parseTypeToColor(type),
@@ -23,7 +23,7 @@ data class PokemonTypeUI(
             )
         }
 
-        fun fromDomainList(types: List<PokemonType>): List<PokemonTypeUI> {
+        fun fromDomainList(types: List<PokemonType>): List<PokemonTypeUi> {
             return types.map { fromDomain(it) }
         }
     }

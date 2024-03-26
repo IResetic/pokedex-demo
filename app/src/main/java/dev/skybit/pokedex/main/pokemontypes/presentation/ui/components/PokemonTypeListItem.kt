@@ -31,11 +31,11 @@ import dev.skybit.pokedex.main.core.presentation.style.thirtyPercent
 import dev.skybit.pokedex.main.core.presentation.ui.components.ShimmerGridListItem
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_NORMAL
 import dev.skybit.pokedex.main.core.utils.capitalizeFirstLetter
-import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUI
+import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUi
 
 @Composable
 fun PokemonTypeListItem(
-    pokemonType: PokemonTypeUI?,
+    pokemonType: PokemonTypeUi?,
     onClick: (Int) -> Unit
 ) {
     if (pokemonType == null) {
@@ -71,7 +71,7 @@ fun PokemonTypeListItem(
 @Composable
 fun PokemonTypeListItemPreview() {
     PokemonTypeListItem(
-        pokemonType = PokemonTypeUI(
+        pokemonType = PokemonTypeUi(
             id = 1,
             name = POKEMON_TYPE_NORMAL,
             icon = R.drawable.ic_normal,
