@@ -3,10 +3,10 @@ package dev.skybit.pokedex.typedetails.presentation.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.testing.asSnapshot
 import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeGrass
-import dev.skybit.pokedex.main.core.domain.usecases.FakeGetPokemonTypeBasicInfo
 import dev.skybit.pokedex.main.core.utils.Resource
 import dev.skybit.pokedex.main.typedetails.domain.model.fakePokemonBasicInfoBulbasaur
 import dev.skybit.pokedex.main.typedetails.domain.model.fakePokemonBasicInfoIvysaur
+import dev.skybit.pokedex.main.typedetails.domain.usecases.FakeGetPokemonTypeBasicInfo
 import dev.skybit.pokedex.main.typedetails.domain.usecases.FakeGetPokemonsBasicInfoByTypeIdPaged
 import dev.skybit.pokedex.main.typedetails.domain.usecases.FakePopulatePokemonTypeDetails
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
@@ -16,6 +16,7 @@ import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScr
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.RetryLoadingPokemonTypeDetails
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -27,6 +28,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PokemonsListViewModelTest {
     private lateinit var getPokemonTypeBasicInfo: FakeGetPokemonTypeBasicInfo
     private lateinit var getPokemonsBasicInfoByTypeIdPaged: FakeGetPokemonsBasicInfoByTypeIdPaged

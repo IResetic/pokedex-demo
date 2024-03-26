@@ -7,10 +7,10 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.skybit.pokedex.main.core.domain.usecases.GetPokemonTypeBasicInfo
 import dev.skybit.pokedex.main.core.utils.RELOADING_DEBOUNCE_TIME
 import dev.skybit.pokedex.main.core.utils.onError
 import dev.skybit.pokedex.main.core.utils.onSuccess
+import dev.skybit.pokedex.main.typedetails.domain.usecases.GetPokemonTypeBasicInfo
 import dev.skybit.pokedex.main.typedetails.domain.usecases.GetPokemonsBasicInfoByTypeIdPaged
 import dev.skybit.pokedex.main.typedetails.domain.usecases.PopulatePokemonTypeDetails
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi

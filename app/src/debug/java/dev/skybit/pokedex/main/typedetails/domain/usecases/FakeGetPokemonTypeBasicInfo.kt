@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.core.domain.usecases
+package dev.skybit.pokedex.main.typedetails.domain.usecases
 
 import dev.skybit.pokedex.main.core.domain.model.PokemonType
 import dev.skybit.pokedex.main.core.domain.model.fakePokemonTypeFire

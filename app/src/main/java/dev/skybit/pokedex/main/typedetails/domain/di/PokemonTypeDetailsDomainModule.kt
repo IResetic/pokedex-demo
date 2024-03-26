@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.skybit.pokedex.main.typedetails.domain.usecases.GetPokemonTypeBasicInfo
+import dev.skybit.pokedex.main.typedetails.domain.usecases.GetPokemonTypeBasicInfoImpl
 import dev.skybit.pokedex.main.typedetails.domain.usecases.GetPokemonsBasicInfoByTypeIdPaged
 import dev.skybit.pokedex.main.typedetails.domain.usecases.GetPokemonsBasicInfoByTypeIdPagedImpl
 import dev.skybit.pokedex.main.typedetails.domain.usecases.PopulatePokemonTypeDetails
@@ -18,4 +20,7 @@ interface PokemonTypeDetailsDomainModule {
 
     @Binds
     fun providePopulatePokemonTypeDetails(impl: PopulatePokemonTypeDetailsImpl): PopulatePokemonTypeDetails
+
+    @Binds
+    fun provideGetPokemonTypeBasicInfo(impl: GetPokemonTypeBasicInfoImpl): GetPokemonTypeBasicInfo
 }
