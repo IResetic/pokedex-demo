@@ -21,6 +21,7 @@ val mediumImageSize = 60.dp
 val largeImageSize = 120.dp
 
 // ***** Percentages *****
+const val fifteenPercent = 0.15f
 const val twentyPercent = 0.2f
 const val twentyFivePercent = 0.25f
 const val thirtyPercent = 0.3f

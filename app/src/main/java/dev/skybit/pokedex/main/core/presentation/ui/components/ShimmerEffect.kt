@@ -16,6 +16,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
+import dev.skybit.pokedex.main.core.presentation.style.fifteenPercent
+import dev.skybit.pokedex.main.core.presentation.style.thirtyPercent
+import dev.skybit.pokedex.main.core.utils.SHIMMER_ANIMATION_DURATION
 
 fun Modifier.shimmerEffect(brush: Brush? = null): Modifier = composed {
     var size by remember { mutableStateOf(IntSize.Zero) }
@@ -23,7 +26,7 @@ fun Modifier.shimmerEffect(brush: Brush? = null): Modifier = composed {
     val startOffsetX by transition.animateFloat(
         initialValue = -2 * size.width.toFloat(),
         targetValue = 2 * size.width.toFloat(),
-        animationSpec = infiniteRepeatable(animation = tween(2500)),
+        animationSpec = infiniteRepeatable(animation = tween(SHIMMER_ANIMATION_DURATION)),
         label = "FloatAnimation"
     )
 
@@ -32,9 +35,9 @@ fun Modifier.shimmerEffect(brush: Brush? = null): Modifier = composed {
     background(
         brush = brush ?: Brush.linearGradient(
             colors = listOf(
-                backgroundColor.copy(alpha = 0.3f),
-                backgroundColor.copy(alpha = 0.15f),
-                backgroundColor.copy(alpha = 0.3f)
+                backgroundColor.copy(alpha = thirtyPercent),
+                backgroundColor.copy(alpha = fifteenPercent),
+                backgroundColor.copy(alpha = thirtyPercent)
             ),
             start = Offset(startOffsetX, 0f),
             end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())

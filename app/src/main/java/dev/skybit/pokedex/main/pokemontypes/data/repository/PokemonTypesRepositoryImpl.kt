@@ -33,25 +33,29 @@ class PokemonTypesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun populatePokemonTypes(offset: Int) {
-        val result = pokemonTypesRemoteDataSource.getPokemonTypes(offset)
+        var currentOffset = offset
+        var nextPageExists = true
 
-        if (result.isSuccessful) {
-            val body = result.body()
-            body?.let {
-                val types = it.results?.map { resultDto ->
-                    resultDtoToPokemonEntityTypeMapper(resultDto)
-                }
-                pokemonTypesLocalDataSource.insertOrUpdatePokemonType(types ?: emptyList())
+        while (nextPageExists) {
+            val result = pokemonTypesRemoteDataSource.getPokemonTypes(offset)
 
-                if (it.next != null) {
-                    populatePokemonTypes(offset + PAGE_SIZE)
+            if (result.isSuccessful) {
+                val body = result.body()
+                body?.let {
+                    val types = it.results?.map { resultDto ->
+                        resultDtoToPokemonEntityTypeMapper(resultDto)
+                    }
+                    pokemonTypesLocalDataSource.insertOrUpdatePokemonType(types ?: emptyList())
+
+                    nextPageExists = it.next != null
+                    currentOffset += PAGE_SIZE
                 }
+            } else {
+                throw result.errorBody()?.let {
+                    val error = it.string()
+                    Exception(error)
+                } ?: Exception("An error occurred")
             }
-        } else {
-            throw result.errorBody()?.let {
-                val error = it.string()
-                Exception(error)
-            } ?: Exception("An error occurred")
         }
     }
 }
