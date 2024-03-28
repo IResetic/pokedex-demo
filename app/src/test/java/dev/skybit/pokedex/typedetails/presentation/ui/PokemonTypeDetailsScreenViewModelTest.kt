@@ -29,7 +29,7 @@ import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class PokemonsListViewModelTest {
+class PokemonTypeDetailsScreenViewModelTest {
     private lateinit var getPokemonTypeBasicInfo: FakeGetPokemonTypeBasicInfo
     private lateinit var getPokemonsBasicInfoByTypeIdPaged: FakeGetPokemonsBasicInfoByTypeIdPaged
     private lateinit var populatePokemonTypeDetails: FakePopulatePokemonTypeDetails
