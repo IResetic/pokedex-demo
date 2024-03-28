@@ -13,8 +13,8 @@ class PokemonTypeDetailsLocalDataSourceImpl @Inject constructor(
         return pokemonBasicInfoDao.insertOrUpdatePokemonBasicInfo(pokemonBasicInfo)
     }
 
-    override suspend fun getPokemonBasicInfoByType(typeId: Int): List<PokemonBasicInfoEntity> {
-        return pokemonBasicInfoDao.getPokemonBasicInfoByType(typeId)
+    override suspend fun getPokemonBasicInfoById(pokemonId: Int): PokemonBasicInfoEntity {
+        return pokemonBasicInfoDao.getPokemonBasicInfoById(pokemonId)
     }
 
     override fun getPokemonBasicInfoByTypePaged(typeId: Int): PagingSource<Int, PokemonBasicInfoEntity> {

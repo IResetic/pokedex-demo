@@ -51,9 +51,10 @@ import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun PokemonTypeDetailsRoute(
+    navigateToPokemonDetails: (pokemonId: Int) -> Unit,
     navigateBack: () -> Unit
 ) {
-    val viewModel = hiltViewModel<PokemonTypeDetailsViewModel>()
+    val viewModel = hiltViewModel<PokemonTypeDetailsScreenViewModel>()
     val context = LocalContext.current
     val pokemonsListScreenState by viewModel.pokemonsListScreenState.collectAsState()
     val pokemonsItems = viewModel.pokemonsBasicInfoPagingSource.collectAsLazyPagingItems()
@@ -73,6 +74,7 @@ fun PokemonTypeDetailsRoute(
         isLoading = pokemonsListScreenState.isLoading,
         errorMessage = pokemonsListScreenState.errorMessage,
         refreshPokemonTypeDetails = { viewModel.onEvent(RetryLoadingPokemonTypeDetails) },
+        navigateToPokemonDetails = navigateToPokemonDetails,
         navigateBack = navigateBack
     )
 }
@@ -85,6 +87,7 @@ fun PokemonTypesDetailsScreen(
     isLoading: Boolean,
     errorMessage: String,
     refreshPokemonTypeDetails: () -> Unit,
+    navigateToPokemonDetails: (pokemonId: Int) -> Unit,
     navigateBack: () -> Unit
 ) {
     val isEmptyState by remember(pokemonsItems.loadState.refresh, pokemonsItems.itemCount, isLoading, errorMessage) {
@@ -162,7 +165,10 @@ fun PokemonTypesDetailsScreen(
                             items(pokemonsItems.itemCount) { index ->
                                 val pokemonInfo = pokemonsItems[index]
                                 if (pokemonInfo != null) {
-                                    BasicPokemonListItem(pokemonInfo)
+                                    BasicPokemonListItem(
+                                        pokemonBasicInfo = pokemonInfo,
+                                        navigateToPokemonDetails = navigateToPokemonDetails
+                                    )
                                 }
                             }
                         }
@@ -225,6 +231,7 @@ fun PokemonTypesDetailsScreenPreview() {
         isLoading = isLoading,
         errorMessage = errorMessage,
         refreshPokemonTypeDetails = { },
+        navigateToPokemonDetails = { },
         navigateBack = { }
     )
 }

@@ -19,6 +19,10 @@ class FakePokemonTypeDetailsRepository : PokemonTypeDetailsRepository {
         }
     }
 
+    override suspend fun getPokemonBasicInfoById(pokemonId: Int): PokemonBasicInfo {
+        return fakePokemonBasicInfoList.first { it.id == pokemonId }
+    }
+
     override fun getPokemonTypeDetailsPaged(pokemonTypeId: Int): Flow<PagingData<PokemonBasicInfo>> {
         val fakePagingSource = object : PagingSource<Int, PokemonBasicInfo>() {
             override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonBasicInfo> {

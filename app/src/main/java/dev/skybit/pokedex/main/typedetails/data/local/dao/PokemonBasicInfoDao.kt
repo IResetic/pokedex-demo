@@ -14,6 +14,9 @@ interface PokemonBasicInfoDao {
     @Query("SELECT * FROM pokemon_basic_info WHERE pokemonTypeId = :pokemonTypeId")
     suspend fun getPokemonBasicInfoByType(pokemonTypeId: Int): List<PokemonBasicInfoEntity>
 
+    @Query("SELECT * FROM pokemon_basic_info WHERE id = :pokemonId")
+    suspend fun getPokemonBasicInfoById(pokemonId: Int): PokemonBasicInfoEntity
+
     @Query("SELECT * FROM pokemon_basic_info WHERE pokemonTypeId = :pokemonTypeId")
     fun getPokemonBasicInfoByTypePaged(pokemonTypeId: Int): PagingSource<Int, PokemonBasicInfoEntity>
 }

@@ -20,15 +20,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.style.largePadding
 import dev.skybit.pokedex.main.core.presentation.style.twentyPercent
+import dev.skybit.pokedex.main.core.utils.BUTTON_CLICK_DEBOUNCE_TIME
+import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_FIRE
 import dev.skybit.pokedex.main.core.utils.capitalizeFirstLetter
 import dev.skybit.pokedex.main.pokemontypes.utils.parseTypeNameToImage
 
@@ -39,6 +46,7 @@ fun PokemonTypeDetailsHeaderComponent(
     navigateBack: () -> Unit
 ) {
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+    var lastClickTimestamp by remember { mutableStateOf(0L) }
 
     Column(
         modifier = Modifier
@@ -57,7 +65,13 @@ fun PokemonTypeDetailsHeaderComponent(
                 actionIconContentColor = Color.Transparent
             ),
             navigationIcon = {
-                IconButton(onClick = { navigateBack() }) {
+                IconButton(onClick = {
+                    val currentTime = System.currentTimeMillis()
+                    if (currentTime - lastClickTimestamp > BUTTON_CLICK_DEBOUNCE_TIME) {
+                        navigateBack()
+                        lastClickTimestamp = currentTime
+                    }
+                }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(id = R.string.navigate_back_icon_content_description)
@@ -75,4 +89,14 @@ fun PokemonTypeDetailsHeaderComponent(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun PokemonTypeDetailsHeaderComponentPreview() {
+    PokemonTypeDetailsHeaderComponent(
+        backgroundColor = MaterialTheme.colorScheme.primary,
+        title = POKEMON_TYPE_FIRE,
+        navigateBack = {}
+    )
 }

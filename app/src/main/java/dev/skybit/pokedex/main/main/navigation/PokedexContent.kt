@@ -5,6 +5,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import dev.skybit.pokedex.main.pokemon.presentation.navigation.PokemonDetailsScreenDestination
+import dev.skybit.pokedex.main.pokemon.presentation.navigation.pokemonDetailsGraph
 import dev.skybit.pokedex.main.pokemontypes.presentation.navigation.PokemonTypesScreenDestination
 import dev.skybit.pokedex.main.pokemontypes.presentation.navigation.pokemonTypesGraph
 import dev.skybit.pokedex.main.typedetails.presentation.navigation.PokemonTypeDetailsScreenDestination
@@ -23,8 +25,11 @@ fun PokedexContent(navController: NavHostController) {
             )
 
             pokemonTypeDetailsGraph(
+                navigateToPokemonDetails = { navController.navigate(PokemonDetailsScreenDestination.route(it)) },
                 navigateBack = navController::popBackStack
             )
+
+            pokemonDetailsGraph()
         }
     }
 }

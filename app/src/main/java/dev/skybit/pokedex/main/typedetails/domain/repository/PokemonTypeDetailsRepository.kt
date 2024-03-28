@@ -7,5 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface PokemonTypeDetailsRepository {
     suspend fun populatePokemonTypeDetails(pokemonTypeId: Int)
 
+    suspend fun getPokemonBasicInfoById(pokemonId: Int): PokemonBasicInfo
+
     fun getPokemonTypeDetailsPaged(pokemonTypeId: Int): Flow<PagingData<PokemonBasicInfo>>
 }

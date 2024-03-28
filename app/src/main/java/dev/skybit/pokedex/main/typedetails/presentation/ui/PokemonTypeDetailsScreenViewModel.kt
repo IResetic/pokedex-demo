@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PokemonTypeDetailsViewModel @Inject constructor(
+class PokemonTypeDetailsScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getPokemonTypeBasicInfo: GetPokemonTypeBasicInfo,
     private val getPokemonsBasicInfoByTypeIdPaged: GetPokemonsBasicInfoByTypeIdPaged,

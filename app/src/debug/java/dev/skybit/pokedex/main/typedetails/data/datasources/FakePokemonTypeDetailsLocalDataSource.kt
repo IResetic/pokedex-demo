@@ -17,8 +17,8 @@ class FakePokemonTypeDetailsLocalDataSource : PokemonTypeDetailsLocalDataSource 
         fakePokemonBasicInfoStorage.addAll(pokemonBasicInfo)
     }
 
-    override suspend fun getPokemonBasicInfoByType(typeId: Int): List<PokemonBasicInfoEntity> {
-        return fakePokemonBasicInfoStorage.filter { it.pokemonTypeId == typeId }
+    override suspend fun getPokemonBasicInfoById(pokemonId: Int): PokemonBasicInfoEntity {
+        return fakePokemonBasicInfoStorage.first { it.id == pokemonId }
     }
 
     override fun getPokemonBasicInfoByTypePaged(typeId: Int): PagingSource<Int, PokemonBasicInfoEntity> {

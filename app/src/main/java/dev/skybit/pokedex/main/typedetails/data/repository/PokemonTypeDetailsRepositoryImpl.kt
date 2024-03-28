@@ -42,6 +42,12 @@ class PokemonTypeDetailsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getPokemonBasicInfoById(pokemonId: Int): PokemonBasicInfo {
+        val pokemonBasicInfoEntity = pokemonTypeDetailsLocalDataSource.getPokemonBasicInfoById(pokemonId)
+
+        return pokemonBasicInfoEntity.toDomain()
+    }
+
     override fun getPokemonTypeDetailsPaged(pokemonTypeId: Int): Flow<PagingData<PokemonBasicInfo>> {
         return Pager(
             PagingConfig(

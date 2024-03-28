@@ -18,6 +18,7 @@ object PokemonTypeDetailsScreenDestination : NavigationDestination {
 }
 
 fun NavGraphBuilder.pokemonTypeDetailsGraph(
+    navigateToPokemonDetails: (pokemonId: Int) -> Unit,
     navigateBack: () -> Unit
 ) {
     composable(
@@ -27,6 +28,7 @@ fun NavGraphBuilder.pokemonTypeDetailsGraph(
         )
     ) {
         PokemonTypeDetailsRoute(
+            navigateToPokemonDetails = navigateToPokemonDetails,
             navigateBack = navigateBack
         )
     }

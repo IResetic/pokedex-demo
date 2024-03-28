@@ -14,7 +14,7 @@ import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicIn
 import dev.skybit.pokedex.main.typedetails.presentation.navigation.PokemonTypeDetailsScreenDestination.POKEMON_TYPE_ID
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.ClearErrorMessage
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.RetryLoadingPokemonTypeDetails
-import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsViewModel
+import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -34,7 +34,7 @@ class PokemonsListViewModelTest {
     private lateinit var getPokemonsBasicInfoByTypeIdPaged: FakeGetPokemonsBasicInfoByTypeIdPaged
     private lateinit var populatePokemonTypeDetails: FakePopulatePokemonTypeDetails
 
-    private lateinit var sut: PokemonTypeDetailsViewModel
+    private lateinit var sut: PokemonTypeDetailsScreenViewModel
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -49,7 +49,7 @@ class PokemonsListViewModelTest {
     }
 
     private fun initSut(savedStateHandle: SavedStateHandle = SavedStateHandle()) {
-        sut = PokemonTypeDetailsViewModel(
+        sut = PokemonTypeDetailsScreenViewModel(
             savedStateHandle = savedStateHandle,
             getPokemonTypeBasicInfo = getPokemonTypeBasicInfo,
             getPokemonsBasicInfoByTypeIdPaged = getPokemonsBasicInfoByTypeIdPaged,

@@ -64,6 +64,7 @@ class PokemonTypeDetailsRepositoryTest {
 
     @Test
     fun should_successfully_get_pokemon_type_details() = runBlocking {
+        // define test data
         pokemonTypeDetailsLocalDataSource.fakePokemonBasicInfoStorage.addAll(
             listOf(
                 fakePokemonBasicInfoEntityGrassOne,
@@ -79,6 +80,25 @@ class PokemonTypeDetailsRepositoryTest {
         val expected = listOf(fakePokemonBasicInfoEntityGrassOne, fakePokemonBasicInfoEntityGrassTwp).map {
             it.toDomain()
         }
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun should_successfully_get_pokemon_basis_info_by_id() = runBlocking {
+        // define test data
+        pokemonTypeDetailsLocalDataSource.fakePokemonBasicInfoStorage.addAll(
+            listOf(
+                fakePokemonBasicInfoEntityGrassOne,
+                fakePokemonBasicInfEntityFireOne,
+                fakePokemonBasicInfoEntityGrassTwp
+            )
+        )
+
+        // trigger action
+        val actual = sut.getPokemonBasicInfoById(fakePokemonBasicInfoEntityGrassOne.id)
+
+        // check assertions
+        val expected = fakePokemonBasicInfoEntityGrassOne.toDomain()
         assertEquals(expected, actual)
     }
 }

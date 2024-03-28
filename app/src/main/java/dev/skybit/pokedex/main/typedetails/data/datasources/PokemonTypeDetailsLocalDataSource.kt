@@ -6,7 +6,7 @@ import dev.skybit.pokedex.main.typedetails.data.local.model.PokemonBasicInfoEnti
 interface PokemonTypeDetailsLocalDataSource {
     suspend fun insertOrUpdatePokemonBasicInfo(pokemonBasicInfo: List<PokemonBasicInfoEntity>)
 
-    suspend fun getPokemonBasicInfoByType(typeId: Int): List<PokemonBasicInfoEntity>
+    suspend fun getPokemonBasicInfoById(pokemonId: Int): PokemonBasicInfoEntity
 
     fun getPokemonBasicInfoByTypePaged(typeId: Int): PagingSource<Int, PokemonBasicInfoEntity>
 }

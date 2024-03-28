@@ -15,7 +15,8 @@ data class PokemonBasicInfoEntity(
     fun toDomain(): PokemonBasicInfo {
         return PokemonBasicInfo(
             id = id,
-            name = name
+            name = name,
+            pokemonTypeName = pokemonTypeName
         )
     }
 }

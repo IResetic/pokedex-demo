@@ -2,6 +2,7 @@ package dev.skybit.pokedex.main.typedetails.presentation.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -32,7 +33,8 @@ import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
 
 @Composable
 fun BasicPokemonListItem(
-    pokemonBasicInfo: PokemonBasicInfoUi
+    pokemonBasicInfo: PokemonBasicInfoUi,
+    navigateToPokemonDetails: (pokemonId: Int) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -42,6 +44,7 @@ fun BasicPokemonListItem(
             .clip(RoundedCornerShape(largeRadius))
             .aspectRatio(1f)
             .background(color = MaterialTheme.colorScheme.onPrimary)
+            .clickable { navigateToPokemonDetails(pokemonBasicInfo.id) }
     ) {
         SubcomposeAsyncImage(
             modifier = Modifier
@@ -80,6 +83,7 @@ fun BasicPokemonListItemPreview() {
             id = 1,
             name = "bulbasaur",
             imageUrl = ""
-        )
+        ),
+        navigateToPokemonDetails = {}
     )
 }
