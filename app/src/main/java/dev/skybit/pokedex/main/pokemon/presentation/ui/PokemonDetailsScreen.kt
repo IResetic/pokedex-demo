@@ -12,7 +12,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import dev.skybit.pokedex.main.pokemon.presentation.model.PokemonDetailsUi
+import dev.skybit.pokedex.main.pokemon.presentation.ui.components.PokemonDetailsBody
 import dev.skybit.pokedex.main.pokemon.presentation.ui.components.PokemonDetailsHeader
+import dev.skybit.pokedex.main.pokemon.presentation.ui.components.PokemonImageView
 
 @Composable
 fun PokemonDetailsRoute() {
@@ -20,13 +23,15 @@ fun PokemonDetailsRoute() {
     val pokemonDetailsScreenUiState by viewModel.pokemonDetailsScreenUiState.collectAsState()
 
     PokemonDetailsScreen(
-        backgroundColor = pokemonDetailsScreenUiState.backgroundColor
+        backgroundColor = pokemonDetailsScreenUiState.backgroundColor,
+        pokemonDetailsUi = pokemonDetailsScreenUiState.pokemonDetails
     )
 }
 
 @Composable
 fun PokemonDetailsScreen(
-    backgroundColor: Color?
+    backgroundColor: Color?,
+    pokemonDetailsUi: PokemonDetailsUi?
 ) {
     Scaffold { paddingValues ->
         Box(
@@ -36,6 +41,11 @@ fun PokemonDetailsScreen(
                 .background(backgroundColor ?: MaterialTheme.colorScheme.primary)
         ) {
             PokemonDetailsHeader()
+            pokemonDetailsUi?.let {
+                PokemonDetailsBody(pokemonDetailsUi = it)
+
+                PokemonImageView(pokemonDetailsUi = it)
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ const val POKEMON_TYPE_STEEL = "steel"
 const val POKEMON_TYPE_FAIRY = "fairy"
 
 // ***** Network Constants *****
-const val IMAGE_BASE_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+const val IMAGE_BASE_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"
 const val POKEMON_IMG_FORMAT = ".png"
 
 // ***** UI Constants *****

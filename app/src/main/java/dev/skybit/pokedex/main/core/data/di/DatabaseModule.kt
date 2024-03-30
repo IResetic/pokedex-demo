@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.skybit.pokedex.main.core.data.DATABASE_NAME
 import dev.skybit.pokedex.main.core.data.local.PokedexAppDatabase
+import dev.skybit.pokedex.main.core.data.local.converters.ListConverter
 import javax.inject.Singleton
 
 @Module
@@ -16,12 +17,13 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): PokedexAppDatabase {
-        return Room.databaseBuilder(
-            context,
-            PokedexAppDatabase::class.java,
-            DATABASE_NAME
-        ).build()
+    fun provideDatabase(
+        @ApplicationContext context: Context,
+        listConverter: ListConverter
+    ): PokedexAppDatabase {
+        return Room.databaseBuilder(context, PokedexAppDatabase::class.java, DATABASE_NAME)
+            .addTypeConverter(listConverter)
+            .build()
     }
 
     @Provides
@@ -29,4 +31,7 @@ object DatabaseModule {
 
     @Provides
     fun providePokemonBasicInfoDao(database: PokedexAppDatabase) = database.pokemonBasicInfoDao()
+
+    @Provides
+    fun providePokemonDetailsDao(database: PokedexAppDatabase) = database.pokemonDetailsDao()
 }
