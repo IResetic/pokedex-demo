@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.pokemontypes.utils
+package dev.skybit.pokedex.main.pokemontypes.presentation.utils
 
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_BUG

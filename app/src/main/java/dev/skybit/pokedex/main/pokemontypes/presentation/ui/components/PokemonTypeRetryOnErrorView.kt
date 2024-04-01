@@ -19,10 +19,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import dev.skybit.pokedex.R
-import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
-import dev.skybit.pokedex.main.core.presentation.style.smallPadding
-import dev.skybit.pokedex.main.core.presentation.style.thirtyPercent
-import dev.skybit.pokedex.main.core.presentation.style.twentyFivePercent
+import dev.skybit.pokedex.main.core.presentation.utlis.mediumPadding
+import dev.skybit.pokedex.main.core.presentation.utlis.smallPadding
+import dev.skybit.pokedex.main.core.presentation.utlis.thirtyPercent
+import dev.skybit.pokedex.main.core.presentation.utlis.twentyFivePercent
 
 @Composable
 fun PokemonTypeRetryOnErrorView(

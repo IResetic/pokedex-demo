@@ -12,11 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import dev.skybit.pokedex.main.core.presentation.style.mediumHeight
-import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
-import dev.skybit.pokedex.main.core.presentation.style.smallPadding
+import dev.skybit.pokedex.main.core.presentation.utlis.capitalizeFirstLetter
+import dev.skybit.pokedex.main.core.presentation.utlis.mediumHeight
+import dev.skybit.pokedex.main.core.presentation.utlis.mediumPadding
+import dev.skybit.pokedex.main.core.presentation.utlis.smallPadding
 import dev.skybit.pokedex.main.core.utils.parseTypeToColor
-import java.util.Locale
 
 @Composable
 fun PokemonDetailsTypeSection(pokemonTypeNames: List<String>) {
@@ -35,9 +35,7 @@ fun PokemonDetailsTypeSection(pokemonTypeNames: List<String>) {
                     .height(mediumHeight)
             ) {
                 Text(
-                    text = typeName.replaceFirstChar {
-                        if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
-                    },
+                    text = typeName.capitalizeFirstLetter(),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onPrimary
                 )

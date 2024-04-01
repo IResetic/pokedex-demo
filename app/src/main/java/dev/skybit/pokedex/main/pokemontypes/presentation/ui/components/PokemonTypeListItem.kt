@@ -23,14 +23,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import dev.skybit.pokedex.R
-import dev.skybit.pokedex.main.core.presentation.style.defaultRadius
-import dev.skybit.pokedex.main.core.presentation.style.largeRadius
-import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
 import dev.skybit.pokedex.main.core.presentation.style.theme.TypeNormal
-import dev.skybit.pokedex.main.core.presentation.style.thirtyPercent
 import dev.skybit.pokedex.main.core.presentation.ui.components.ShimmerGridListItem
+import dev.skybit.pokedex.main.core.presentation.utlis.capitalizeFirstLetter
+import dev.skybit.pokedex.main.core.presentation.utlis.defaultRadius
+import dev.skybit.pokedex.main.core.presentation.utlis.largeRadius
+import dev.skybit.pokedex.main.core.presentation.utlis.mediumPadding
+import dev.skybit.pokedex.main.core.presentation.utlis.thirtyPercent
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_NORMAL
-import dev.skybit.pokedex.main.core.utils.capitalizeFirstLetter
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUi
 
 @Composable

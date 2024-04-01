@@ -24,11 +24,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.SubcomposeAsyncImage
 import dev.skybit.pokedex.R
-import dev.skybit.pokedex.main.core.presentation.style.defaultRadius
-import dev.skybit.pokedex.main.core.presentation.style.fiftyPercent
-import dev.skybit.pokedex.main.core.presentation.style.largeRadius
-import dev.skybit.pokedex.main.core.presentation.style.seventyPercent
-import dev.skybit.pokedex.main.core.utils.capitalizeFirstLetter
+import dev.skybit.pokedex.main.core.presentation.utlis.capitalizeFirstLetter
+import dev.skybit.pokedex.main.core.presentation.utlis.defaultRadius
+import dev.skybit.pokedex.main.core.presentation.utlis.fiftyPercent
+import dev.skybit.pokedex.main.core.presentation.utlis.largeRadius
+import dev.skybit.pokedex.main.core.presentation.utlis.seventyPercent
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
 
 @Composable

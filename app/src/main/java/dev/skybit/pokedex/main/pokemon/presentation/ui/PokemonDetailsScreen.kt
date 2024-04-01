@@ -18,20 +18,24 @@ import dev.skybit.pokedex.main.pokemon.presentation.ui.components.PokemonDetails
 import dev.skybit.pokedex.main.pokemon.presentation.ui.components.PokemonImageView
 
 @Composable
-fun PokemonDetailsRoute() {
+fun PokemonDetailsRoute(
+    navigateBack: () -> Unit
+) {
     val viewModel = hiltViewModel<PokemonDetailsScreenViewModel>()
     val pokemonDetailsScreenUiState by viewModel.pokemonDetailsScreenUiState.collectAsState()
 
     PokemonDetailsScreen(
         backgroundColor = pokemonDetailsScreenUiState.backgroundColor,
-        pokemonDetailsUi = pokemonDetailsScreenUiState.pokemonDetails
+        pokemonDetailsUi = pokemonDetailsScreenUiState.pokemonDetails,
+        navigateBack = navigateBack
     )
 }
 
 @Composable
 fun PokemonDetailsScreen(
     backgroundColor: Color?,
-    pokemonDetailsUi: PokemonDetailsUi?
+    pokemonDetailsUi: PokemonDetailsUi?,
+    navigateBack: () -> Unit
 ) {
     Scaffold { paddingValues ->
         Box(
@@ -40,7 +44,7 @@ fun PokemonDetailsScreen(
                 .fillMaxSize()
                 .background(backgroundColor ?: MaterialTheme.colorScheme.primary)
         ) {
-            PokemonDetailsHeader()
+            PokemonDetailsHeader(navigateBack = navigateBack)
             pokemonDetailsUi?.let {
                 PokemonDetailsBody(pokemonDetailsUi = it)
 

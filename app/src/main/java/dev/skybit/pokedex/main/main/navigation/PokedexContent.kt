@@ -29,7 +29,9 @@ fun PokedexContent(navController: NavHostController) {
                 navigateBack = navController::popBackStack
             )
 
-            pokemonDetailsGraph()
+            pokemonDetailsGraph(
+                navigateBack = navController::popBackStack
+            )
         }
     }
 }

@@ -16,8 +16,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
-import dev.skybit.pokedex.main.core.presentation.style.fifteenPercent
-import dev.skybit.pokedex.main.core.presentation.style.thirtyPercent
+import dev.skybit.pokedex.main.core.presentation.utlis.fifteenPercent
+import dev.skybit.pokedex.main.core.presentation.utlis.thirtyPercent
 import dev.skybit.pokedex.main.core.utils.SHIMMER_ANIMATION_DURATION
 
 fun Modifier.shimmerEffect(brush: Brush? = null): Modifier = composed {

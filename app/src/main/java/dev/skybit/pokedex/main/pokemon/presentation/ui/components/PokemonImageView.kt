@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import dev.skybit.pokedex.main.core.presentation.style.largeImageSite
+import dev.skybit.pokedex.main.core.presentation.utlis.largeImageSite
 import dev.skybit.pokedex.main.core.utils.IMAGE_BASE_URL
 import dev.skybit.pokedex.main.core.utils.POKEMON_IMG_FORMAT
 import dev.skybit.pokedex.main.pokemon.presentation.model.PokemonDetailsUi

@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.core.presentation.style
+package dev.skybit.pokedex.main.core.presentation.utlis
 
 import androidx.compose.ui.unit.dp
 
@@ -16,8 +16,9 @@ val defaultRadius = 6.dp
 val mediumRadius = 8.dp
 val largeRadius = 12.dp
 
-// ***** Image Size *****
+// ***** Sizes *****
 val largeImageSite = 200.dp
+val sectionSize = 60.dp
 
 // ***** Percentages *****
 const val fifteenPercent = 0.15f
@@ -28,4 +29,8 @@ const val fiftyPercent = 0.5f
 const val seventyPercent = 0.7f
 
 // ***** Height *****
+val smallHeight = 28.dp
 val mediumHeight = 36.dp
+
+// ***** Icon Size *****
+val largeIconSize = 36.dp

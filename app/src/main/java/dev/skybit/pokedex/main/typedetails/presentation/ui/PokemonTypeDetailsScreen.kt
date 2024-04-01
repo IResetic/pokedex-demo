@@ -33,9 +33,9 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import dev.skybit.pokedex.R
-import dev.skybit.pokedex.main.core.presentation.style.defaultPadding
-import dev.skybit.pokedex.main.core.presentation.style.largePadding
 import dev.skybit.pokedex.main.core.presentation.ui.components.ShimmerGridListItem
+import dev.skybit.pokedex.main.core.presentation.utlis.defaultPadding
+import dev.skybit.pokedex.main.core.presentation.utlis.largePadding
 import dev.skybit.pokedex.main.core.utils.DEFAULT_SIZE_OF_GRID_LIST
 import dev.skybit.pokedex.main.core.utils.LANDSCAPE_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.core.utils.PORTRAIT_MODE_NUMBER_OF_COLUMNS

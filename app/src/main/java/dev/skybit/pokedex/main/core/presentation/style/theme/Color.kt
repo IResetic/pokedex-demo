@@ -26,6 +26,17 @@ val TypeSteel = Color(0xFFB7B7CE)
 val TypeFairy = Color(0xFFD685AD)
 val TypePokeballRed = Color(0xFFEE1515)
 
+// ********************************
+// ***** Pokemon Stats Colors ******
+// ********************************
+
+val HPColor = Color(0xFFF5FF00)
+val AtkColor = Color(0xA8FF0000)
+val DefColor = Color(0x700000FF)
+val SpAtkColor = Color(0x91AB00FF)
+val SpDefColor = Color(0xB2FF00CC)
+val SpdColor = Color(0x8C00FF10)
+
 // **********************************
 // ***** Material Theme Colors ******
 // **********************************

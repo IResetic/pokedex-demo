@@ -11,6 +11,9 @@
     <string name="empty_pokemons_list_message">There are no pokemons to show.</string>
     <string name="pokemons_list_error_message">Unable to fetch pokemons from the network.</string>
 
+    <!-- Pokemon Details Screen -->
+    <string name="basic_stats_title">Base stats:</string>
+
     <!-- Buttons text -->
     <string name="retry_button_text">Retry</string>
 </resources>

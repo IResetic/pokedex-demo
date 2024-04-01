@@ -17,13 +17,15 @@ object PokemonDetailsScreenDestination : NavigationDestination {
     }
 }
 
-fun NavGraphBuilder.pokemonDetailsGraph() {
+fun NavGraphBuilder.pokemonDetailsGraph(
+    navigateBack: () -> Unit
+) {
     composable(
         route = PokemonDetailsScreenDestination.route,
         arguments = listOf(
             navArgument(PokemonDetailsScreenDestination.POKEMON_ID) { type = NavType.IntType }
         )
     ) {
-        PokemonDetailsRoute()
+        PokemonDetailsRoute(navigateBack = navigateBack)
     }
 }

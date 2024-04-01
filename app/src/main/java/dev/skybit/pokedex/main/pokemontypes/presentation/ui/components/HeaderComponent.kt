@@ -13,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.skybit.pokedex.R
-import dev.skybit.pokedex.main.core.presentation.style.largePadding
+import dev.skybit.pokedex.main.core.presentation.utlis.largePadding
 
 @Composable
 fun HeaderComponent() {

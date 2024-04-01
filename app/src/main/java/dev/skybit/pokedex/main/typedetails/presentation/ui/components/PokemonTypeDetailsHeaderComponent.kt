@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -32,12 +33,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.skybit.pokedex.R
-import dev.skybit.pokedex.main.core.presentation.style.largePadding
-import dev.skybit.pokedex.main.core.presentation.style.twentyPercent
+import dev.skybit.pokedex.main.core.presentation.utlis.capitalizeFirstLetter
+import dev.skybit.pokedex.main.core.presentation.utlis.largeIconSize
+import dev.skybit.pokedex.main.core.presentation.utlis.largePadding
+import dev.skybit.pokedex.main.core.presentation.utlis.twentyPercent
 import dev.skybit.pokedex.main.core.utils.BUTTON_CLICK_DEBOUNCE_TIME
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_FIRE
-import dev.skybit.pokedex.main.core.utils.capitalizeFirstLetter
-import dev.skybit.pokedex.main.pokemontypes.utils.parseTypeNameToImage
+import dev.skybit.pokedex.main.pokemontypes.presentation.utils.parseTypeNameToImage
 
 @Composable
 fun PokemonTypeDetailsHeaderComponent(
@@ -65,14 +67,17 @@ fun PokemonTypeDetailsHeaderComponent(
                 actionIconContentColor = Color.Transparent
             ),
             navigationIcon = {
-                IconButton(onClick = {
-                    val currentTime = System.currentTimeMillis()
-                    if (currentTime - lastClickTimestamp > BUTTON_CLICK_DEBOUNCE_TIME) {
-                        navigateBack()
-                        lastClickTimestamp = currentTime
+                IconButton(
+                    onClick = {
+                        val currentTime = System.currentTimeMillis()
+                        if (currentTime - lastClickTimestamp > BUTTON_CLICK_DEBOUNCE_TIME) {
+                            navigateBack()
+                            lastClickTimestamp = currentTime
+                        }
                     }
-                }) {
+                ) {
                     Icon(
+                        modifier = Modifier.size(largeIconSize),
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(id = R.string.navigate_back_icon_content_description)
                     )

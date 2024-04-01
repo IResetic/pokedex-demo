@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.core.utils
+package dev.skybit.pokedex.main.core.presentation.utlis
 
 import java.util.Locale
 

@@ -17,9 +17,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import dev.skybit.pokedex.R
-import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
-import dev.skybit.pokedex.main.core.presentation.style.twentyFivePercent
-import dev.skybit.pokedex.main.core.presentation.style.twentyPercent
+import dev.skybit.pokedex.main.core.presentation.utlis.mediumPadding
+import dev.skybit.pokedex.main.core.presentation.utlis.twentyFivePercent
+import dev.skybit.pokedex.main.core.presentation.utlis.twentyPercent
 
 @Composable
 fun EmptyPokemonListView(

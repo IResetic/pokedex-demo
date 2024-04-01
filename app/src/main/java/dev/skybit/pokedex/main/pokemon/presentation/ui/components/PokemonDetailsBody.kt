@@ -2,7 +2,9 @@ package dev.skybit.pokedex.main.pokemon.presentation.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -18,10 +20,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.skybit.pokedex.main.core.presentation.style.mediumPadding
-import dev.skybit.pokedex.main.core.presentation.style.mediumRadius
+import dev.skybit.pokedex.main.core.presentation.utlis.capitalizeFirstLetter
+import dev.skybit.pokedex.main.core.presentation.utlis.mediumPadding
+import dev.skybit.pokedex.main.core.presentation.utlis.mediumRadius
 import dev.skybit.pokedex.main.pokemon.presentation.model.PokemonDetailsUi
-import java.util.Locale
+
+val POKEMON_DETAILS_BODY_OFFSET_Y = 100.dp
 
 @Composable
 fun PokemonDetailsBody(
@@ -41,16 +45,22 @@ fun PokemonDetailsBody(
             .clip(RoundedCornerShape(mediumRadius))
             .background(MaterialTheme.colorScheme.surface)
             .fillMaxSize()
-            .offset(y = 100.dp)
+            .offset(y = POKEMON_DETAILS_BODY_OFFSET_Y)
             .verticalScroll(scrollState)
     ) {
         Text(
-            text = "${pokemonDetailsUi.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }}",
+            text = pokemonDetailsUi.name.capitalizeFirstLetter(),
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.headlineLarge,
             textAlign = TextAlign.Center
         )
 
         PokemonDetailsTypeSection(pokemonDetailsUi.types)
+        PokemonDimensions(
+            pokemonWeight = pokemonDetailsUi.weightKg,
+            pokemonHeight = pokemonDetailsUi.heightCm
+        )
+        PokemonStats(pokemonDetailsUi)
+        Spacer(modifier = Modifier.height(POKEMON_DETAILS_BODY_OFFSET_Y))
     }
 }

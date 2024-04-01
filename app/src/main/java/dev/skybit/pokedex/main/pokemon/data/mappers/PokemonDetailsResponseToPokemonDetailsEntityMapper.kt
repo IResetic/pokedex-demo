@@ -4,6 +4,7 @@ import dev.skybit.pokedex.main.pokemon.data.local.model.PokemonDetailsEntity
 import dev.skybit.pokedex.main.pokemon.data.remote.model.PokemonBasicStatsDto
 import dev.skybit.pokedex.main.pokemon.data.remote.model.PokemonDetailsResponse
 import dev.skybit.pokedex.main.pokemon.domain.model.PokemonBaseStats
+import java.math.RoundingMode
 import javax.inject.Inject
 
 class PokemonDetailsResponseToPokemonDetailsEntityMapper @Inject constructor() {
@@ -19,7 +20,7 @@ class PokemonDetailsResponseToPokemonDetailsEntityMapper @Inject constructor() {
     }
 
     private fun hectogramsToKilograms(hectograms: Int?): Double {
-        return hectograms?.let { it * 0.1 } ?: 0.0
+        return (hectograms?.let { it * 0.1 } ?: 0.0).toBigDecimal().setScale(1, RoundingMode.UP).toDouble()
     }
 
     private fun decimetresToCentimetres(decimetres: Int?): Int {
@@ -40,12 +41,12 @@ class PokemonDetailsResponseToPokemonDetailsEntityMapper @Inject constructor() {
     }
 
     companion object {
-        private const val DEFAULT_STAT_VALUE = 0
-        private const val HP_STAT = "hp"
-        private const val ATTACK_STAT = "attack"
-        private const val DEFENSE_STAT = "defense"
-        private const val SPECIAL_ATTACK_STAT = "special-attack"
-        private const val SPECIAL_DEFENSE_STAT = "special-defense"
-        private const val SPEED_STAT = "speed"
+        const val DEFAULT_STAT_VALUE = 0
+        const val HP_STAT = "hp"
+        const val ATTACK_STAT = "attack"
+        const val DEFENSE_STAT = "defense"
+        const val SPECIAL_ATTACK_STAT = "special-attack"
+        const val SPECIAL_DEFENSE_STAT = "special-defense"
+        const val SPEED_STAT = "speed"
     }
 }

@@ -29,7 +29,7 @@ const val LANDSCAPE_MODE_NUMBER_OF_COLUMNS = 3
 const val PORTRAIT_MODE_NUMBER_OF_COLUMNS = 2
 const val DEFAULT_SIZE_OF_GRID_LIST = 10
 
-// ***** Type Constants *****
+// ***** Time Constants *****
 const val RELOADING_DEBOUNCE_TIME = 1000L
 const val SHIMMER_ANIMATION_DURATION = 2500
 const val BUTTON_CLICK_DEBOUNCE_TIME = 500L
@@ -37,3 +37,7 @@ const val BUTTON_CLICK_DEBOUNCE_TIME = 500L
 // ***** Paging Constants *****
 const val POKEMON_BASIC_INFO_PAGE_SIZE = 20
 const val POKEMON_BASIC_INFO_INITIAL_LOAD_SIZE = 20
+
+// ***** Units *****
+const val POKEMON_WEIGHT_UNIT = "kg"
+const val POKEMON_HEIGHT_UNIT = "cm"

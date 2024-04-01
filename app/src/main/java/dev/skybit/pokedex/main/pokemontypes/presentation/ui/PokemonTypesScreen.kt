@@ -24,8 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.domain.model.PokemonType
-import dev.skybit.pokedex.main.core.presentation.style.defaultPadding
-import dev.skybit.pokedex.main.core.presentation.style.largePadding
+import dev.skybit.pokedex.main.core.presentation.utlis.defaultPadding
+import dev.skybit.pokedex.main.core.presentation.utlis.largePadding
 import dev.skybit.pokedex.main.core.utils.DEFAULT_SIZE_OF_GRID_LIST
 import dev.skybit.pokedex.main.core.utils.LANDSCAPE_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_BUG

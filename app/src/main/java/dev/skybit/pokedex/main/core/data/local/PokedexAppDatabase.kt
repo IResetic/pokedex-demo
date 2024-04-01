@@ -20,7 +20,6 @@ import dev.skybit.pokedex.main.typedetails.data.local.model.PokemonBasicInfoEnti
     ],
     version = DATABASE_VERSION
 )
-
 @TypeConverters(ListConverter::class)
 abstract class PokedexAppDatabase : RoomDatabase() {
     abstract fun pokemonTypeDao(): PokemonTypeDao

@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
-import dev.skybit.pokedex.main.core.presentation.style.defaultRadius
-import dev.skybit.pokedex.main.core.presentation.style.largeRadius
+import dev.skybit.pokedex.main.core.presentation.utlis.defaultRadius
+import dev.skybit.pokedex.main.core.presentation.utlis.largeRadius
 
 @Composable
 fun ShimmerGridListItem() {
