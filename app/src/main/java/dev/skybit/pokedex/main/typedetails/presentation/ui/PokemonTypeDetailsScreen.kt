@@ -1,18 +1,10 @@
 package dev.skybit.pokedex.main.typedetails.presentation.ui
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,7 +14,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,17 +25,14 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.ui.components.ShimmerGridListItem
-import dev.skybit.pokedex.main.core.presentation.utlis.defaultPadding
-import dev.skybit.pokedex.main.core.presentation.utlis.largePadding
 import dev.skybit.pokedex.main.core.utils.DEFAULT_SIZE_OF_GRID_LIST
-import dev.skybit.pokedex.main.core.utils.LANDSCAPE_MODE_NUMBER_OF_COLUMNS
-import dev.skybit.pokedex.main.core.utils.PORTRAIT_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicInfoUI
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.ClearErrorMessage
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.RetryLoadingPokemonTypeDetails
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.BasicPokemonListItem
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.EmptyPokemonListView
+import dev.skybit.pokedex.main.typedetails.presentation.ui.components.PokemonTypeDetailsGridList
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.PokemonTypeDetailsHeaderComponent
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.PokemonsRetryOnErrorView
 import kotlinx.coroutines.flow.flowOf
@@ -56,7 +44,7 @@ fun PokemonTypeDetailsRoute(
 ) {
     val viewModel = hiltViewModel<PokemonTypeDetailsScreenViewModel>()
     val context = LocalContext.current
-    val pokemonsListScreenState by viewModel.pokemonsListScreenState.collectAsState()
+    val pokemonsListScreenState by viewModel.pokemonsTypeDetailsScreenState.collectAsState()
     val pokemonsItems = viewModel.pokemonsBasicInfoPagingSource.collectAsLazyPagingItems()
     val toastErrorMessage = stringResource(id = R.string.unable_to_fetch_pokemon_type_details_error_message)
 
@@ -117,15 +105,20 @@ fun PokemonTypesDetailsScreen(
             )
         }
     ) { paddingValues ->
-        val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-        val gridState = rememberLazyGridState()
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
             when {
+                (isLoading || pokemonsItems.loadState.refresh is LoadState.Loading) -> {
+                    PokemonTypeDetailsGridList(
+                        backgroundColor = pokemonTypeBasicInfo?.backgroundColor,
+                        itemCount = DEFAULT_SIZE_OF_GRID_LIST,
+                        renderItem = { ShimmerGridListItem() }
+                    )
+                }
+
                 isEmptyState -> {
                     EmptyPokemonListView(pokemonTypeBasicInfo?.backgroundColor)
                 }
@@ -138,41 +131,19 @@ fun PokemonTypesDetailsScreen(
                 }
 
                 else -> {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(
-                            if (isLandscape) LANDSCAPE_MODE_NUMBER_OF_COLUMNS else PORTRAIT_MODE_NUMBER_OF_COLUMNS
-                        ),
-                        state = gridState,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                color = pokemonTypeBasicInfo?.backgroundColor ?: MaterialTheme.colorScheme.primary
-                            ),
-                        contentPadding = PaddingValues(
-                            start = largePadding,
-                            end = largePadding,
-                            top = defaultPadding,
-                            bottom = largePadding
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(defaultPadding),
-                        horizontalArrangement = Arrangement.spacedBy(defaultPadding)
-                    ) {
-                        if (isLoading || pokemonsItems.loadState.refresh is LoadState.Loading) {
-                            items(DEFAULT_SIZE_OF_GRID_LIST) {
-                                ShimmerGridListItem()
-                            }
-                        } else {
-                            items(pokemonsItems.itemCount) { index ->
-                                val pokemonInfo = pokemonsItems[index]
-                                if (pokemonInfo != null) {
-                                    BasicPokemonListItem(
-                                        pokemonBasicInfo = pokemonInfo,
-                                        navigateToPokemonDetails = navigateToPokemonDetails
-                                    )
-                                }
+                    PokemonTypeDetailsGridList(
+                        backgroundColor = pokemonTypeBasicInfo?.backgroundColor,
+                        itemCount = pokemonsItems.itemCount,
+                        renderItem = { index ->
+                            val pokemonInfo = pokemonsItems[index]
+                            pokemonInfo?.let {
+                                BasicPokemonListItem(
+                                    pokemonBasicInfo = it,
+                                    navigateToPokemonDetails = navigateToPokemonDetails
+                                )
                             }
                         }
-                    }
+                    )
                 }
             }
         }

@@ -72,7 +72,7 @@ class PokemonTypeDetailsScreenViewModelTest {
         initSut(savedStateHandle)
 
         // check assertions
-        val actual = sut.pokemonsListScreenState.first().pokemonTypeBasicInfo
+        val actual = sut.pokemonsTypeDetailsScreenState.first().pokemonTypeBasicInfo
         val expected = PokemonTypeBasicInfoUI.fromDomain(fakePokemonTypeGrass)
         assertEquals(expected, actual)
     }
@@ -87,7 +87,7 @@ class PokemonTypeDetailsScreenViewModelTest {
         initSut(savedStateHandle)
 
         // check assertions
-        val actual = sut.pokemonsListScreenState.first()
+        val actual = sut.pokemonsTypeDetailsScreenState.first()
         assertTrue(actual.errorMessage.isEmpty())
     }
 
@@ -102,7 +102,7 @@ class PokemonTypeDetailsScreenViewModelTest {
         initSut(savedStateHandle)
 
         // check assertions
-        val actual = sut.pokemonsListScreenState.first().errorMessage
+        val actual = sut.pokemonsTypeDetailsScreenState.first().errorMessage
         assertTrue(actual.contains(networkError))
     }
 
@@ -117,7 +117,7 @@ class PokemonTypeDetailsScreenViewModelTest {
         initSut(savedStateHandle)
 
         // check assertions
-        val currentError = sut.pokemonsListScreenState.first().errorMessage
+        val currentError = sut.pokemonsTypeDetailsScreenState.first().errorMessage
         assertTrue(currentError.contains(networkError))
 
         // trigger action
@@ -127,7 +127,7 @@ class PokemonTypeDetailsScreenViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
 
         // check assertions
-        val actual = sut.pokemonsListScreenState.first()
+        val actual = sut.pokemonsTypeDetailsScreenState.first()
         assertTrue(actual.errorMessage.isEmpty())
     }
 
@@ -142,7 +142,7 @@ class PokemonTypeDetailsScreenViewModelTest {
         initSut(savedStateHandle)
 
         // check assertions
-        val currentError = sut.pokemonsListScreenState.first().errorMessage
+        val currentError = sut.pokemonsTypeDetailsScreenState.first().errorMessage
         assertTrue(currentError.contains(networkError))
 
         // trigger action
@@ -150,7 +150,7 @@ class PokemonTypeDetailsScreenViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
 
         // check assertions
-        val actual = sut.pokemonsListScreenState.first().errorMessage
+        val actual = sut.pokemonsTypeDetailsScreenState.first().errorMessage
         assertTrue(actual.isEmpty())
     }
 

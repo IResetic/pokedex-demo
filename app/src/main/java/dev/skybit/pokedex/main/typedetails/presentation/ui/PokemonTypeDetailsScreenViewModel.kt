@@ -49,8 +49,9 @@ class PokemonTypeDetailsScreenViewModel @Inject constructor(
         }.cachedIn(viewModelScope)
     } ?: flowOf(PagingData.empty())
 
-    private var _pokemonsListScreenState = MutableStateFlow(PokemonTypeDetailsUiState())
-    val pokemonsListScreenState: StateFlow<PokemonTypeDetailsUiState> = _pokemonsListScreenState.asStateFlow()
+    private var _pokemonTypeDetailsScreenState = MutableStateFlow(PokemonTypeDetailsUiState())
+    val pokemonsTypeDetailsScreenState: StateFlow<PokemonTypeDetailsUiState> =
+        _pokemonTypeDetailsScreenState.asStateFlow()
 
     init {
         getBasicPokemonTypeInfo()
@@ -63,7 +64,7 @@ class PokemonTypeDetailsScreenViewModel @Inject constructor(
                 tryReloadingPokemonTypeDetails()
             }
             is ClearErrorMessage -> {
-                _pokemonsListScreenState.update {
+                _pokemonTypeDetailsScreenState.update {
                     it.copy(errorMessage = "")
                 }
             }
@@ -75,7 +76,7 @@ class PokemonTypeDetailsScreenViewModel @Inject constructor(
             pokemonTypeId?.let { pokemonTypeId ->
                 val pokemonTypeBasicInfo = getPokemonTypeBasicInfo(pokemonTypeId.toInt())
 
-                _pokemonsListScreenState.update {
+                _pokemonTypeDetailsScreenState.update {
                     it.copy(pokemonTypeBasicInfo = PokemonTypeBasicInfoUI.fromDomain(pokemonTypeBasicInfo))
                 }
             }
@@ -83,7 +84,7 @@ class PokemonTypeDetailsScreenViewModel @Inject constructor(
     }
 
     private fun getPokemonTypeDetails() {
-        _pokemonsListScreenState.update {
+        _pokemonTypeDetailsScreenState.update {
             it.copy(isLoading = true)
         }
 
@@ -93,7 +94,7 @@ class PokemonTypeDetailsScreenViewModel @Inject constructor(
     }
 
     private fun tryReloadingPokemonTypeDetails() {
-        _pokemonsListScreenState.update {
+        _pokemonTypeDetailsScreenState.update {
             it.copy(isLoading = true)
         }
 
@@ -123,7 +124,7 @@ class PokemonTypeDetailsScreenViewModel @Inject constructor(
     private fun updatePokemonScreenStateAfterFetching(
         errorMessage: String = ""
     ) {
-        _pokemonsListScreenState.update {
+        _pokemonTypeDetailsScreenState.update {
             it.copy(
                 errorMessage = errorMessage,
                 isLoading = false,
