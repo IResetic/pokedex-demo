@@ -37,4 +37,13 @@ class PokemonDetailsRepositoryImpl @Inject constructor(
             it?.toDomain()
         }
     }
+
+    override suspend fun getPokemonDetails(pokemonId: Int): PokemonDetails? {
+        return try {
+            val pokemonDetails = pokemonDetailsLocalDataSource.getPokemonDetailsById(pokemonId)
+            pokemonDetails.toDomain()
+        } catch (e: Exception) {
+            null
+        }
+    }
 }

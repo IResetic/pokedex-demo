@@ -16,4 +16,8 @@ class PokemonDetailsLocalDataSourceImpl @Inject constructor(
     override fun getPokemonDetails(pokemonId: Int): Flow<PokemonDetailsEntity?> {
         return pokemonDetailsDao.getPokemonDetails(pokemonId)
     }
+
+    override suspend fun getPokemonDetailsById(pokemonId: Int): PokemonDetailsEntity {
+        return pokemonDetailsDao.getPokemonDetailsById(pokemonId)
+    }
 }

@@ -1,4 +1,4 @@
-package dev.skybit.pokedex.main.typedetails.presentation.ui.components
+package dev.skybit.pokedex.main.pokemon.presentation.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,14 +16,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.core.presentation.utlis.mediumPadding
 import dev.skybit.pokedex.main.core.presentation.utlis.twentyFivePercent
 import dev.skybit.pokedex.main.core.presentation.utlis.twentyPercent
 
 @Composable
-fun EmptyPokemonListView(
+fun EmptyPokemonDataView(
     backgroundColor: Color?
 ) {
     Column(
@@ -42,17 +41,11 @@ fun EmptyPokemonListView(
         )
 
         Text(
-            text = stringResource(id = R.string.empty_pokemon_details_message),
+            text = stringResource(id = R.string.empty_pokemons_list_message),
             style = MaterialTheme.typography.titleMedium.copy(
                 color = MaterialTheme.colorScheme.onPrimary
             ),
             textAlign = TextAlign.Center
         )
     }
-}
-
-@Preview
-@Composable
-fun EmptyPokemonListViewPreview() {
-    EmptyPokemonListView(backgroundColor = MaterialTheme.colorScheme.primary)
 }

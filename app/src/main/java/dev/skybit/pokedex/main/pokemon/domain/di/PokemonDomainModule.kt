@@ -6,8 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.skybit.pokedex.main.pokemon.domain.usecases.GetPokemonBasicInfo
 import dev.skybit.pokedex.main.pokemon.domain.usecases.GetPokemonBasicInfoImpl
+import dev.skybit.pokedex.main.pokemon.domain.usecases.GetPokemonDetails
 import dev.skybit.pokedex.main.pokemon.domain.usecases.GetPokemonDetailsById
 import dev.skybit.pokedex.main.pokemon.domain.usecases.GetPokemonDetailsByIdImpl
+import dev.skybit.pokedex.main.pokemon.domain.usecases.GetPokemonDetailsImpl
 import dev.skybit.pokedex.main.pokemon.domain.usecases.PopulatePokemonDetails
 import dev.skybit.pokedex.main.pokemon.domain.usecases.PopulatePokemonDetailsImpl
 
@@ -22,5 +24,8 @@ interface PokemonDomainModule {
     fun providePopulatePokemonDetails(impl: PopulatePokemonDetailsImpl): PopulatePokemonDetails
 
     @Binds
-    fun provideGetPokemonDetails(impl: GetPokemonDetailsByIdImpl): GetPokemonDetailsById
+    fun provideGetPokemonDetailsById(impl: GetPokemonDetailsByIdImpl): GetPokemonDetailsById
+
+    @Binds
+    fun provideGetPokemonDetails(impl: GetPokemonDetailsImpl): GetPokemonDetails
 }

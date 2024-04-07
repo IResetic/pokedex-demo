@@ -7,4 +7,6 @@ interface PokemonDetailsRepository {
     suspend fun populatePokemonDetails(pokemonId: Int)
 
     fun getPokemonDetailsById(pokemonId: Int): Flow<PokemonDetails?>
+
+    suspend fun getPokemonDetails(pokemonId: Int): PokemonDetails?
 }

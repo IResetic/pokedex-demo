@@ -13,6 +13,9 @@
 
     <!-- Pokemon Details Screen -->
     <string name="basic_stats_title">Base stats:</string>
+    <string name="empty_pokemon_details_message">There are no pokemon details to show.</string>
+    <string name="pokemon_details_error_message">Unable to fetch pokemon details from the network.</string>
+    <string name="unable_to_fetch_pokemon_details_error_message">There was an error when fetching pokemon details.</string>
 
     <!-- Buttons text -->
     <string name="retry_button_text">Retry</string>

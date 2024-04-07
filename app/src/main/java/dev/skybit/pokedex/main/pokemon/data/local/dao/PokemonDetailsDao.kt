@@ -14,4 +14,7 @@ interface PokemonDetailsDao {
 
     @Query("SELECT * FROM pokemon_details WHERE  id = :pokemonId")
     fun getPokemonDetails(pokemonId: Int): Flow<PokemonDetailsEntity?>
+
+    @Query("SELECT * FROM pokemon_details WHERE  id = :pokemonId")
+    suspend fun getPokemonDetailsById(pokemonId: Int): PokemonDetailsEntity
 }
