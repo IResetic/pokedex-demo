@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.skybit.pokedex.R
 import dev.skybit.pokedex.main.pokemon.presentation.model.PokemonDetailsUi
-import dev.skybit.pokedex.main.pokemon.presentation.ui.PokemonDetailsScreenEvent.ClearErrorMessage
-import dev.skybit.pokedex.main.pokemon.presentation.ui.PokemonDetailsScreenEvent.RetryLoading
+import dev.skybit.pokedex.main.pokemon.presentation.ui.PokemonDetailsScreenEvent.ClearPokemonErrorMessage
+import dev.skybit.pokedex.main.pokemon.presentation.ui.PokemonDetailsScreenEvent.RetryLoadingPokemonDetails
 import dev.skybit.pokedex.main.pokemon.presentation.ui.components.EmptyPokemonDataView
 import dev.skybit.pokedex.main.pokemon.presentation.ui.components.PokemonDetailsBody
 import dev.skybit.pokedex.main.pokemon.presentation.ui.components.PokemonDetailsHeader
@@ -44,7 +44,7 @@ fun PokemonDetailsRoute(
         val error = pokemonDetailsScreenUiState.errorMessage
         if (error.isNotEmpty() && pokemonDetailsScreenUiState.pokemonDetails != null) {
             Toast.makeText(context, toastErrorMessage, Toast.LENGTH_SHORT).show()
-            viewModel.onEvent(ClearErrorMessage)
+            viewModel.onEvent(ClearPokemonErrorMessage)
         }
     }
 
@@ -52,7 +52,7 @@ fun PokemonDetailsRoute(
         backgroundColor = pokemonDetailsScreenUiState.backgroundColor,
         pokemonDetailsUi = pokemonDetailsScreenUiState.pokemonDetails,
         pokemonDetailsDataState = pokemonDetailsScreenUiState.pokemonDetailsDataState,
-        retryLoading = { viewModel.onEvent(RetryLoading) },
+        retryLoading = { viewModel.onEvent(RetryLoadingPokemonDetails) },
         navigateBack = navigateBack
     )
 }

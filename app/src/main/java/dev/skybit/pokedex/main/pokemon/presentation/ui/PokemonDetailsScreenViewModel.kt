@@ -12,8 +12,8 @@ import dev.skybit.pokedex.main.pokemon.domain.usecases.GetPokemonBasicInfo
 import dev.skybit.pokedex.main.pokemon.domain.usecases.GetPokemonDetails
 import dev.skybit.pokedex.main.pokemon.presentation.model.PokemonDetailsUi
 import dev.skybit.pokedex.main.pokemon.presentation.navigation.PokemonDetailsScreenDestination.POKEMON_ID
-import dev.skybit.pokedex.main.pokemon.presentation.ui.PokemonDetailsScreenEvent.ClearErrorMessage
-import dev.skybit.pokedex.main.pokemon.presentation.ui.PokemonDetailsScreenEvent.RetryLoading
+import dev.skybit.pokedex.main.pokemon.presentation.ui.PokemonDetailsScreenEvent.ClearPokemonErrorMessage
+import dev.skybit.pokedex.main.pokemon.presentation.ui.PokemonDetailsScreenEvent.RetryLoadingPokemonDetails
 import dev.skybit.pokedex.main.pokemon.presentation.ui.model.PokemonDetailsDataState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -44,8 +44,8 @@ class PokemonDetailsScreenViewModel @Inject constructor(
 
     fun onEvent(event: PokemonDetailsScreenEvent) {
         when (event) {
-            ClearErrorMessage -> clearErrorMessage()
-            RetryLoading -> retryLoadingPokemonDetails()
+            ClearPokemonErrorMessage -> clearErrorMessage()
+            RetryLoadingPokemonDetails -> retryLoadingPokemonDetails()
         }
     }
 
@@ -138,8 +138,8 @@ class PokemonDetailsScreenViewModel @Inject constructor(
             }
         }
 
-        _pokemonDetailsScreenUiState.update {
-            it.copy(pokemonDetailsDataState = newDataState)
+        _pokemonDetailsScreenUiState.update { currentState ->
+            currentState.copy(pokemonDetailsDataState = newDataState)
         }
     }
 

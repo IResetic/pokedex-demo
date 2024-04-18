@@ -5,8 +5,6 @@ import dev.skybit.pokedex.main.pokemon.data.datasources.PokemonDetailsRemoteData
 import dev.skybit.pokedex.main.pokemon.data.mappers.PokemonDetailsResponseToPokemonDetailsEntityMapper
 import dev.skybit.pokedex.main.pokemon.domain.model.PokemonDetails
 import dev.skybit.pokedex.main.pokemon.domain.repository.PokemonDetailsRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class PokemonDetailsRepositoryImpl @Inject constructor(
@@ -29,12 +27,6 @@ class PokemonDetailsRepositoryImpl @Inject constructor(
                 val error = it.string()
                 Exception(error)
             } ?: Exception("An error occurred")
-        }
-    }
-
-    override fun getPokemonDetailsById(pokemonId: Int): Flow<PokemonDetails?> {
-        return pokemonDetailsLocalDataSource.getPokemonDetails(pokemonId).map {
-            it?.toDomain()
         }
     }
 
