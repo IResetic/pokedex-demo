@@ -37,7 +37,7 @@ class PokemonTypesRepositoryImpl @Inject constructor(
         var nextPageExists = true
 
         while (nextPageExists) {
-            val result = pokemonTypesRemoteDataSource.getPokemonTypes(offset)
+            val result = pokemonTypesRemoteDataSource.getPokemonTypes(currentOffset)
 
             if (result.isSuccessful) {
                 val body = result.body()
