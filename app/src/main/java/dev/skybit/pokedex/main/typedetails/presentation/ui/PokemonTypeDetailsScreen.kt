@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package dev.skybit.pokedex.main.typedetails.presentation.ui
 
 import android.annotation.SuppressLint
@@ -5,15 +7,20 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +36,7 @@ import dev.skybit.pokedex.main.core.utils.DEFAULT_SIZE_OF_GRID_LIST
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicInfoUI
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.ClearErrorMessage
+import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.RefreshPokemonTypeDetails
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.RetryLoadingPokemonTypeDetails
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.BasicPokemonListItem
 import dev.skybit.pokedex.main.typedetails.presentation.ui.components.EmptyPokemonListView
@@ -60,8 +68,10 @@ fun PokemonTypeDetailsRoute(
         pokemonTypeBasicInfo = pokemonsListScreenState.pokemonTypeBasicInfo,
         pokemonsItems = pokemonsItems,
         isLoading = pokemonsListScreenState.isLoading,
+        isRefreshing = pokemonsListScreenState.isRefreshing,
         errorMessage = pokemonsListScreenState.errorMessage,
         refreshPokemonTypeDetails = { viewModel.onEvent(RetryLoadingPokemonTypeDetails) },
+        pullToRefreshPokemonTypeDetails = { viewModel.onEvent(RefreshPokemonTypeDetails) },
         navigateToPokemonDetails = navigateToPokemonDetails,
         navigateBack = navigateBack
     )
@@ -73,11 +83,29 @@ fun PokemonTypesDetailsScreen(
     pokemonTypeBasicInfo: PokemonTypeBasicInfoUI? = null,
     pokemonsItems: LazyPagingItems<PokemonBasicInfoUi>,
     isLoading: Boolean,
+    isRefreshing: Boolean,
     errorMessage: String,
     refreshPokemonTypeDetails: () -> Unit,
+    pullToRefreshPokemonTypeDetails: () -> Unit,
     navigateToPokemonDetails: (pokemonId: Int) -> Unit,
     navigateBack: () -> Unit
 ) {
+    val pullToRefreshState = rememberPullToRefreshState()
+
+    if (pullToRefreshState.isRefreshing) {
+        LaunchedEffect(key1 = true) {
+            pullToRefreshPokemonTypeDetails()
+        }
+    }
+
+    LaunchedEffect(key1 = isRefreshing) {
+        if (isRefreshing) {
+            pullToRefreshState.startRefresh()
+        } else {
+            pullToRefreshState.endRefresh()
+        }
+    }
+
     val isEmptyState by remember(pokemonsItems.loadState.refresh, pokemonsItems.itemCount, isLoading, errorMessage) {
         derivedStateOf {
             pokemonsItems.loadState.refresh is NotLoading &&
@@ -109,6 +137,7 @@ fun PokemonTypesDetailsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .nestedScroll(pullToRefreshState.nestedScrollConnection)
         ) {
             when {
                 (isLoading || pokemonsItems.loadState.refresh is LoadState.Loading) -> {
@@ -146,6 +175,11 @@ fun PokemonTypesDetailsScreen(
                     )
                 }
             }
+
+            PullToRefreshContainer(
+                modifier = Modifier.align(Alignment.TopCenter),
+                state = pullToRefreshState
+            )
         }
     }
 }
@@ -200,8 +234,10 @@ fun PokemonTypesDetailsScreenPreview() {
         pokemonTypeBasicInfo = pokemonTypeBasicInfo,
         pokemonsItems = pokemonsItems,
         isLoading = isLoading,
+        isRefreshing = false,
         errorMessage = errorMessage,
         refreshPokemonTypeDetails = { },
+        pullToRefreshPokemonTypeDetails = { },
         navigateToPokemonDetails = { },
         navigateBack = { }
     )

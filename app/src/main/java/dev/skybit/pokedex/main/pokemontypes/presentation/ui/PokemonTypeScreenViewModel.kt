@@ -40,7 +40,7 @@ class PokemonTypeScreenViewModel @Inject constructor(
         when (event) {
             is LoadPokemonTypes -> { loadPokemonTypes() }
             is ClearErrorMessage -> { clearErrorMessage() }
-            is RetryLoadingOfPokemonTypes -> { refreshPokemonTypes() }
+            is RetryLoadingOfPokemonTypes -> { retryLoadingPokemonTypes() }
             is RefreshPokemonTypes -> { refreshPokemonTypes() }
         }
     }

@@ -17,6 +17,7 @@ import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonBasicInfoUi
 import dev.skybit.pokedex.main.typedetails.presentation.model.PokemonTypeBasicInfoUI
 import dev.skybit.pokedex.main.typedetails.presentation.navigation.PokemonTypeDetailsScreenDestination.POKEMON_TYPE_ID
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.ClearErrorMessage
+import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.RefreshPokemonTypeDetails
 import dev.skybit.pokedex.main.typedetails.presentation.ui.PokemonTypeDetailsScreenEvent.RetryLoadingPokemonTypeDetails
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -68,6 +69,9 @@ class PokemonTypeDetailsScreenViewModel @Inject constructor(
                     it.copy(errorMessage = "")
                 }
             }
+            is RefreshPokemonTypeDetails -> {
+                refreshPokemonTypeDetails()
+            }
         }
     }
 
@@ -105,6 +109,17 @@ class PokemonTypeDetailsScreenViewModel @Inject constructor(
 
             fetchPokemonsBasicInfo()
         }
+    }
+
+    private fun refreshPokemonTypeDetails() {
+        _pokemonTypeDetailsScreenState.update {
+            it.copy(
+                isRefreshing = true,
+                pokemonTypeBasicInfo = null
+            )
+        }
+
+        tryReloadingPokemonTypeDetails()
     }
 
     private suspend fun fetchPokemonsBasicInfo() {
