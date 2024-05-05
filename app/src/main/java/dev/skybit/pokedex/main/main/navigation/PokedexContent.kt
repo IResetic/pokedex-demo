@@ -1,8 +1,12 @@
 package dev.skybit.pokedex.main.main.navigation
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import dev.skybit.pokedex.main.pokemon.presentation.navigation.PokemonDetailsScreenDestination
@@ -15,7 +19,9 @@ import dev.skybit.pokedex.main.typedetails.presentation.navigation.pokemonTypeDe
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PokedexContent(navController: NavHostController) {
-    Scaffold {
+    Scaffold(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars)
+    ) {
         NavHost(
             navController = navController,
             startDestination = PokemonTypesScreenDestination.route
