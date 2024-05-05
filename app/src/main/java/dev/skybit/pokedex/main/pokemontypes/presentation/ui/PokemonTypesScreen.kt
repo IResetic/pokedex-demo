@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package dev.skybit.pokedex.main.pokemontypes.presentation.ui
 
 import android.content.res.Configuration
@@ -10,13 +12,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -37,6 +44,8 @@ import dev.skybit.pokedex.main.core.utils.POKEMON_TYPE_NORMAL
 import dev.skybit.pokedex.main.core.utils.PORTRAIT_MODE_NUMBER_OF_COLUMNS
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUi
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.ClearErrorMessage
+import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.RefreshPokemonTypes
+import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.RetryLoadingOfPokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.EmptyPokemonTypesListView
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.HeaderComponent
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.components.PokemonTypeListItem
@@ -66,7 +75,8 @@ internal fun PokemonTypesRoute(
         pokemonTypes = pokemonTypes.toImmutableList(),
         isLoading = pokemonTypesScreenState.isLoading,
         errorMessage = pokemonTypesScreenState.errorMessage,
-        retryLoading = { viewModel.onEvent(PokemonTypeScreenEvent.RetryLoadingOfPokemonTypes) },
+        retryLoading = { viewModel.onEvent(RetryLoadingOfPokemonTypes) },
+        refreshPokemonTypes = { viewModel.onEvent(RefreshPokemonTypes) },
         navigateToPokemonsList = navigateToPokemonsList
     )
 }
@@ -77,16 +87,36 @@ internal fun PokemonTypesScreen(
     isLoading: Boolean = false,
     errorMessage: String,
     retryLoading: () -> Unit,
+    refreshPokemonTypes: () -> Unit,
     navigateToPokemonsList: (Int) -> Unit
 ) {
+    val pullToRefreshState = rememberPullToRefreshState()
+
+    if (pullToRefreshState.isRefreshing) {
+        LaunchedEffect(key1 = true) {
+            refreshPokemonTypes()
+        }
+    }
+
+    LaunchedEffect(key1 = isLoading) {
+        if (isLoading) {
+            pullToRefreshState.startRefresh()
+        } else {
+            pullToRefreshState.endRefresh()
+        }
+    }
+
     Scaffold(
         modifier = Modifier.background(color = MaterialTheme.colorScheme.primary),
-        topBar = {
-            HeaderComponent()
-        }
+        topBar = { HeaderComponent() }
     ) { paddingValues ->
         val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-        Box(modifier = Modifier.padding(paddingValues)) {
+
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+                .nestedScroll(pullToRefreshState.nestedScrollConnection)
+        ) {
             when {
                 pokemonTypes.isEmpty() && !isLoading && errorMessage.isEmpty() -> {
                     EmptyPokemonTypesListView()
@@ -126,6 +156,11 @@ internal fun PokemonTypesScreen(
                     }
                 }
             }
+
+            PullToRefreshContainer(
+                modifier = Modifier.align(Alignment.TopCenter),
+                state = pullToRefreshState
+            )
         }
     }
 }
@@ -147,7 +182,8 @@ fun PokemonTypesScreenPreview() {
         isLoading = false,
         errorMessage = "",
         retryLoading = {},
-        navigateToPokemonsList = {}
+        navigateToPokemonsList = {},
+        refreshPokemonTypes = {}
     )
 }
 
@@ -161,7 +197,8 @@ fun PokemonTypesScreenEmptyListPreview() {
         isLoading = false,
         errorMessage = "",
         retryLoading = {},
-        navigateToPokemonsList = {}
+        navigateToPokemonsList = {},
+        refreshPokemonTypes = {}
     )
 }
 
@@ -175,6 +212,7 @@ fun PokemonTypesScreenEmptyListWithErrorPreview() {
         isLoading = false,
         errorMessage = "Error for preview",
         retryLoading = {},
-        navigateToPokemonsList = {}
+        navigateToPokemonsList = {},
+        refreshPokemonTypes = {}
     )
 }

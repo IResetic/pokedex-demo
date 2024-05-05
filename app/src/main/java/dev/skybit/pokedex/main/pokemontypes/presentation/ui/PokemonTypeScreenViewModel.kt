@@ -1,5 +1,6 @@
 package dev.skybit.pokedex.main.pokemontypes.presentation.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +12,7 @@ import dev.skybit.pokedex.main.pokemontypes.domain.usecases.GetPokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.presentation.model.PokemonTypeUi
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.ClearErrorMessage
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.LoadPokemonTypes
+import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.RefreshPokemonTypes
 import dev.skybit.pokedex.main.pokemontypes.presentation.ui.PokemonTypeScreenEvent.RetryLoadingOfPokemonTypes
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -38,8 +40,17 @@ class PokemonTypeScreenViewModel @Inject constructor(
         when (event) {
             is LoadPokemonTypes -> { loadPokemonTypes() }
             is ClearErrorMessage -> { clearErrorMessage() }
-            is RetryLoadingOfPokemonTypes -> { retryLoadingPokemonTypes() }
+            is RetryLoadingOfPokemonTypes -> { refreshPokemonTypes() }
+            is RefreshPokemonTypes -> { refreshPokemonTypes() }
         }
+    }
+
+    private fun refreshPokemonTypes() {
+        _pokemonTypeScreenState.update {
+            it.copy(pokemonTypes = emptyList())
+        }
+
+        retryLoadingPokemonTypes()
     }
 
     private fun loadPokemonTypes() {
@@ -53,6 +64,7 @@ class PokemonTypeScreenViewModel @Inject constructor(
     }
 
     private fun retryLoadingPokemonTypes() {
+        Log.d("PokemonTypesScreen", "retryLoadingPokemonTypes")
         _pokemonTypeScreenState.update {
             it.copy(isLoading = true, errorMessage = "")
         }
