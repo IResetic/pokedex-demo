@@ -74,6 +74,12 @@ class PokemonDetailsScreenViewModel @Inject constructor(
         }
     }
 
+    private fun clearErrorMessage() {
+        _pokemonDetailsScreenUiState.update {
+            it.copy(errorMessage = "")
+        }
+    }
+
     private fun retryLoadingPokemonDetails() {
         _pokemonDetailsScreenUiState.update { currentState ->
             currentState.copy(
@@ -140,12 +146,6 @@ class PokemonDetailsScreenViewModel @Inject constructor(
 
         _pokemonDetailsScreenUiState.update { currentState ->
             currentState.copy(pokemonDetailsDataState = newDataState)
-        }
-    }
-
-    private fun clearErrorMessage() {
-        _pokemonDetailsScreenUiState.update {
-            it.copy(errorMessage = "")
         }
     }
 }
